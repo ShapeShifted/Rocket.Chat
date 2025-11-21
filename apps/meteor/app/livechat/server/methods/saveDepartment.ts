@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { hasPermissionAsync } from '../../../authorization/server/functions/hasPermission';
 import { methodDeprecationLogger } from '../../../lib/server/lib/deprecationWarningLogger';
 import { saveDepartment } from '../lib/departmentsLib';
+import { LivechatDepartment } from '@rocket.chat/models';
 
 declare module '@rocket.chat/ddp-client' {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -23,6 +24,7 @@ declare module '@rocket.chat/ddp-client' {
 				fallbackForwardDepartment?: string;
 				departmentsAllowedToForward?: string[];
 				allowReceiveForwardOffline?: boolean;
+				enableAgentDepartment?: boolean;
 			},
 			departmentAgents?:
 				| {
@@ -45,6 +47,19 @@ Meteor.methods<ServerMethods>({
 				method: 'livechat:saveDepartment',
 			});
 		}
+
+		// Prevent enabling this flag on more than one department
+        if (departmentData?.enableAgentDepartment === true) {
+            const existing = await LivechatDepartment.findOne({
+                enableAgentDepartment: true,
+                enabled: true,
+                _id: { $ne: _id ?? undefined },
+            });
+
+            if (existing) {
+                throw new Meteor.Error('error-enable-agent-department-exists', 'Another department already has Human Agent Department enabled');
+            }
+        }
 
 		return saveDepartment(uid, _id, departmentData, { upsert: departmentAgents }, departmentUnit);
 	},

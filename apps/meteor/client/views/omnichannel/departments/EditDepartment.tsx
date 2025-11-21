@@ -139,6 +139,7 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 	const requestTagBeforeClosingChatField = useId();
 	const chatClosingTagsField = useId();
 	const allowReceiveForwardOffline = useId();
+	const enableAgentDepartment = useId();
 	const unitFieldId = useId();
 	const agentsLabelId = useId();
 	const departmentsAllowedToForwardFieldId = useId();
@@ -464,6 +465,15 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 							<Box display='flex' flexDirection='column' height='50vh'>
 								<DepartmentsAgentsTable aria-labelledby={agentsLabelId} control={control} register={register} />
 							</Box>
+						</Field>
+						<Field>
+							<FieldRow>
+								<FieldLabel htmlFor={enableAgentDepartment}>{t('Agent_Department_Enable')}</FieldLabel>
+								<ToggleSwitch id={enableAgentDepartment} {...register('enableAgentDepartment')} />
+							</FieldRow>
+							<FieldRow>
+								<FieldHint id={`${enableAgentDepartment}-hint`}>{t('Agent_Department_Enable_Description')}</FieldHint>
+							</FieldRow>
 						</Field>
 					</FieldGroup>
 				</PageScrollableContentWithShadow>

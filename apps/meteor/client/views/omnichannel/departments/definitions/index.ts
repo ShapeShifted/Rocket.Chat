@@ -11,6 +11,7 @@ export type EditDepartmentFormData = {
 	description: string;
 	enabled: boolean;
 	maxNumberSimultaneousChat: number;
+	enableAgentDepartment: boolean;
 	showOnRegistration: boolean;
 	showOnOfflineForm: boolean;
 	abandonedRoomsCloseCustomMessage: string;
