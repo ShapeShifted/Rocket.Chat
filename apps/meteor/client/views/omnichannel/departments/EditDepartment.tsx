@@ -138,11 +138,11 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 	const fallbackForwardDepartmentField = useId();
 	const requestTagBeforeClosingChatField = useId();
 	const chatClosingTagsField = useId();
-	const allowReceiveForwardOffline = useId();
-	const enableAgentDepartment = useId();
+	const allowReceiveForwardOffline = useId();	
 	const unitFieldId = useId();
 	const agentsLabelId = useId();
 	const departmentsAllowedToForwardFieldId = useId();
+	const enableAgentDepartment = useId();
 
 	return (
 		<Page flexDirection='row'>
@@ -469,7 +469,17 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 						<Field>
 							<FieldRow>
 								<FieldLabel htmlFor={enableAgentDepartment}>{t('Agent_Department_Enable')}</FieldLabel>
-								<ToggleSwitch id={enableAgentDepartment} {...register('enableAgentDepartment')} />
+								 <Controller
+									control={control}
+									name="enableAgentDepartment"
+									render={({ field: { value, onChange } }) => (
+										<ToggleSwitch
+											id={enableAgentDepartment}
+											checked={!!value}
+											onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.checked)}
+										/>
+									)}
+								/>
 							</FieldRow>
 							<FieldRow>
 								<FieldHint id={`${enableAgentDepartment}-hint`}>{t('Agent_Department_Enable_Description')}</FieldHint>

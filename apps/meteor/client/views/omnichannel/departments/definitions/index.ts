@@ -11,7 +11,6 @@ export type EditDepartmentFormData = {
 	description: string;
 	enabled: boolean;
 	maxNumberSimultaneousChat: number;
-	enableAgentDepartment: boolean;
 	showOnRegistration: boolean;
 	showOnOfflineForm: boolean;
 	abandonedRoomsCloseCustomMessage: string;
@@ -25,4 +24,5 @@ export type EditDepartmentFormData = {
 	chatClosingTags: string[];
 	allowReceiveForwardOffline: boolean;
 	unit?: string;
+	enableAgentDepartment: boolean;
 };

@@ -18,6 +18,7 @@ export const formatEditDepartmentPayload = (data: EditDepartmentFormData) => {
 		fallbackForwardDepartment,
 		allowReceiveForwardOffline,
 		requestTagBeforeClosingChat,
+		enableAgentDepartment
 	} = data;
 
 	return {
@@ -37,5 +38,6 @@ export const formatEditDepartmentPayload = (data: EditDepartmentFormData) => {
 		departmentsAllowedToForward: departmentsAllowedToForward?.map((dep) => dep.value),
 		fallbackForwardDepartment,
 		allowReceiveForwardOffline,
+		enableAgentDepartment: !!data.enableAgentDepartment,
 	};
 };

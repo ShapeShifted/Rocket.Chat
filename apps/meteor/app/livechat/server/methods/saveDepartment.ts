@@ -40,6 +40,7 @@ declare module '@rocket.chat/ddp-client' {
 
 Meteor.methods<ServerMethods>({
 	async 'livechat:saveDepartment'(_id, departmentData, departmentAgents, departmentUnit) {
+		console.log("Testing livechat:saveDepartment method called");
 		methodDeprecationLogger.method('livechat:saveDepartment', '8.0.0', '/v1/livechat/department');
 		const uid = Meteor.userId();
 		if (!uid || !(await hasPermissionAsync(uid, 'manage-livechat-departments'))) {
@@ -48,6 +49,7 @@ Meteor.methods<ServerMethods>({
 			});
 		}
 
+		console.log('livechat:saveDepartment enableAgentDepartment:', !!departmentData?.enableAgentDepartment);
 		// Prevent enabling this flag on more than one department
         if (departmentData?.enableAgentDepartment === true) {
             const existing = await LivechatDepartment.findOne({
