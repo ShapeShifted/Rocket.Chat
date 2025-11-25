@@ -109,6 +109,24 @@ API.v1.addRoute(
 );
 
 API.v1.addRoute(
+    'livechat/department/agent-department',
+    {
+        authRequired: true,
+        permissionsRequired: { GET: { permissions: ['view-livechat-departments', 'view-l-room'], operation: 'hasAny' } },
+    },
+    {
+        async get() {
+            try {
+                const dep = await LivechatDepartment.findOne({ enableAgentDepartment: true }, { projection: { _id: 1 } });
+                return API.v1.success({ departmentId: dep?._id ?? -1 });
+            } catch (error) {
+                return API.v1.success({ departmentId: -1 });
+            }
+        },
+    },
+);
+
+API.v1.addRoute(
 	'livechat/department/:_id',
 	{
 		authRequired: true,
