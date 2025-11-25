@@ -1024,6 +1024,8 @@
   "Chatops_Username": "Chatops Username",
   "Chats": "Chats",
   "Chats_removed": "Chats Removed",
+  "Chatbot_Department_Enable": "Chatbot Agent Department",
+  "Chatbot_Department_Enable_Description": "Allow this department to be assigned to chatbot agents (Only one department can be enabled at a time).",  
   "Check_All": "Check All",
   "Check_Progress": "Check Progress",
   "Check_back_later": "Check back later",

@@ -188,6 +188,20 @@ Meteor.startup(async () => {
 		} catch (err: unknown) {
 			logger.error('ensure-enableAgentDepartment-index: createIndex error:', err);
 		}
+
+		try {
+			await col.createIndex(
+				{ enableChatbotDepartment: 1 },
+				{
+					unique: true,
+					partialFilterExpression: { enableChatbotDepartment: true, enabled: true },
+					name: 'unique_enableChatbotDepartment_enabled_true',
+				},
+			);
+			logger.info('ensure-enableAgentDepartment-index: ensured unique index for enableChatbotDepartment');
+		} catch (err: unknown) {
+			logger.error('ensure-enableAgentDepartment-index: createIndex error:', err);
+		}
 	} catch (err: unknown) {
 		logger.error('ensure-enableAgentDepartment-index: unexpected error:', err);
 	}

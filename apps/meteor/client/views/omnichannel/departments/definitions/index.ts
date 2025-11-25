@@ -25,4 +25,5 @@ export type EditDepartmentFormData = {
 	allowReceiveForwardOffline: boolean;
 	unit?: string;
 	enableAgentDepartment: boolean;
+	enableChatbotDepartment: boolean;
 };

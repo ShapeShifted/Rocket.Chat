@@ -20,6 +20,7 @@ export interface ILivechatDepartment {
 	ancestors?: string[];
 	allowReceiveForwardOffline?: boolean;
 	enableAgentDepartment?: boolean;
+	enableChatbotDepartment?: boolean;
 	// extra optional fields
 	[k: string]: any;
 }
@@ -39,4 +40,6 @@ export type LivechatDepartmentDTO = {
 	offlineMessageChannelName?: string | undefined;
 	abandonedRoomsCloseCustomMessage?: string | undefined;
 	waitingQueueMessage?: string | undefined;
+	enableAgentDepartment?: boolean;
+	enableChatbotDepartment?: boolean;
 };

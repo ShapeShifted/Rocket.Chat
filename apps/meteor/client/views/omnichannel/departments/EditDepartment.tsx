@@ -143,6 +143,7 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 	const agentsLabelId = useId();
 	const departmentsAllowedToForwardFieldId = useId();
 	const enableAgentDepartment = useId();
+	const enableChatbotDepartment = useId();
 
 	return (
 		<Page flexDirection='row'>
@@ -483,6 +484,23 @@ function EditDepartment({ data, id, title, allowedToForwardData }: EditDepartmen
 							</FieldRow>
 							<FieldRow>
 								<FieldHint id={`${enableAgentDepartment}-hint`}>{t('Agent_Department_Enable_Description')}</FieldHint>
+							</FieldRow>
+							<FieldRow>
+								<FieldLabel htmlFor={enableChatbotDepartment}>{t('Chatbot_Department_Enable')}</FieldLabel>
+								 <Controller
+									control={control}
+									name="enableChatbotDepartment"
+									render={({ field: { value, onChange } }) => (
+										<ToggleSwitch
+											id={enableChatbotDepartment}
+											checked={!!value}
+											onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.checked)}
+										/>
+									)}
+								/>
+							</FieldRow>
+							<FieldRow>
+								<FieldHint id={`${enableChatbotDepartment}-hint`}>{t('Chatbot_Department_Enable_Description')}</FieldHint>
 							</FieldRow>
 						</Field>
 					</FieldGroup>

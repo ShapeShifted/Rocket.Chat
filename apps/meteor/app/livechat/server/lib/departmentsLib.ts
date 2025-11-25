@@ -36,14 +36,21 @@ export async function saveDepartment(
 	 // Log invocation (helps identify REST vs DDP calls)
   livechatLogger.info('saveDepartment invoked', { userId, departmentId: _id, name: departmentData?.name });
 
-  // Permission check: ensure callers are allowed (both REST and DDP pass userId)
-  if (!userId || !(await hasPermissionAsync(userId, 'manage-livechat-departments'))) {
-    livechatLogger.warn('saveDepartment: user not allowed', { userId });
-    throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:saveDepartment' });
+   // Disallow enabling both Human Agent and Chatbot on the same department.
+  // This must be enforced before the "unique enabled" checks for each flag.
+  if (departmentData?.enableAgentDepartment === true && departmentData?.enableChatbotDepartment === true) {
+    livechatLogger.info('saveDepartment prevented: cannot enable both agent and chatbot on the same department', {
+      userId,
+      departmentId: _id,
+      name: departmentData?.name,
+    });
+    throw new Meteor.Error(
+      'error-enable-both-agent-and-chatbot', 'A department cannot be enabled as both Human Agent Department and Chatbot Department at the same time',
+    );
   }
 
-  // Prevent enabling this flag on more than one department (same logic you added to method)
-  if (departmentData?.enableAgentDepartment === true) {
+  // Permission check: ensure callers are allowed (both REST and DDP pass userId)
+ if (departmentData?.enableAgentDepartment === true) {
     const query: Record<string, any> = {
       enableAgentDepartment: true,
       enabled: true,
@@ -57,7 +64,34 @@ export async function saveDepartment(
       livechatLogger.info('saveDepartment prevented: another enableAgentDepartment exists', { existingId: existing._id });
       throw new Meteor.Error('error-enable-agent-department-exists', 'Another department already has Human Agent Department enabled');
     }
+  }  if (!userId || !(await hasPermissionAsync(userId, 'manage-livechat-departments'))) {
+    livechatLogger.warn('saveDepartment: user not allowed', { userId });
+    throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:saveDepartment' });
   }
+
+  if (departmentData?.enableChatbotDepartment === true) {
+    const query: Record<string, any> = {
+      enableChatbotDepartment: true,
+      enabled: true,
+    };
+    if (_id) {
+      query._id = { $ne: _id };
+    }
+
+    const existing = await LivechatDepartment.findOne(query, { projection: { _id: 1 } });
+    if (existing) {
+      livechatLogger.info('saveDepartment prevented: another enableChatbotDepartment exists', { existingId: existing._id });
+      throw new Meteor.Error('error-enable-chatbot-department-exists', 'Another department already has Chatbot Agent Department enabled');
+    }
+  }  
+  
+  if (!userId || !(await hasPermissionAsync(userId, 'manage-livechat-departments'))) {
+    livechatLogger.warn('saveDepartment: user not allowed', { userId });
+    throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:saveDepartment' });
+  }
+
+  // Prevent enabling these flags on more than one department
+ 
 
 	if (departmentUnit?._id !== undefined && typeof departmentUnit._id !== 'string') {
 		throw new Meteor.Error('error-invalid-department-unit', 'Invalid department unit id provided', {

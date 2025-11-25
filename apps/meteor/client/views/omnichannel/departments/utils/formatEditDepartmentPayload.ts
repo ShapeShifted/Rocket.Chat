@@ -38,5 +38,6 @@ export const formatEditDepartmentPayload = (data: EditDepartmentFormData) => {
 		fallbackForwardDepartment,
 		allowReceiveForwardOffline,
 		enableAgentDepartment: !!data.enableAgentDepartment,
+		enableChatbotDepartment: !!data.enableChatbotDepartment,
 	};
 };
