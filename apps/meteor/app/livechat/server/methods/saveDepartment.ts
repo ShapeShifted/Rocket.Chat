@@ -2,6 +2,7 @@ import type { ILivechatDepartment } from '@rocket.chat/core-typings';
 import type { ServerMethods } from '@rocket.chat/ddp-client';
 import { Meteor } from 'meteor/meteor';
 
+
 import { hasPermissionAsync } from '../../../authorization/server/functions/hasPermission';
 import { methodDeprecationLogger } from '../../../lib/server/lib/deprecationWarningLogger';
 import { saveDepartment } from '../lib/departmentsLib';
@@ -40,29 +41,38 @@ declare module '@rocket.chat/ddp-client' {
 
 Meteor.methods<ServerMethods>({
 	async 'livechat:saveDepartment'(_id, departmentData, departmentAgents, departmentUnit) {
-		console.log("Testing livechat:saveDepartment method called");
 		methodDeprecationLogger.method('livechat:saveDepartment', '8.0.0', '/v1/livechat/department');
+
 		const uid = Meteor.userId();
+
 		if (!uid || !(await hasPermissionAsync(uid, 'manage-livechat-departments'))) {
 			throw new Meteor.Error('error-not-allowed', 'Not allowed', {
 				method: 'livechat:saveDepartment',
 			});
 		}
 
-		console.log('livechat:saveDepartment enableAgentDepartment:', !!departmentData?.enableAgentDepartment);
-		// Prevent enabling this flag on more than one department
-        if (departmentData?.enableAgentDepartment === true) {
-            const existing = await LivechatDepartment.findOne({
-                enableAgentDepartment: true,
-                enabled: true,
-                _id: { $ne: _id ?? undefined },
-            });
+		// Call saveDepartment and map DB duplicate-key errors (race conditions) into a friendly Meteor.Error
+		try {
+			const result = await saveDepartment(uid, _id, departmentData, { upsert: departmentAgents }, departmentUnit);
+			return result;
+		} catch (err: any) {
+			// Log full error object at debug level and a short message at warn/error
+			const msg = err?.message ?? err?.errmsg ?? String(err);
 
-            if (existing) {
-                throw new Meteor.Error('error-enable-agent-department-exists', 'Another department already has Human Agent Department enabled');
-            }
-        }
+			const isDup =
+				err?.code === 11000 ||
+				err?.codeName === 'DuplicateKey' ||
+				(typeof msg === 'string' &&
+					(msg.includes('E11000') ||
+						msg.toLowerCase().includes('duplicate key') ||
+						msg.includes('unique_enableAgentDepartment_enabled_true') ||
+						msg.includes('enableAgentDepartment')));
 
-		return saveDepartment(uid, _id, departmentData, { upsert: departmentAgents }, departmentUnit);
+			if (isDup) {
+				throw new Meteor.Error('error-enable-agent-department-exists', 'Only one Human Agent Department can be enabled at a time');
+			}
+
+			throw err;
+		}
 	},
 });

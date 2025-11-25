@@ -19,6 +19,7 @@ export interface ILivechatDepartment {
 	parentId?: string;
 	ancestors?: string[];
 	allowReceiveForwardOffline?: boolean;
+	enableAgentDepartment?: boolean;
 	// extra optional fields
 	[k: string]: any;
 }

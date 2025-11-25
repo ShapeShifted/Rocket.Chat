@@ -4,6 +4,7 @@ import { LivechatDepartment, LivechatDepartmentAgents, LivechatVisitors, Livecha
 import { isDepartmentCreationAvailable } from '@rocket.chat/omni-core';
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { hasPermissionAsync } from '../../../authorization/server/functions/hasPermission';
 
 import { updateDepartmentAgents } from './Helper';
 import { afterDepartmentArchived, afterDepartmentUnarchived } from './hooks';
@@ -20,6 +21,7 @@ import { settings } from '../../../settings/server';
  * @param {{upsert?: { agentId: string; count?: number; order?: number; }[], remove?: { agentId: string; count?: number; order?: number; }}} [departmentAgents] - The department agents
  * @param {{_id?: string}} [departmentUnit] - The department's unit id
  */
+
 export async function saveDepartment(
 	userId: string,
 	_id: string | null,
@@ -30,6 +32,33 @@ export async function saveDepartment(
 	},
 	departmentUnit?: { _id?: string },
 ) {
+
+	 // Log invocation (helps identify REST vs DDP calls)
+  livechatLogger.info('saveDepartment invoked', { userId, departmentId: _id, name: departmentData?.name });
+
+  // Permission check: ensure callers are allowed (both REST and DDP pass userId)
+  if (!userId || !(await hasPermissionAsync(userId, 'manage-livechat-departments'))) {
+    livechatLogger.warn('saveDepartment: user not allowed', { userId });
+    throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:saveDepartment' });
+  }
+
+  // Prevent enabling this flag on more than one department (same logic you added to method)
+  if (departmentData?.enableAgentDepartment === true) {
+    const query: Record<string, any> = {
+      enableAgentDepartment: true,
+      enabled: true,
+    };
+    if (_id) {
+      query._id = { $ne: _id };
+    }
+
+    const existing = await LivechatDepartment.findOne(query, { projection: { _id: 1 } });
+    if (existing) {
+      livechatLogger.info('saveDepartment prevented: another enableAgentDepartment exists', { existingId: existing._id });
+      throw new Meteor.Error('error-enable-agent-department-exists', 'Another department already has Human Agent Department enabled');
+    }
+  }
+
 	if (departmentUnit?._id !== undefined && typeof departmentUnit._id !== 'string') {
 		throw new Meteor.Error('error-invalid-department-unit', 'Invalid department unit id provided', {
 			method: 'livechat:saveDepartment',
@@ -76,6 +105,7 @@ export async function saveDepartment(
 		fallbackForwardDepartment: Match.Optional(String),
 		departmentsAllowedToForward: Match.Optional([String]),
 		allowReceiveForwardOffline: Match.Optional(Boolean),
+		enableAgentDepartment: Match.Optional(Boolean),
 	};
 
 	// The Livechat Form department support addition/custom fields, so those fields need to be added before validating

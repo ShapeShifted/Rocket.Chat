@@ -1,7 +1,7 @@
 import type { IUser } from '@rocket.chat/core-typings';
 import { ILivechatAgentStatus, isOmnichannelRoom } from '@rocket.chat/core-typings';
 import { Logger } from '@rocket.chat/logger';
-import { LivechatContacts, LivechatRooms } from '@rocket.chat/models';
+import { LivechatContacts, LivechatRooms, LivechatDepartment } from '@rocket.chat/models';
 import { registerGuest } from '@rocket.chat/omni-core';
 import { validateEmail, wrapExceptions } from '@rocket.chat/tools';
 import { Accounts } from 'meteor/accounts-base';
@@ -145,4 +145,50 @@ Meteor.startup(async () => {
 			},
 		});
 	});
+
+	// Ensure only one enabled department can have enableAgentDepartment:true
+	// Fix duplicates (keep the most recently created) and create a partial unique index.
+	try {
+		const col = LivechatDepartment.col;
+
+		// Find docs that have the flag and are enabled, newest first
+		const docs = await col
+			.find({ enableAgentDepartment: true, enabled: true }, { projection: { _id: 1, name: 1, createdAt: 1 } })
+			.sort({ createdAt: -1 })
+			.toArray();
+
+		if (docs.length > 1) {
+			const [keep, ...others] = docs;
+			const otherIds = others.map((d) => d._id);
+
+			logger.info(
+				`ensure-enableAgentDepartment-index: Found ${docs.length} enabled departments with enableAgentDepartment:true. Keeping ${String(
+					keep._id,
+				)} and disabling ${otherIds.length} others`,
+			);
+
+			await col.updateMany({ _id: { $in: otherIds } }, { $set: { enableAgentDepartment: false } });
+
+			logger.info('ensure-enableAgentDepartment-index: Disabled other enableAgentDepartment flags.');
+		} else {
+			logger.info('ensure-enableAgentDepartment-index: No duplicates found.');
+		}
+
+		// Ensure partial unique index exists
+		try {
+			await col.createIndex(
+				{ enableAgentDepartment: 1 },
+				{
+					unique: true,
+					partialFilterExpression: { enableAgentDepartment: true, enabled: true },
+					name: 'unique_enableAgentDepartment_enabled_true',
+				},
+			);
+			logger.info('ensure-enableAgentDepartment-index: ensured unique index for enableAgentDepartment');
+		} catch (err: unknown) {
+			logger.error('ensure-enableAgentDepartment-index: createIndex error:', err);
+		}
+	} catch (err: unknown) {
+		logger.error('ensure-enableAgentDepartment-index: unexpected error:', err);
+	}
 });

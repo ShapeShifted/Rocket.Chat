@@ -2,6 +2,7 @@ import { API } from '../api';
 import { getLoggedInUser } from '../helpers/getLoggedInUser';
 import { getServerInfo } from '../lib/getServerInfo';
 
+
 API.default.addRoute(
 	'info',
 	{ authRequired: false },

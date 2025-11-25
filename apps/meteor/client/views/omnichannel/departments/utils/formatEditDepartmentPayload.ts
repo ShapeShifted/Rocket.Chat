@@ -18,7 +18,6 @@ export const formatEditDepartmentPayload = (data: EditDepartmentFormData) => {
 		fallbackForwardDepartment,
 		allowReceiveForwardOffline,
 		requestTagBeforeClosingChat,
-		enableAgentDepartment
 	} = data;
 
 	return {
