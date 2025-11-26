@@ -1,5 +1,6 @@
 import { lazy } from 'react';
-
+import { registerAdminSidebarItem as registerAdminSidebarItem } from './sidebarItems';
+import { hasPermission } from '../../../app/authorization/client';
 import { createRouteGroup } from '../../lib/createRouteGroup';
 
 declare module '@rocket.chat/ui-contexts' {

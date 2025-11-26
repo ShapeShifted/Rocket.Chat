@@ -1,6 +1,7 @@
 import { hasAtLeastOnePermission, hasPermission } from '../../../app/authorization/client';
 import { createSidebarItems } from '../../lib/createSidebarItems';
 
+
 export const {
 	registerSidebarItem: registerOmnichannelSidebarItem,
 	unregisterSidebarItem,
@@ -84,5 +85,11 @@ export const {
 		icon: 'shield-check',
 		i18nLabel: 'Security_and_privacy',
 		permissionGranted: () => hasAtLeastOnePermission(['view-privileged-setting', 'edit-privileged-setting', 'manage-selected-settings']),
+	},
+	{
+	href: '/omnichannel/chatbot-portal',
+	i18nLabel: 'Chatbot Portal',
+	icon: 'chat',
+	permissionGranted: (): boolean => hasPermission('view-statistics'),
 	},
 ]);
