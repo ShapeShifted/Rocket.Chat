@@ -14,9 +14,9 @@
 		"chat"
 	],
 	"scripts": {
-		"start": "meteor",
+		"start": "meteor --settings settings.development.json",
 		"build:ci": "METEOR_DISABLE_OPTIMISTIC_CACHING=1 meteor build --server-only --directory /tmp/dist",
-		"dev": "NODE_OPTIONS=\"--trace-warnings\" meteor --exclude-archs \"web.browser.legacy, web.cordova\"",
+		"dev": "NODE_OPTIONS=\"--trace-warnings\" meteor --settings settings.development.json --exclude-archs \"web.browser.legacy, web.cordova\"",
 		"dsv": "meteor npm run dev",
 		"ha": "meteor npm run ha:start",
 		"ms": "TRANSPORTER=${TRANSPORTER:-TCP} meteor npm run dev",
@@ -108,6 +108,7 @@
 		"@types/google-libphonenumber": "^7.4.30",
 		"@types/gravatar": "^1.8.6",
 		"@types/he": "^1.2.3",
+		"@types/http-proxy": "^1",
 		"@types/i18next-sprintf-postprocessor": "^0.2.3",
 		"@types/imap": "^0.8.42",
 		"@types/jest": "~30.0.0",
@@ -367,6 +368,7 @@
 		"he": "^1.2.0",
 		"highlight.js": "11.8.0",
 		"hono": "^4.10.6",
+		"http-proxy": "^1.18.1",
 		"http-proxy-agent": "^7.0.2",
 		"human-interval": "^2.0.1",
 		"i18next-http-backend": "^1.4.5",

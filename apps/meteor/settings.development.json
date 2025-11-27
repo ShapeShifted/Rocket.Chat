@@ -1,0 +1,6 @@
+{
+  "public": {
+    "KNOWLEDGE_API_BASE_URL": "http://host.docker.internal:3005/knowledge",
+    "KNOWLEDGE_PROXY_TARGET": "http://host.docker.internal:3005"
+  }
+}

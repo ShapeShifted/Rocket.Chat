@@ -6,9 +6,10 @@
 	"private": true,
 	"scripts": {
 		"fossify": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' ts-node scripts/fossify.ts",
-        "fix-tsconfig": "cp packages/fuselage-ui-kit/tsconfig.esm.json packages/fuselage-ui-kit/tsconfig-esm.json",
-        "build": "yarn fix-tsconfig && turbo run build",
+		"fix-tsconfig": "cp packages/fuselage-ui-kit/tsconfig.esm.json packages/fuselage-ui-kit/tsconfig-esm.json",
+		"build": "yarn fix-tsconfig && turbo run build",
 		"build:services": "turbo run build --filter=rocketchat-services...",
+		"predsv": "node ./scripts/log-dsv-env.js",
 		"testunit": "turbo run testunit",
 		"test-storybook": "turbo run test-storybook",
 		"dev": "turbo run dev --env-mode=loose --parallel --filter=@rocket.chat/meteor...",
