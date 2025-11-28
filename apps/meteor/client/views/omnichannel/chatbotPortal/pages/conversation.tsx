@@ -212,66 +212,74 @@ const ConversationManager: React.FC = () => {
             </div>
           </Box>
         </div>
-        {/* Conversation Details Side Panel */}
+      </div>
+      {/* Modal for Conversation Details */}
+      {selectedBox && (
         <div
-          className="flex flex-col"
           style={{
-            flex: '1 1 0%',
-            padding: '2rem',
-            background: '#fff',
-            overflowY: 'auto',
-            maxHeight: '900px',
-            minWidth: 350,
-            maxWidth: 600,
-            borderLeft: '1px solid #e5e7eb',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {selectedBox ? (
-            <>
-              <button
-                onClick={() => setSelectedBox(null)}
-                className="absolute top-4 right-5 text-gray-400 hover:text-gray-700"
-                aria-label="Close"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: 24,
-                  cursor: 'pointer',
-                  position: 'absolute',
-                  right: 16,
-                  top: 16,
-                  zIndex: 10,
-                }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </button>
-              <h2 className="text-xl font-bold text-green-700 mb-4">Conversation</h2>
-              {Array.isArray(selectedBox.conversation) && selectedBox.conversation.length > 0 ? (
-                <div style={{ maxHeight: MAX_HEIGHT, overflowY: 'auto', paddingRight: 8 }}>
-                  {selectedBox.conversation.map((message, i) => (
-                    <div className="mb-2 flex bg-gray-50 rounded p-2" key={`${message.timestamp ?? i}-${i}`}>
-                      <div className="min-w-[80px] font-semibold text-green-700 flex-shrink-0">
-                        {titleCase(message.role)}:
-                      </div>
-                      <div className="ml-2 break-words">{message.content}</div>
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 12,
+              padding: '2rem',
+              maxWidth: 600,
+              width: '90%',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              position: 'relative',
+              boxShadow: '0 4px 32px rgba(0,0,0,0.15)',
+            }}
+          >
+            <button
+              onClick={() => setSelectedBox(null)}
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                background: 'none',
+                border: 'none',
+                fontSize: 24,
+                color: '#888',
+                cursor: 'pointer',
+              }}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold text-green-700 mb-4">Conversation</h2>
+            {Array.isArray(selectedBox.conversation) && selectedBox.conversation.length > 0 ? (
+              <div>
+                {selectedBox.conversation.map((message, i) => (
+                  <div className="mb-2 flex bg-gray-50 rounded p-2" key={`${message.timestamp ?? i}-${i}`}>
+                    <div className="min-w-[80px] font-semibold text-green-700 flex-shrink-0">
+                      {titleCase(message.role)}:
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-gray-500">No messages in this conversation.</div>
-              )}
-            </>
-          ) : (
-            <div className="text-gray-400 flex items-center justify-center h-full">Select a conversation to view details.</div>
-          )}
+                    <div className="ml-2 break-words">{message.content}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-500">No messages in this conversation.</div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
     </Box>
   );
+// ...existing code...
 };
 
 export default ConversationManager;
