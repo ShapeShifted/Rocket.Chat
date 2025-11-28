@@ -330,19 +330,30 @@ const FAQ: React.FC = () => {
         )}
       </div>
 
-      <Box marginBlockStart="x8" display="flex" alignItems="center" justifyContent="space-between">
-        <div>
-          <Button small disabled={page <= 1} onClick={() => load(page - 1)}>
-            Previous
-          </Button>
-          <Button small disabled={page >= totalPages} onClick={() => load(page + 1)} style={{ marginLeft: 8 }}>
-            Next
-          </Button>
-        </div>
-        <div>
-          Page {page} / {totalPages}
-        </div>
-      </Box>
+    <Box marginBlockStart="x8" display="flex" alignItems="center" justifyContent="space-between">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <Button small disabled={page <= 1} onClick={() => load(page - 1)}>
+          Previous
+        </Button>
+        {/* Page selector */}
+        <span>Page</span>
+        <input
+          type="number"
+          min={1}
+          max={totalPages}
+          value={page}
+          onChange={(e) => {
+            const val = Math.max(1, Math.min(totalPages, Number(e.target.value)));
+            if (val !== page) load(val);
+          }}
+          style={{ width: 60, textAlign: 'center' }}
+        />
+        <span>of {totalPages}</span>
+        <Button small disabled={page >= totalPages} onClick={() => load(page + 1)}>
+          Next
+        </Button>
+      </div>
+    </Box>
     </Box>
   );
 };
