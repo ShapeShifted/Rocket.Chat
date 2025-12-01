@@ -1,6 +1,7 @@
 import './tracing';
 import './models';
 import './knowledge-proxy';
+import "./voice-proxy"; 
 
 /**
  * ./settings uses top level await, in theory the settings creation

@@ -5,8 +5,9 @@ import FAQ from './pages/faq';
 import Fact from './pages/fact';
 import Conversation from './pages/conversation';
 import Analytics from './pages/analytics';
+import VoiceProcessing from './pages/voice';
 
-type Selected = 'FAQ' | 'Fact' | 'Conversation' | 'Analytics';
+type Selected = 'FAQ' | 'Fact' | 'Conversation' | 'Analytics' | 'Voice Processing';
 
 const ChatbotPortalRoute = () => {
   const [selected, setSelected] = useState<Selected>('FAQ');
@@ -29,6 +30,9 @@ const ChatbotPortalRoute = () => {
           <Button primary={selected === 'Analytics'} type="button" onClick={() => setSelected('Analytics')}>
             Analytics
           </Button>
+                    <Button primary={selected === 'Voice Processing'} type="button" onClick={() => setSelected('Voice Processing')}>
+            Voice Processing
+          </Button>
         </ButtonGroup>
       </Box>
 
@@ -38,6 +42,7 @@ const ChatbotPortalRoute = () => {
           {selected === 'Fact' && <Fact />}
           {selected === 'Conversation' && <Conversation />}
           {selected === 'Analytics' && <Analytics />}
+          {selected === 'Voice Processing' && <VoiceProcessing />}
         </Box>
       </Margins>
     </Box>
