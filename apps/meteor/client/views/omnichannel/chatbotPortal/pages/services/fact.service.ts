@@ -34,4 +34,17 @@ export const FactService = {
 
       deleteFact: (factId: string): Promise<FactResponse> =>
         fetch(`${BASE}/fact/delete/${encodeURIComponent(factId)}`, { method: 'DELETE', credentials: 'include' }).then(handleJsonResponse),
-    };
+
+      searchFacts: (query: string, type: string = 'fact', source?: string): Promise<FactResponse> =>
+        fetch(`${BASE}/search`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            query,
+            type:'fact',
+            source,
+          }),
+        }).then(handleJsonResponse),
+  };
+
