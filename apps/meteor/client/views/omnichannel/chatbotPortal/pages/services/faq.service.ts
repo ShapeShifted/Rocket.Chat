@@ -39,4 +39,16 @@ export const FaqService = {
       body: JSON.stringify(qnaPayload),
       credentials: 'include',
     }).then(handleJsonResponse),
-};
+
+  searchFaqs: (query: string, type: string = 'qna', source?: string): Promise<QnaResponse> =>
+        fetch(`${BASE}/search`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            query,
+            type:'qna',
+            source,
+          }),
+        }).then(handleJsonResponse),
+      };

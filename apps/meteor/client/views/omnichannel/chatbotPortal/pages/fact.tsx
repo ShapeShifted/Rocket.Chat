@@ -467,7 +467,7 @@ const FactManager = (): ReactElement => {
         >
           <h2 style={{ margin: '0 0 12px 0', fontWeight: 700, fontSize: '1.6rem' }}>Delete Fact?</h2>
           <div style={{ marginBottom: 24, fontSize: '1rem', color: '#222' }}>
-            Are you sure you want to delete the <b>{deletingFact.title}</b>?<br />
+            Are you sure you want to delete the <b>{deletingFact.title}</b> fact?<br />
             <span style={{ color: '#d32f2f', fontWeight: 500 }}>It will be permanently removed and cannot be recovered.</span>
           </div>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
