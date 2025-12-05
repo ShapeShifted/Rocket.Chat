@@ -19,6 +19,7 @@ interface FaqTopic {
 }
 
 const FAQ: React.FC = () => {
+  const [allFaqTopics, setAllFaqTopics] = useState<FaqTopic[]>([]); // store all topics
   const [faqTopics, setFaqTopics] = useState<FaqTopic[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -42,7 +43,7 @@ const FAQ: React.FC = () => {
     try {
       let res;
       if (searchQuery) {
-        res = await FaqService.searchFaqs(searchQuery, 'qna');
+        res = await FaqService.searchFaqs(searchQuery, 'qna', undefined, p ,PAGE_SIZE);
       } else {
         res = await FaqService.getFaqs(p, PAGE_SIZE);
       }

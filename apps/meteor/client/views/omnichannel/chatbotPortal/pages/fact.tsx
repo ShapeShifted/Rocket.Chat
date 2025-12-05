@@ -38,7 +38,7 @@ const FactManager = (): ReactElement => {
     try {
       let res;
       if (searchQuery) {
-        res = await FactService.searchFacts(searchQuery, 'fact');
+        res = await FactService.searchFacts(searchQuery, 'fact', p, PAGE_SIZE);
         const docs = res.documents ?? [];
         const mapped: Fact[] = docs.map((d: any) => ({
           id: d.id ?? d._id,
