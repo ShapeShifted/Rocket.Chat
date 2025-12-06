@@ -19,7 +19,6 @@ interface FaqTopic {
 }
 
 const FAQ: React.FC = () => {
-  const [allFaqTopics, setAllFaqTopics] = useState<FaqTopic[]>([]); // store all topics
   const [faqTopics, setFaqTopics] = useState<FaqTopic[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -35,6 +34,7 @@ const FAQ: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<FaqTopic[]>([]);
   const [deletingTopic, setDeletingTopic] = useState<FaqTopic | null>(null);
+  const [pageInput, setPageInput] = useState<string>(String(page));
 
   // Load topics (grouped by topic)
   const load = async (p = 1, searchQuery = '') => {
@@ -74,7 +74,12 @@ const FAQ: React.FC = () => {
     }
   };
 
-  useEffect(() => { load(1); }, []);
+  useEffect(() => {
+  load(1); // Load first page on mount
+}, []);
+
+  useEffect(() => {setPageInput(String(page));
+}, [page]);
 
   // Modal handlers
   const onStartEdit = (topic: FaqTopic) => {
@@ -177,6 +182,7 @@ const FAQ: React.FC = () => {
 
   // Pagination
   const handlePageChange = (newPage: number) => {
+    setPage(newPage);
     load(newPage, isSearching ? search : '');
   };
 
@@ -311,8 +317,8 @@ const FAQ: React.FC = () => {
               <div style={{ fontWeight: 600, fontSize: '1.15rem', marginBottom: 8 }}>{topic.topic}</div>
               {topic.faqs.map((f, idx) => (
                 <div key={f._id ?? idx} style={{ marginBottom: 12 }}>
-                  <div style={{ fontWeight: 500, color: '#222' }}>FAQ #{idx + 1}</div>
-                  <div style={{ color: '#222', marginBottom: 2 }}>
+                  <div style={{ fontWeight: 600, color: '#222', fontSize: '1rem', marginBottom: 8 }}>FAQ #{idx + 1}</div>
+                  <div style={{ color: '#222', marginBottom: 8 }}>
                     <b>Question:</b> {f.question}
                   </div>
                   <div style={{ color: '#333', marginBottom: 2 }}>
@@ -401,7 +407,7 @@ const FAQ: React.FC = () => {
             {editingTopic.faqs.map((f, idx) => (
               <div key={idx} style={{ background: '#e4e7ea', borderRadius: 8, padding: 12, marginBottom: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <div style={{ fontWeight: 500, fontSize: '1.1rem' }}>FAQ #{idx + 1}</div>
+                  <div style={{ fontWeight: 500, fontSize: '1.1rem', marginBottom: 12 }}><b>FAQ #{idx + 1}</b></div>
                   <span
                       onClick={() => onRemoveFaq(idx)}
                       style={{
@@ -521,13 +527,27 @@ const FAQ: React.FC = () => {
           </Button>
           <span>Page</span>
           <input
-            type="number"
+            type="text" // <-- changed from "number" to "text"
+            inputMode="numeric" // helps mobile keyboards show numbers
+            pattern="[0-9]*" // restricts input to digits
             min={1}
             max={totalPages}
-            value={page}
-            onChange={(e) => {
-              const val = Math.max(1, Math.min(totalPages, Number(e.target.value)));
-              if (val !== page) handlePageChange(val);
+            value={pageInput}
+            onChange={e => 
+            {
+              // Allow empty string for editing
+              const val = e.target.value;
+              // Prevent 0 from being entered
+              if (val === '' || Number(val) >= 1) {
+                setPageInput(val);
+              }
+            }
+            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const val = Math.max(1, Math.min(totalPages, Number(pageInput) || 1));
+                if (val !== page) handlePageChange(val);
+              }
             }}
             style={{ width: 40, textAlign: 'center', fontSize: '16px' }}
           />

@@ -31,6 +31,7 @@ const FactManager = (): ReactElement => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<Fact[]>([]);
   const [deletingFact, setDeletingFact] = useState<Fact | null>(null);
+  const [pageInput, setPageInput] = useState<string>(String(page));
 
   const load = async (p = 1, searchQuery = '') => {
     setLoading(true);
@@ -71,9 +72,13 @@ const FactManager = (): ReactElement => {
     }
   };
 
-  useEffect(() => {
-    load(1);
+    useEffect(() => {
+    load(1); // Load first page on mount
   }, []);
+
+  useEffect(() => {
+  setPageInput(String(page));
+}, [page]);
 
   const handleSearchKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -491,19 +496,32 @@ const FactManager = (): ReactElement => {
       {/* Pagination */}
       <Box marginBlockStart="x8" display="flex" alignItems="center" justifyContent="space-between">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '16px' }}>
-          <Button small disabled={page <= 1} onClick={() => load(page - 1)}
+          <Button small disabled={page <= 1} onClick={() => handlePageChange(page - 1)}
             style={{ fontSize: '16px' }}>
             Previous
           </Button>
           <span>Page</span>
           <input
-            type="number"
+            type="text" // <-- changed from "number" to "text"
+            inputMode="numeric" // helps mobile keyboards show numbers
+            pattern="[0-9]*" // restricts input to digits
             min={1}
             max={totalPages}
-            value={page}
-            onChange={(e) => {
-              const val = Math.max(1, Math.min(totalPages, Number(e.target.value)));
-              if (val !== page) handlePageChange(val);
+            value={pageInput??page}
+            onChange={e => // Allow empty string for editing
+              {
+                const val = e.target.value;
+              // Prevent 0 from being entered
+              if (val === '' || Number(val) >= 1) {
+                setPageInput(val);
+                }
+              }
+              }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const val = Math.max(1, Math.min(totalPages, Number(e.currentTarget.value)));
+                if (val !== page) handlePageChange(val);
+              }
             }}
             style={{ width: 40, textAlign: 'center', fontSize: '16px' }}
           />
@@ -515,6 +533,8 @@ const FactManager = (): ReactElement => {
         </div>
       </Box>
     </Box>
+
+    
   );
 };
 
