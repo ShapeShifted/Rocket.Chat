@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Box, Button } from '@rocket.chat/fuselage';
 import { ConversationService } from './services/conversation.service';
+import type { ReactElement } from 'react';
+import type { ConversationResponse } from './services/conversation.service';
 
 type Message = {
   role?: string;
@@ -18,20 +20,43 @@ type ConversationBox = {
 const PAGE_SIZE = 8;
 const LIST_MAX_HEIGHT = '70vh';
 
-const ConversationManager: React.FC = () => {
+const ConversationManager = (): ReactElement => {
   const [conversations, setConversations] = useState<ConversationBox[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [search, setSearch] = useState('');
   const [selectedBox, setSelectedBox] = useState<ConversationBox | null>(null);
+  const [pageInput, setPageInput] = useState<string>(String(page));
+  const [searchResults, setSearchResults] = useState<ConversationBox[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const load = async (p = 1) => {
+  const load = async (p = 1, searchQuery = '') => {
     setLoading(true);
     setError(null);
     try {
-      const resp: any = await ConversationService.getConversations(p, PAGE_SIZE);
+      let res: ConversationResponse;
+      if (searchQuery) {
+              res = await ConversationService.searchConversations(searchQuery, p, PAGE_SIZE);
+             if (res.sessionID && res.phone_id && res.conversations) {
+            const mapped: ConversationBox[] = res.sessionID.map((sessionId: string, i: number) => ({
+              sessionId,
+              phoneId: res.phone_id[i],
+              conversation: res.conversations[i],
+            }));
+            setSearchResults(mapped);
+            setTotalPages(res.totalPages ?? 1);
+            setPage(1);
+            setConversations(mapped.slice(0, PAGE_SIZE));
+          } else {
+            setSearchResults([]);
+            setConversations([]);
+            setTotalPages(1);
+            setPage(1);
+  }
+            } else {
+      const resp: ConversationResponse = await ConversationService.getConversations(p, PAGE_SIZE);
       let conversationsArray: any[] = [];
       let count = 0;
 
@@ -72,7 +97,8 @@ const ConversationManager: React.FC = () => {
       setConversations(mapped);
       setTotalPages(resp?.totalPages ?? Math.max(1, Math.ceil((resp.total ?? count) / PAGE_SIZE)));
       setPage(p);
-    } catch (err: any) {
+    }
+   } catch (err: any) {
       setError(err?.message ?? String(err) ?? 'Failed to load conversations');
     } finally {
       setLoading(false);
@@ -83,17 +109,59 @@ const ConversationManager: React.FC = () => {
     load(1);
   }, []);
 
+  useEffect(() => {
+    setPageInput(String(page));
+  }, [page]);
+
   const handlePageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > totalPages) return;
+    if (isSearching && searchResults.length > 0) {
+    setPage(newPage);
+    setConversations(searchResults.slice((newPage - 1) * PAGE_SIZE, newPage * PAGE_SIZE));
+  } else {
     load(newPage);
+  }
   };
+
+  const handleSearchKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        if (search.trim() === '') {
+          setIsSearching(false);
+          await load(1);
+        } else {
+          setIsSearching(true);
+          await load(1, search.trim());
+        }
+      }
+    };
 
   return (
     <Box style={{ maxWidth: 1200, margin: '0 auto' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8 }}>
         <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Conversations</h2>
-        <div style={{ width: 260 }} />
+        <div style={{ position: 'relative', width: 320 , display: 'flex', justifyContent: 'flex-end'}}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+              style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#888' }}
+              xmlns="http://www.w3.org/2000/svg">
+              <circle cx="9" cy="9" r="7" stroke="#888" strokeWidth="2" />
+              <line x1="15" y1="15" x2="19" y2="19" stroke="#888" strokeWidth="2" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search for Conversations"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              style={{
+                padding: '8px 12px 8px 36px',
+                borderRadius: 6,
+                border: '1px solid #ccc',
+                fontSize: '16px',
+                width: '100%',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
       </div>
 
       <div
@@ -164,13 +232,23 @@ const ConversationManager: React.FC = () => {
           </Button>
           <span>Page</span>
           <input
-            type="number"
+            type="text" 
+            inputMode="numeric"
+            pattern="[0-9]*" 
             min={1}
             max={totalPages}
-            value={page}
+            value={pageInput??page}
             onChange={(e) => {
-              const val = Math.max(1, Math.min(totalPages, Number(e.target.value)));
-              if (val !== page) handlePageChange(val);
+               const val = e.target.value;
+              if (val === '' || Number(val) >= 1) {
+                setPageInput(val);
+                }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const val = Math.max(1, Math.min(totalPages, Number(e.currentTarget.value)));
+                if (val !== page) handlePageChange(val);
+              }
             }}
             style={{ width: 40, textAlign: 'center', fontSize: '16px' }}
           />

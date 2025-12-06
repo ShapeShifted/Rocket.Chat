@@ -14,5 +14,11 @@ async function handleJsonResponse(res: Response) {
 
 export const ConversationService = {
   getConversations: (page = 1, limit = 8): Promise<ConversationResponse> =>
-    fetch(`${BASE}/archived-conversations`, { credentials: 'include' }).then(handleJsonResponse),
+    fetch(`${BASE}/archived-conversations?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
+
+  searchConversations: (query: string, page = 1, limit = 8): Promise<ConversationResponse> =>
+    fetch(
+      `${BASE}/conversations/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`,
+      { credentials: 'include' }
+    ).then(handleJsonResponse),
 };
