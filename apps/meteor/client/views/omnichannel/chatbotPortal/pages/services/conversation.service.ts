@@ -21,4 +21,6 @@ export const ConversationService = {
       `${BASE}/conversations/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`,
       { credentials: 'include' }
     ).then(handleJsonResponse),
+
+    
 };

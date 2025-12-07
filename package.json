@@ -85,6 +85,8 @@
 	},
 	"dependencies": {
 		"@types/stream-buffers": "^3.0.8",
-		"node-gyp": "^10.2.0"
+		"date-fns": "^4.1.0",
+		"node-gyp": "^10.2.0",
+		"react-datepicker": "^8.10.0"
 	}
 }
