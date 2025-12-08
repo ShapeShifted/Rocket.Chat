@@ -37,13 +37,14 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
     const data = Object.values(issueTypeCounts);
 
     useEffect(() => {
-        if (!canvas.current) return;
 
         // Destroy previous chart instance if exists
         if (chartInstance.current) {
             chartInstance.current.destroy();
             chartInstance.current = null;
         }
+
+		if (!canvas.current || !labels.length || !data.length) return;
 
         // Draw new chart and store the instance
         drawDoughnutChart(
@@ -64,6 +65,14 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
             }
         };
     }, [labels, data, t]);
+
+	if (!labels.length || !data.length) {
+        return (
+            <div style={{ textAlign: 'center', padding: '2em' }}>
+                {t('No data to display')}
+            </div>
+        );
+    }
 
     return <Chart canvasRef={canvas} {...props} />;
 };
