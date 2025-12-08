@@ -13,12 +13,18 @@ async function handleJsonResponse(res: Response) {
   return res.json();
 }
 
-export const AnalyticsService = {
+export const ConversationMonitoringService = {
   getAnalytics: (page = 1, limit = 8): Promise<AnalyticsResponse> =>
     fetch(`${BASE}/analytics?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
 
   getConversations: (page = 1, limit = 8): Promise<ConversationResponse> =>
       fetch(`${BASE}/archived-conversations?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
+
+  getAllAnalytics: (): Promise<AnalyticsResponse> =>
+      fetch(`${BASE}/analytics/all`, { credentials: 'include' }).then(handleJsonResponse),
+
+  getAllConversations: (): Promise<ConversationResponse> =>
+      fetch(`${BASE}/archived-conversations/all`, { credentials: 'include' }).then(handleJsonResponse),
 
   searchConversations: (query: string, page = 1, limit = 8): Promise<ConversationResponse> =>
       fetch(

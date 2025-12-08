@@ -92,4 +92,10 @@ export const {
 	icon: 'chat',
 	permissionGranted: (): boolean => hasPermission('view-statistics'),
 	},
+	{
+		href: '/omnichannel/conversation-monitoring',
+		i18nLabel: 'Conversation Monitoring',
+		icon: 'file-sheets',
+		permissionGranted: (): boolean => hasPermission('view-statistics'),
+	},
 ]);

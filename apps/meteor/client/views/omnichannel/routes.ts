@@ -100,6 +100,10 @@ declare module '@rocket.chat/ui-contexts' {
 			pattern: '/omnichannel/chatbot-portal';
 			pathname: `/omnichannel/chatbot-portal`;
 		};
+		'omnichannel-conversation-monitoring': {
+			pattern: '/omnichannel/conversation-monitoring';
+			pathname: `/omnichannel/conversation-monitoring`;
+		};
 	}
 }
 
@@ -212,4 +216,9 @@ registerOmnichannelRoute('/security-privacy', {
 registerOmnichannelRoute('/chatbot-portal', {
   name: 'omnichannel-chatbot-portal',
   component: lazy(() => import('./chatbotPortal/ChatbotPortalRoute')), // or copy component to an omnichannel route component
+});
+
+registerOmnichannelRoute('/conversation-monitoring', {
+  name: 'omnichannel-conversation-monitoring',
+  component: lazy(() => import('./conversationMonitoring/ConversationMonitoringRoute')), // or copy component to an omnichannel route component
 });
