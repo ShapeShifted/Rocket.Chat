@@ -222,7 +222,7 @@ const FAQ: React.FC = () => {
               fontSize: '18px',
               padding: '8px 20px',
               borderRadius: 8,
-              background: '#1677ff',
+              background: '#156ff5',
               border: 'none',
               display: 'flex',
               alignItems: 'center',

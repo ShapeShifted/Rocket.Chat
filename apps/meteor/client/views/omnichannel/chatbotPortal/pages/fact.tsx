@@ -232,7 +232,7 @@ const FactManager = (): ReactElement => {
               fontSize: '18px',
               padding: '8px 20px',
               borderRadius: 8,
-              background: '#165ff5',
+              background: '#156ff5',
               border: 'none',
               display: 'flex',
               alignItems: 'center',

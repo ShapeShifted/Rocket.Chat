@@ -22,5 +22,17 @@ export const VoiceService = {
             body: formData,
             credentials: 'include',
         }).then(handleJsonResponse);
-    }
+    },
+
+    getTranscriptions: (page = 1, limit = 8): Promise<VoiceResponse> =>
+        fetch(`${BASE}/paginatedTranscriptions?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
+
+    getAllTranscriptions: (): Promise<VoiceResponse> =>
+        fetch(`${BASE}/allTranscriptions`, { credentials: 'include' }).then(handleJsonResponse),
+
+    searchTranscriptions: (query: string, page = 1, limit = 8): Promise<VoiceResponse> =>
+        fetch(
+            `${BASE}/searchTranscription?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`,
+            { credentials: 'include' }
+        ).then(handleJsonResponse),
 };
