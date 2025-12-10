@@ -435,7 +435,10 @@ const Analytics: React.FC = () => {
   >
     {/* backdrop */}
     <div
-      onClick={() => setSelectedConversation(null)}
+      onClick={() => {
+        setSelectedConversation(null);
+        setSelectedSession(null);
+      }}  
       style={{
         position: 'absolute',
         inset: 0,
@@ -477,7 +480,7 @@ const Analytics: React.FC = () => {
         </button>
         <button
           aria-label="Close"
-          onClick={() => setSelectedConversation(null)}
+          onClick={() => {setSelectedConversation(null); setSelectedSession(null);}}
           style={{
             background: 'none',
             border: 'none',
