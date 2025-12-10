@@ -35,6 +35,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
 
     const labels = Object.keys(issueTypeCounts).map((type) => type.replace(/_/g, ' '));
     const data = Object.values(issueTypeCounts);
+    const labelsWithCounts = labels.map((label, idx) => `${label} (${data[idx]})`);
 
     useEffect(() => {
 
@@ -51,7 +52,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
             canvas.current,
             t(' '),
             undefined,
-            labels,
+            labelsWithCounts,
             data,
         ).then((chart) => {
             chartInstance.current = chart;
@@ -64,7 +65,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
                 chartInstance.current = null;
             }
         };
-    }, [labels, data, t]);
+    }, [labelsWithCounts, data, t]);
 
 	if (!labels.length || !data.length) {
         return (
@@ -74,7 +75,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
         );
     }
 
-    return <Chart canvasRef={canvas} {...props} />;
+      return <Chart canvasRef={canvas} {...props} />;
 };
 
 export default AnalyticsOverview;
