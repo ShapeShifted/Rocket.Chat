@@ -384,7 +384,7 @@ export const createGeneralSettings = () =>
 				type: 'boolean',
 				enableQuery: {
 					_id: 'Register_Server',
-					value: true,
+					value: false,
 				},
 				i18nDescription: 'Update_EnableChecker_Description',
 			});

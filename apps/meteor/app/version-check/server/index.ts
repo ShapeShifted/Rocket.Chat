@@ -18,7 +18,7 @@ const addVersionCheckJob = async () => {
 Meteor.startup(() => {
 	setImmediate(() => {
 		if (settings.get('Update_EnableChecker')) {
-			void checkVersionUpdate();
+			//void checkVersionUpdate();
 		}
 	});
 });

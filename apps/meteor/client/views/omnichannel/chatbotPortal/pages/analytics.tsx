@@ -139,7 +139,12 @@ const Analytics: React.FC = () => {
           <input
             type="date"
             value={calendarDate}
-            onChange={handleCalendarChange}
+            onChange={e => {
+              setCalendarDate(e.target.value);
+              if (e.target.value) {
+                load(1, e.target.value); // Automatically search when date changes
+              }
+            }}
             placeholder="yyyy-mm-dd"
             style={{
               padding: '8px 12px',
@@ -151,21 +156,6 @@ const Analytics: React.FC = () => {
               marginRight: 8,
             }}
           />
-          <Button
-            primary
-            style={{
-              fontWeight: 600,
-              fontSize: '16px',
-              padding: '8px 20px',
-              borderRadius: 8,
-              background: '#156ff5',
-              border: 'none',
-              minWidth: 80,
-            }}
-            onClick={handleCalendarSearch}
-          >
-            Search
-          </Button>
         </div>
       </div>
 
