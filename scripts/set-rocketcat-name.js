@@ -1,0 +1,15 @@
+const { MongoClient } = require('mongodb');
+
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:3001/rocketchat';
+const NEW_NAME = process.env.ROCKETCAT_NAME || 'DB Engage Bot';
+
+(async () => {
+  const client = await MongoClient.connect(MONGO_URL);
+  const db = client.db();
+  await db.collection('users').updateOne(
+    { username: 'rocket.cat' },
+    { $set: { name: NEW_NAME } }
+  );
+  console.log(`rocket.cat name set to "${NEW_NAME}"`);
+  await client.close();
+})();
