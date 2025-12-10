@@ -36,6 +36,10 @@ const FAQ: React.FC = () => {
   const [deletingTopic, setDeletingTopic] = useState<FaqTopic | null>(null);
   const [pageInput, setPageInput] = useState<string>(String(page));
 
+   // Tooltip state for validation
+  const [showTopicTooltip, setShowTopicTooltip] = useState(false);
+  const [faqTooltips, setFaqTooltips] = useState<{ [idx: number]: { question: boolean; answer: boolean } }>({});
+
   // Load topics (grouped by topic)
   const load = async (p = 1, searchQuery = '') => {
     setLoading(true);
@@ -97,12 +101,41 @@ const FAQ: React.FC = () => {
   const onChangeTopicName = (v: string) => {
     if (!editingTopic) return;
     setEditingTopic({ ...editingTopic, topic: v });
+    setShowTopicTooltip(false);
   };
+
+   const onBlurTopic = () => {
+    if (!editingTopic?.topic.trim()) {
+      setShowTopicTooltip(true);
+    } else {
+      setShowTopicTooltip(false);
+    }
+  };
+
   const onChangeFaq = (idx: number, field: 'question' | 'answer', value: string) => {
     if (!editingTopic) return;
     const faqs = editingTopic.faqs.map((f, i) => i === idx ? { ...f, [field]: value } : f);
     setEditingTopic({ ...editingTopic, faqs });
+
+    setFaqTooltips(prev => ({
+      ...prev,
+      [idx]: {
+        ...prev[idx],
+        [field]: false,
+      },
+    }));
   };
+
+const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => {
+    setFaqTooltips(prev => ({
+      ...prev,
+      [idx]: {
+        ...prev[idx],
+        [field]: !value.trim(),
+      },
+    }));
+  };
+
   const onAddFaq = () => {
     if (!editingTopic) return;
     setEditingTopic({ ...editingTopic, faqs: [...editingTopic.faqs, { question: '', answer: '' }] });
@@ -393,16 +426,70 @@ const FAQ: React.FC = () => {
               </div>
               <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>FAQs</h2>
             </div>
-            <div style={{ marginBottom: 12 }}>
+            <div style={{ marginBottom: 12 , position: 'relative'}}>
               <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: '20px' }}>Topic Name</label>
               <input
                 type="text"
                 value={editingTopic.topic}
                 placeholder="Provide a topic here"
                 onChange={e => onChangeTopicName(e.target.value)}
-                style={{ color: '#1F2329', width: '100%', padding: 10, borderRadius: 6, border: '1px solid #8e8e8e', fontSize: '1rem', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
+                onBlur={onBlurTopic}
+                style={{ color: '#1F2329', width: '100%', padding: 10, borderRadius: 6, border: showTopicTooltip ? '1px solid #e53e3e':'1px solid #8e8e8e', fontSize: '1rem', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
                 autoFocus
               />
+              {showTopicTooltip && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 'calc(100% + 8px)',
+                    marginTop: 2,
+                    background: '#ffffff',
+                    color: '#222',
+                    border: '1px solid #222',
+                    borderRadius: 4,
+                    padding: '6px 12px',
+                    fontSize: '0.95rem',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                    zIndex: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    minWidth: '220px',
+                  }}
+                >
+                  <span
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '16px',
+                    width: 0,
+                    height: 0,
+                    borderLeft: '10px solid transparent',
+                    borderRight: '10px solid transparent',
+                    borderBottom: '10px solid #222', // outline color
+                    zIndex: 10,
+                  }}
+                />
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-9px',
+                    left: '18px',
+                    width: 0,
+                    height: 0,
+                    borderLeft: '8px solid transparent',
+                    borderRight: '8px solid transparent',
+                    borderBottom: '8px solid #fff', // fill color
+                    zIndex: 11,
+                  }}
+                />
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="22" height="22" rx="2" fill="#FF8C00"/>
+                  <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                  </svg> Please fill out this field.
+                </div>
+              )}
             </div>
             {editingTopic.faqs.map((f, idx) => (
               <div key={idx} style={{ background: '#e4e7ea', borderRadius: 8, padding: 12, marginBottom: 12 }}>
@@ -425,24 +512,135 @@ const FAQ: React.FC = () => {
                       Remove
                   </span>
                 </div>
-                <div style={{ marginBottom: 8 }}>
+                <div style={{ marginBottom: 8 , position: 'relative'}}>
                   <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Question</label>
                   <input
                     type="text"
                     value={f.question}
                     onChange={e => onChangeFaq(idx, 'question', e.target.value)}
+                    onBlur={e => onBlurFaq(idx, 'question', e.target.value)}
                     placeholder="Provide the question here"
-                    style={{ background: '#fff', color: '#1F2329', width: '100%', padding: 8, borderRadius: 6, border: '1px solid #8e8e8e', fill: '#fff',fontSize: '1rem', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
+                    style={{ background: '#fff', color: '#1F2329', width: '100%', padding: 8, borderRadius: 6, border: faqTooltips[idx]?.question ? '1px solid #e53e3e' :'1px solid #8e8e8e', fill: '#fff',fontSize: '1rem', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
                   />
-                </div>
-                <div>
+                
+                {faqTooltips[idx]?.question && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 'calc(100% + 8px)',
+                        marginTop: 2,
+                        background: '#ffffff',
+                        color: '#222',
+                        border: '1px solid #222',
+                        borderRadius: 4,
+                        padding: '6px 12px',
+                        fontSize: '0.95rem',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        zIndex: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        minWidth: '220px',
+                      }}
+                    >
+                        <span
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        left: '16px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '10px solid transparent',
+                        borderRight: '10px solid transparent',
+                        borderBottom: '10px solid #222', // outline color
+                        zIndex: 10,
+                      }}
+                    />
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-9px',
+                        left: '18px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '8px solid transparent',
+                        borderRight: '8px solid transparent',
+                        borderBottom: '8px solid #fff', // fill color
+                        zIndex: 11,
+                      }}
+                      />
+                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                      </svg>
+                      Please fill out this field.
+                    </div>
+                  )}
+                  </div>
+                <div style={{ marginBottom: 8 , position: 'relative'}}>
                   <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Answer</label>
                   <textarea
                     value={f.answer}
                     onChange={e => onChangeFaq(idx, 'answer', e.target.value)}
+                    onBlur={e => onBlurFaq(idx, 'answer', e.target.value)}
                     placeholder="Provide the answer related to the question here"
-                    style={{  background: '#fff', color: '#1F2329', width: '100%', padding: 8, borderRadius: 6, border: '1px solid #8e8e8e', fill: '#fff', fontSize: '1rem', minHeight: 80, boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
+                    style={{  background: '#fff', color: '#1F2329', width: '100%', padding: 8, borderRadius: 6, border: faqTooltips[idx]?.answer ? '1px solid #e53e3e' :'1px solid #8e8e8e', fill: '#fff', fontSize: '1rem', minHeight: 80, boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}
                   />
+                  {faqTooltips[idx]?.answer && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 'calc(100% + 8px)',
+                        marginTop: 2,
+                        background: '#ffffff',
+                        color: '#222',
+                        border: '1px solid #222',
+                        borderRadius: 4,
+                        padding: '6px 12px',
+                        fontSize: '0.95rem',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        zIndex: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        minWidth: '220px',
+                      }}
+                    >
+                       <span
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '16px',
+                    width: 0,
+                    height: 0,
+                    borderLeft: '10px solid transparent',
+                    borderRight: '10px solid transparent',
+                    borderBottom: '10px solid #222', // outline color
+                    zIndex: 10,
+                  }}
+                />
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-9px',
+                    left: '18px',
+                    width: 0,
+                    height: 0,
+                    borderLeft: '8px solid transparent',
+                    borderRight: '8px solid transparent',
+                    borderBottom: '8px solid #fff', // fill color
+                    zIndex: 11,
+                  }}
+                  />
+                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                      </svg>
+                      Please fill out this field.
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
