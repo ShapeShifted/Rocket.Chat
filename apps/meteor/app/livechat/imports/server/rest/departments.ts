@@ -117,7 +117,7 @@ API.v1.addRoute(
     {
         async get() {
             try {
-                const dep = await LivechatDepartment.findOne({ enableAgentDepartment: true }, { projection: { _id: 1 } });
+                const dep = await LivechatDepartment.findOne({ enableAgentDepartment: true }, { projection: { _id: 1, name: 1  } });
                 return API.v1.success({ departmentId: dep?._id ?? -1, departmentName: dep?.name ?? '' });
             } catch (error) {
                 return API.v1.success({ departmentId: -1 });
@@ -135,7 +135,7 @@ API.v1.addRoute(
     {
         async get() {
             try {
-                const dep = await LivechatDepartment.findOne({ enableChatbotDepartment: true }, { projection: { _id: 1 } });
+                const dep = await LivechatDepartment.findOne({ enableChatbotDepartment: true }, { projection: { _id: 1, name: 1  } });
                 return API.v1.success({ departmentId: dep?._id ?? -1, departmentName: dep?.name ?? '' });
             } catch (error) {
                 return API.v1.success({ departmentId: -1 });
