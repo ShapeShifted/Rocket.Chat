@@ -131,11 +131,11 @@ Meteor.startup(async () => {
 	}
 
 	try {
-		if (!(await Users.findOneById('rocket.cat', { projection: { _id: 1 } }))) {
+		if (!(await Users.findOneById('docubutler', { projection: { _id: 1 } }))) {
 			await Users.create({
-				_id: 'rocket.cat',
-				name: 'Rocket.Cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				name: 'DB Engage Bot',
+				username: 'docubutler',
 				status: 'online',
 				statusDefault: 'online',
 				utcOffset: 0,
@@ -143,26 +143,26 @@ Meteor.startup(async () => {
 				type: 'bot',
 			});
 
-			await addUserRolesAsync('rocket.cat', ['bot']);
+			await addUserRolesAsync('docubutler', ['bot']);
 
-			const buffer = Buffer.from(await Assets.getBinaryAsync('avatars/rocketcat.png'));
+			const buffer = Buffer.from(await Assets.getBinaryAsync('avatars/docubutler.png'));
 
 			const rs = RocketChatFile.bufferToStream(buffer, 'utf8');
 			const fileStore = FileUpload.getStore('Avatars');
-			await fileStore.deleteByName('rocket.cat');
+			await fileStore.deleteByName('docubutler');
 
 			const file = {
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 				type: 'image/png',
 				size: buffer.length,
 			};
 
 			const upload = await fileStore.insert(file, rs);
-			await Users.setAvatarData('rocket.cat', 'local', upload.etag);
+			await Users.setAvatarData('docubutler', 'local', upload.etag);
 		}
 	} catch (error) {
 		console.log(
-			'Error creating default `rocket.cat` user, if you created a user with this username please remove it and restart the server',
+			'Error creating default `docubutler` user, if you created a user with this username please remove it and restart the server',
 		);
 		throw error;
 	}
