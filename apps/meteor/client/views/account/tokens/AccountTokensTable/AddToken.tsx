@@ -61,7 +61,7 @@ const AddToken = ({ reload, disabled }: AddTokenProps) => {
 							dangerouslySetInnerHTML={{
 								__html: DOMPurify.sanitize(
 									t('API_Personal_Access_Token_Generated_Text_Token_s_UserId_s', {
-										token,
+										token: token.token,
 										userId,
 									}),
 								),

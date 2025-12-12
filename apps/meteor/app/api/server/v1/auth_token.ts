@@ -2,7 +2,7 @@ import { API } from '../api';
 import { Users } from '@rocket.chat/models';
 
 API.v1.addRoute(
-  'me.personalAccessTokenSingle',
+  'auth-token',
   {
     async get() {
       const user = await Users.findOne(
