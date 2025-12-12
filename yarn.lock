@@ -20278,6 +20278,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^17.2.3":
+  version: 17.2.3
+  resolution: "dotenv@npm:17.2.3"
+  checksum: 10/f8b78626ebfff6e44420f634773375c9651808b3e1a33df6d4cc19120968eea53e100f59f04ec35f2a20b2beb334b6aba4f24040b2f8ad61773f158ac042a636
+  languageName: node
+  linkType: hard
+
 "drachtio-srf@npm:5.0.12":
   version: 5.0.12
   resolution: "drachtio-srf@npm:5.0.12"
@@ -32973,6 +32980,7 @@ __metadata:
     "@types/node": "npm:~22.16.5"
     "@types/stream-buffers": "npm:^3.0.8"
     date-fns: "npm:^4.1.0"
+    dotenv: "npm:^17.2.3"
     node-gyp: "npm:^10.2.0"
     react-datepicker: "npm:^8.10.0"
     ts-node: "npm:^10.9.2"

@@ -2,6 +2,8 @@ import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { argv, exit } from 'node:process';
 import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
+dotenv.config({ path: '/workspaces/Rocket.Chat/packages/i18n/src/scripts/.env.script' });
 
 import { distDirectory, languageFromBasename, resourceBasename, resourcesDirectory } from './common.mts';
 import { normalizeI18nInterpolations } from './normalize.mts';
@@ -15,6 +17,8 @@ async function build() {
 			content: JSON.parse(await readFile(join(resourcesDirectory, file), 'utf8')),
 		})),
 	);
+
+	const myWord = process.env.MY_PRODUCT || 'DB';
 
 	// normalize the interpolations and collect the stats
 	const countsByNormalization: Record<string, number> = {
@@ -49,6 +53,11 @@ async function build() {
 	// ./resources/*.i18n.json
 	await mkdir(join(distDirectory, 'resources'), { recursive: true });
 	for await (const resource of resources) {
+		for (const key in resource.content) {
+            if (typeof resource.content[key] === 'string') {
+                resource.content[key] = resource.content[key].replace(/{my_product}/g, myWord);
+            }
+        }
 		await writeFile(join(distDirectory, 'resources', resourceBasename(resource.language)), JSON.stringify(resource.content, null, 2));
 	}
 
