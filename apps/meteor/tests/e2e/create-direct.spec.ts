@@ -17,11 +17,11 @@ test.describe.serial('channel-direct-message', () => {
 		await poHomeChannel.sidenav.openNewByLabel('Direct message');
 
 		await poHomeChannel.sidenav.inputDirectUsername.click();
-		await page.keyboard.type('rocket.cat');
+		await page.keyboard.type('docubutler');
 		await page.waitForTimeout(200);
 		await page.keyboard.press('Enter');
 		await poHomeChannel.sidenav.btnCreate.click();
 
-		await expect(page).toHaveURL('direct/rocket.catrocketchat.internal.admin.test');
+		await expect(page).toHaveURL('direct/docubutlerrocketchat.internal.admin.test');
 	});
 });

@@ -109,10 +109,10 @@ export class ConverterCache {
 	}
 
 	async findImportedUser(importId: string): Promise<UserIdentification | null> {
-		if (importId === 'rocket.cat') {
+		if (importId === 'docubutler') {
 			return {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 			};
 		}
 
@@ -159,7 +159,7 @@ export class ConverterCache {
 		}
 
 		const user =
-			importId === 'rocket.cat' ? await Users.findOneById('rocket.cat', options) : await Users.findOneByImportId(importId, options);
+			importId === 'docubutler' ? await Users.findOneById('docubutler', options) : await Users.findOneByImportId(importId, options);
 		if (user) {
 			if (!this._userCache.has(importId)) {
 				this.addUser(importId, user._id, user.username);
@@ -177,7 +177,7 @@ export class ConverterCache {
 		return (
 			await Promise.all(
 				importedIds.map(async (user) => {
-					if (user === 'rocket.cat') {
+					if (user === 'docubutler') {
 						return user;
 					}
 

@@ -761,7 +761,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -782,7 +782,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -800,7 +800,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -818,7 +818,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -836,7 +836,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -854,7 +854,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -872,7 +872,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: group._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -1630,7 +1630,7 @@ describe('[Groups]', () => {
 					name: 'Incoming test',
 					enabled: true,
 					alias: 'test',
-					username: 'rocket.cat',
+					username: 'docubutler',
 					scriptEnabled: false,
 					overrideDestinationChannelEnabled: true,
 					channel: `#${createdGroup.name}`,
@@ -2192,7 +2192,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: testGroup._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -2202,7 +2202,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: testGroup._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -2212,7 +2212,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: testGroup._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -2280,7 +2280,7 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: testGroup._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -2290,11 +2290,11 @@ describe('[Groups]', () => {
 				.set(credentials)
 				.send({
 					roomId: testGroup._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
-		it('should return an array of moderators with rocket.cat as a moderator', (done) => {
+		it('should return an array of moderators with docubutler as a moderator', (done) => {
 			void request
 				.get(api('groups.moderators'))
 				.set(credentials)
@@ -2306,7 +2306,7 @@ describe('[Groups]', () => {
 				.expect((res) => {
 					expect(res.body).to.have.a.property('success', true);
 					expect(res.body).to.have.a.property('moderators').that.is.an('array').that.has.lengthOf(1);
-					expect(res.body.moderators[0].username).to.be.equal('rocket.cat');
+					expect(res.body.moderators[0].username).to.be.equal('docubutler');
 				})
 				.end(done);
 		});

@@ -71,7 +71,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -90,7 +90,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -105,7 +105,7 @@ describe('[Channels]', () => {
 			.post(api('channels.addModerator'))
 			.set(credentials)
 			.send({
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(400)
@@ -136,7 +136,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -151,7 +151,7 @@ describe('[Channels]', () => {
 			.post(api('channels.removeModerator'))
 			.set(credentials)
 			.send({
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(400)
@@ -182,7 +182,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -198,7 +198,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -216,7 +216,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -237,7 +237,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -256,7 +256,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -610,7 +610,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -625,7 +625,7 @@ describe('[Channels]', () => {
 			.set(credentials)
 			.send({
 				roomId: channel._id,
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 			})
 			.expect('Content-Type', 'application/json')
 			.expect(200)
@@ -2188,7 +2188,7 @@ describe('[Channels]', () => {
 										name: 'Incoming test',
 										enabled: true,
 										alias: 'test',
-										username: 'rocket.cat',
+										username: 'docubutler',
 										scriptEnabled: false,
 										overrideDestinationChannelEnabled: true,
 										channel: `#${createdChannel.name}`,
@@ -3150,7 +3150,7 @@ describe('[Channels]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -3160,7 +3160,7 @@ describe('[Channels]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -3170,7 +3170,7 @@ describe('[Channels]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -3222,7 +3222,7 @@ describe('[Channels]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
@@ -3232,11 +3232,11 @@ describe('[Channels]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.end(done);
 		});
-		it('should return an array of moderators with rocket.cat as a moderator', (done) => {
+		it('should return an array of moderators with docubutler as a moderator', (done) => {
 			void request
 				.get(api('channels.moderators'))
 				.set(credentials)
@@ -3248,7 +3248,7 @@ describe('[Channels]', () => {
 				.expect((res) => {
 					expect(res.body).to.have.a.property('success', true);
 					expect(res.body).to.have.a.property('moderators').that.is.an('array').that.has.lengthOf(1);
-					expect(res.body.moderators[0].username).to.be.equal('rocket.cat');
+					expect(res.body.moderators[0].username).to.be.equal('docubutler');
 				})
 				.end(done);
 		});

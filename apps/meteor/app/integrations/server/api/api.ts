@@ -60,7 +60,7 @@ async function createIntegration(options: IntegrationOptions, user: IUser): Prom
 				options.data.channel_name = `#${options.data.channel_name}`;
 			}
 			return addOutgoingIntegration(user._id, {
-				username: 'rocket.cat',
+				username: 'docubutler',
 				urls: [options.target_url],
 				name: options.name,
 				channel: options.data.channel_name,
@@ -83,7 +83,7 @@ async function createIntegration(options: IntegrationOptions, user: IUser): Prom
 			}
 
 			return addOutgoingIntegration(user._id, {
-				username: 'rocket.cat',
+				username: 'docubutler',
 				urls: [options.target_url],
 				name: options.name,
 				channel: options.data.username,
@@ -273,7 +273,7 @@ function integrationSampleRest(): { statusCode: number; body: IntegrationSampleB
 				channel_name: 'general',
 				timestamp: new Date(),
 				user_id: Random.id(),
-				user_name: 'rocket.cat',
+				user_name: 'docubutler',
 				text: 'Sample text 1',
 				trigger_word: 'Sample',
 			},
@@ -283,7 +283,7 @@ function integrationSampleRest(): { statusCode: number; body: IntegrationSampleB
 				channel_name: 'general',
 				timestamp: new Date(),
 				user_id: Random.id(),
-				user_name: 'rocket.cat',
+				user_name: 'docubutler',
 				text: 'Sample text 2',
 				trigger_word: 'Sample',
 			},
@@ -293,7 +293,7 @@ function integrationSampleRest(): { statusCode: number; body: IntegrationSampleB
 				channel_name: 'general',
 				timestamp: new Date(),
 				user_id: Random.id(),
-				user_name: 'rocket.cat',
+				user_name: 'docubutler',
 				text: 'Sample text 3',
 				trigger_word: 'Sample',
 			},

@@ -101,7 +101,7 @@ export class OmnichannelTriggers {
 			description: 'Updating the existing trigger',
 			condition: 'chat-opened-by-visitor',
 			sender: 'custom',
-			agentName: 'Rocket.cat',
+			agentName: 'docubutler',
 			triggerMessage,
 		});
 		await this.btnSave.click();

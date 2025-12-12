@@ -85,13 +85,13 @@ export const validators: OmnichannelRoomAccessValidator[] = [
 		return hasPermissionAsync(user._id, 'view-livechat-room-closed-same-department');
 	},
 	function (_room, user) {
-		// Check if user is rocket.cat
+		// Check if user is docubutler
 		if (!user?._id) {
 			return false;
 		}
 
 		// This opens the ability for rocketcat to upload files to a livechat room without being included in it :)
 		// Worst case, someone manages to log in as rocketcat lol
-		return user._id === 'rocket.cat';
+		return user._id === 'docubutler';
 	},
 ];

@@ -11,7 +11,7 @@ Meteor.startup(() => {
 		// Only event I found triggers this is from ephemeral messages
 		// Other types of messages come from another stream
 		return sdk.stream('notify-user', [`${getUserId()}/message`], (msg: IMessage) => {
-			msg.u = msg.u || { username: 'rocket.cat' };
+			msg.u = msg.u || { username: 'docubutler' };
 			msg.private = true;
 
 			return Messages.state.store(msg);

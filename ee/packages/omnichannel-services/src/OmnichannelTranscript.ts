@@ -325,7 +325,7 @@ export class OmnichannelTranscript extends ServiceClass implements IOmnichannelT
 		const outBuff = await streamToBuffer(stream as Readable);
 
 		try {
-			const { rid } = await roomService.createDirectMessage({ to: details.userId, from: 'rocket.cat' });
+			const { rid } = await roomService.createDirectMessage({ to: details.userId, from: 'docubutler' });
 			const [rocketCatFile, transcriptFile] = await this.uploadFiles({
 				details,
 				buffer: outBuff,
@@ -346,10 +346,10 @@ export class OmnichannelTranscript extends ServiceClass implements IOmnichannelT
 			return;
 		}
 
-		const { rid } = await roomService.createDirectMessage({ to: details.userId, from: 'rocket.cat' });
+		const { rid } = await roomService.createDirectMessage({ to: details.userId, from: 'docubutler' });
 		this.log.info(`Transcript for room ${details.rid} by user ${details.userId} - Sending error message to user`);
 		await messageService.sendMessage({
-			fromId: 'rocket.cat',
+			fromId: 'docubutler',
 			rid,
 			msg: `${i18n.t('pdf_error_message')}: ${e.message}`,
 		});
@@ -380,8 +380,8 @@ export class OmnichannelTranscript extends ServiceClass implements IOmnichannelT
 						}.pdf`,
 						type: 'application/pdf',
 						rid: roomId,
-						// Rocket.cat is the goat
-						userId: 'rocket.cat',
+						// docubutler is the goat
+						userId: 'docubutler',
 						size: buffer.length,
 					},
 				});
@@ -410,7 +410,7 @@ export class OmnichannelTranscript extends ServiceClass implements IOmnichannelT
 			const result = await Promise.allSettled([
 				uploadService.sendFileMessage({
 					roomId: details.rid,
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 					file: transcriptFile,
 					message: {
 						// Translate from service
@@ -420,7 +420,7 @@ export class OmnichannelTranscript extends ServiceClass implements IOmnichannelT
 				// Send the file to the user who requested it, so they can download it
 				uploadService.sendFileMessage({
 					roomId: rocketCatFile.rid || '',
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 					file: rocketCatFile,
 					message: {
 						// Translate from service

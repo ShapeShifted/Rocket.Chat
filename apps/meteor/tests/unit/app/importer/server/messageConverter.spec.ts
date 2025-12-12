@@ -32,7 +32,7 @@ describe('Message Converter', () => {
 	const messageToImport = {
 		ts: Date.now(),
 		u: {
-			_id: 'rocket.cat',
+			_id: 'docubutler',
 		},
 		rid: 'general',
 		msg: 'testing',
@@ -63,8 +63,8 @@ describe('Message Converter', () => {
 			expect(insertMessage.getCalls()).to.be.an('array').with.lengthOf(1);
 			expect(insertMessage.getCall(0).args).to.be.an('array').with.lengthOf(4);
 			expect(insertMessage.getCall(0).args[0]).to.be.deep.equal({
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 			});
 			expect(insertMessage.getCall(0).args[1]).to.deep.include({
 				ts: messageToImport.ts,
@@ -78,7 +78,7 @@ describe('Message Converter', () => {
 		it('should have the basic info', async () => {
 			const converter = new MessageConverter({ workInMemory: true });
 
-			const converted = await converter.buildMessageObject(messageToImport, 'general', { _id: 'rocket.cat', username: 'rocket.cat' });
+			const converted = await converter.buildMessageObject(messageToImport, 'general', { _id: 'docubutler', username: 'docubutler' });
 
 			expect(converted)
 				.to.be.an('object')
@@ -86,8 +86,8 @@ describe('Message Converter', () => {
 					ts: messageToImport.ts,
 					msg: messageToImport.msg,
 					u: {
-						_id: 'rocket.cat',
-						username: 'rocket.cat',
+						_id: 'docubutler',
+						username: 'docubutler',
 					},
 				});
 		});

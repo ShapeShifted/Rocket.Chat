@@ -2842,7 +2842,7 @@ describe('[Chat]', () => {
 				.set(credentials)
 				.query({
 					rid: 'invalid',
-					userId: 'rocket.cat',
+					userId: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(400)

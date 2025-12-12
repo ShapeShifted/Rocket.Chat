@@ -39,7 +39,7 @@ callbacks.add(
 			return data;
 		}
 
-		const user = await Users.findOneById('rocket.cat', { projection: { username: 1 } });
+		const user = await Users.findOneById('docubutler', { projection: { username: 1 } });
 		if (!user) {
 			return data;
 		}

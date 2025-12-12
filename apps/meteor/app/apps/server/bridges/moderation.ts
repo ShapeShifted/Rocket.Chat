@@ -22,7 +22,7 @@ export class AppModerationBridge extends ModerationBridge {
 			throw new Error('Invalid description');
 		}
 
-		await reportMessage(messageId, description, userId || 'rocket.cat');
+		await reportMessage(messageId, description, userId || 'docubutler');
 	}
 
 	protected async dismissReportsByMessageId(messageId: IMessage['id'], reason: string, action: string, appId: string): Promise<void> {

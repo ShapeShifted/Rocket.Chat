@@ -75,8 +75,8 @@ export class ListenersModule {
 			notifications.notifyUserInThisInstance(uid, 'message', {
 				groupable: false,
 				u: {
-					_id: 'rocket.cat',
-					username: 'rocket.cat',
+					_id: 'docubutler',
+					username: 'docubutler',
 				},
 				private: true,
 				_id: message._id || String(Date.now()),

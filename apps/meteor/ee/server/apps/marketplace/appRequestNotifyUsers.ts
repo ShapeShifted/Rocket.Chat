@@ -5,7 +5,7 @@ import { getWorkspaceAccessToken } from '../../../../app/cloud/server';
 import { i18n } from '../../../../server/lib/i18n';
 import { sendDirectMessageToUsers } from '../../../../server/lib/sendDirectMessageToUsers';
 
-const ROCKET_CAT_USERID = 'rocket.cat';
+const ROCKET_CAT_USERID = 'docubutler';
 const DEFAULT_LIMIT = 100;
 
 const notifyBatchOfUsersError = (error: Error) => {

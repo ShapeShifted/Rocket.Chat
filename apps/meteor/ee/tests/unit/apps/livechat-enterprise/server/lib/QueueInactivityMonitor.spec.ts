@@ -51,11 +51,11 @@ describe('OmnichannelQueueInactivityMonitorClass', () => {
 		modelsMock.Users.findOneById.reset();
 	});
 	describe('getRocketChatUser', () => {
-		it('should return rocket.cat user', async () => {
+		it('should return docubutler user', async () => {
 			const qclass = new OmnichannelQueueInactivityMonitorClass();
 			await qclass.getRocketCatUser();
 
-			expect(modelsMock.Users.findOneById.calledWith('rocket.cat')).to.be.true;
+			expect(modelsMock.Users.findOneById.calledWith('docubutler')).to.be.true;
 		});
 	});
 
@@ -178,7 +178,7 @@ describe('OmnichannelQueueInactivityMonitorClass', () => {
 			const qclass = new OmnichannelQueueInactivityMonitorClass();
 			modelsMock.LivechatInquiry.findOneById.resolves({ status: 'queued', rid: 'roomId' });
 			modelsMock.LivechatRooms.findOneById.resolves({ _id: 'roomId' });
-			modelsMock.Users.findOneById.resolves({ _id: 'rocket.cat' });
+			modelsMock.Users.findOneById.resolves({ _id: 'docubutler' });
 
 			await qclass.closeRoom({ attrs: { data: { inquiryId: 'inquiryId' } } });
 
@@ -189,7 +189,7 @@ describe('OmnichannelQueueInactivityMonitorClass', () => {
 					sinon.match({
 						comment: 'Closed automatically',
 						room: { _id: 'roomId' },
-						user: { _id: 'rocket.cat' },
+						user: { _id: 'docubutler' },
 					}),
 				),
 			);

@@ -309,7 +309,7 @@ class MessageSearchQueryParser {
  * @returns The MongoDB query and options
  * @private
  * @example
- * const { query, options } = parseMessageSearchQuery('from:rocket.cat', {
+ * const { query, options } = parseMessageSearchQuery('from:docubutler', {
  * 	user: await Meteor.userAsync(),
  * 	offset: 0,
  * 	limit: 20,

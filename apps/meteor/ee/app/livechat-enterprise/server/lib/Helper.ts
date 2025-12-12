@@ -167,7 +167,7 @@ const getQueueInfo = async (department?: string) => {
 	const text = await getWaitingQueueMessage(department);
 	const message = {
 		text,
-		user: { _id: 'rocket.cat', username: 'rocket.cat' },
+		user: { _id: 'docubutler', username: 'docubutler' },
 	};
 	return { message, statistics, numberMostRecentChats };
 };

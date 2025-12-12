@@ -12,7 +12,7 @@ beforeEach(() => {
 			[
 				{
 					_id: 1,
-					username: 'rocket.cat',
+					username: 'docubutler',
 				},
 				{
 					_id: 2,
@@ -54,7 +54,7 @@ describe('Mention Server', () => {
 					usernames: [
 						{
 							_id: 1,
-							username: 'rocket.cat',
+							username: 'docubutler',
 						},
 						{
 							_id: 2,
@@ -90,14 +90,14 @@ describe('Mention Server', () => {
 				const result = await mention.getUsersByMentions(message);
 				expect(expected).to.be.deep.equal(result);
 			});
-			it('should return "rocket.cat"', async () => {
+			it('should return "docubutler"', async () => {
 				const message = {
-					msg: '@rocket.cat',
+					msg: '@docubutler',
 				};
 				const expected = [
 					{
 						_id: 1,
-						username: 'rocket.cat',
+						username: 'docubutler',
 					},
 				];
 				const result = await mention.getUsersByMentions(message);
@@ -122,9 +122,9 @@ describe('Mention Server', () => {
 				const result = await mention.getUsersByMentions(message);
 				expect(expected).to.be.deep.equal(result);
 			});
-			it('should return "here and rocket.cat"', async () => {
+			it('should return "here and docubutler"', async () => {
 				const message = {
-					msg: '@here @rocket.cat',
+					msg: '@here @docubutler',
 				};
 				const expected = [
 					{
@@ -133,16 +133,16 @@ describe('Mention Server', () => {
 					},
 					{
 						_id: 1,
-						username: 'rocket.cat',
+						username: 'docubutler',
 					},
 				];
 				const result = await mention.getUsersByMentions(message);
 				expect(expected).to.be.deep.equal(result);
 			});
 
-			it('should return "here, rocket.cat, jon"', async () => {
+			it('should return "here, docubutler, jon"', async () => {
 				const message = {
-					msg: '@here @rocket.cat @jon',
+					msg: '@here @docubutler @jon',
 				};
 				const expected = [
 					{
@@ -151,7 +151,7 @@ describe('Mention Server', () => {
 					},
 					{
 						_id: 1,
-						username: 'rocket.cat',
+						username: 'docubutler',
 					},
 					{
 						_id: 2,
@@ -229,9 +229,9 @@ describe('Mention Server', () => {
 		describe('for message with only an md link', () => {
 			const result = [];
 			[
-				'[@rocket.cat](https://rocket.chat)',
-				'[@rocket.cat](https://rocket.chat) hello',
-				'[@rocket.cat](https://rocket.chat) hello how are you?',
+				'[@docubutler](https://rocket.chat)',
+				'[@docubutler](https://rocket.chat) hello',
+				'[@docubutler](https://rocket.chat) hello how are you?',
 				'[test](https://rocket.chat)',
 			].forEach((text) => {
 				it(`should return "${JSON.stringify(result)}" from "${text}"`, () => {

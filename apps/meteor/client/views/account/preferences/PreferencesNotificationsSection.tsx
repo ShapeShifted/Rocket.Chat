@@ -47,7 +47,7 @@ const PreferencesNotificationsSection = () => {
 	const onSendNotification = useCallback(() => {
 		notify({
 			payload: {
-				sender: { _id: 'rocket.cat', username: 'rocket.cat' },
+				sender: { _id: 'docubutler', username: 'docubutler' },
 				rid: 'GENERAL',
 			} as INotificationDesktop['payload'],
 			title: t('Desktop_Notification_Test'),

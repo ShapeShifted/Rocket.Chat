@@ -10,7 +10,7 @@ import {
 test.each([
   ['# h1', [heading([plain('h1')], 1)]],
   ['# Hello', [heading([plain('Hello')], 1)]],
-  ['# Rocket.Cat', [heading([plain('Rocket.Cat')], 1)]],
+  ['# docubutler', [heading([plain('docubutler')], 1)]],
   ['# Hi', [heading([plain('Hi')], 1)]],
   ['# Hello this is dog', [heading([plain('Hello this is dog')], 1)]],
   ['# Rocket cat says Hello', [heading([plain('Rocket cat says Hello')], 1)]],
@@ -20,7 +20,7 @@ test.each([
   ['He#llo', [paragraph([plain('He#llo')])]],
 
   ['## Hello', [heading([plain('Hello')], 2)]],
-  ['## Rocket.Cat', [heading([plain('Rocket.Cat')], 2)]],
+  ['## docubutler', [heading([plain('docubutler')], 2)]],
   ['## Hi', [heading([plain('Hi')], 2)]],
   ['## Hello this is dog', [heading([plain('Hello this is dog')], 2)]],
   ['## Rocket cat says Hello', [heading([plain('Rocket cat says Hello')], 2)]],
@@ -30,7 +30,7 @@ test.each([
   ['He##llo', [paragraph([plain('He##llo')])]],
 
   ['### Hello', [heading([plain('Hello')], 3)]],
-  ['### Rocket.Cat', [heading([plain('Rocket.Cat')], 3)]],
+  ['### docubutler', [heading([plain('docubutler')], 3)]],
   ['### Hi', [heading([plain('Hi')], 3)]],
   ['### Hello this is dog', [heading([plain('Hello this is dog')], 3)]],
   ['### Rocket cat says Hello', [heading([plain('Rocket cat says Hello')], 3)]],
@@ -40,7 +40,7 @@ test.each([
   ['He###llo', [paragraph([plain('He###llo')])]],
 
   ['#### Hello', [heading([plain('Hello')], 4)]],
-  ['#### Rocket.Cat', [heading([plain('Rocket.Cat')], 4)]],
+  ['#### docubutler', [heading([plain('docubutler')], 4)]],
   ['#### Hi', [heading([plain('Hi')], 4)]],
   ['#### Hello this is dog', [heading([plain('Hello this is dog')], 4)]],
   [

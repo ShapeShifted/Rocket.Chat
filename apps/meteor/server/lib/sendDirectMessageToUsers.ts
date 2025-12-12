@@ -6,7 +6,7 @@ import { createDirectMessage } from '../methods/createDirectMessage';
 import { SystemLogger } from './logger/system';
 
 export async function sendDirectMessageToUsers(
-	fromId = 'rocket.cat',
+	fromId = 'docubutler',
 	toIds: string[],
 	messageFn: (user: IUser) => string,
 ): Promise<string[]> {

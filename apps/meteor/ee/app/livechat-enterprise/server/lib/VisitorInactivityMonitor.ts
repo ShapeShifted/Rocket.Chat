@@ -36,7 +36,7 @@ export class VisitorInactivityMonitor {
 	async start() {
 		await this._startMonitoring();
 		this._initializeMessageCache();
-		const cat = await Users.findOneById('rocket.cat');
+		const cat = await Users.findOneById('docubutler');
 		if (cat) {
 			this.user = cat;
 		}

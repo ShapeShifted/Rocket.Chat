@@ -1230,7 +1230,7 @@ describe('[Users]', () => {
 						expect(res.body).to.have.property('success', true);
 						expect(res.body).to.have.property('full', true);
 
-						const user = (res.body.users as IUser[]).find((user) => user.username === 'rocket.cat');
+						const user = (res.body.users as IUser[]).find((user) => user.username === 'docubutler');
 
 						expect(user).to.have.all.keys('_id', 'avatarETag', 'username', 'name', 'status', 'utcOffset');
 					})
@@ -1266,7 +1266,7 @@ describe('[Users]', () => {
 						expect(res.body).to.have.property('success', true);
 						expect(res.body).to.have.property('full', true);
 
-						const user = (res.body.users as IUser[]).find((user) => user.username === 'rocket.cat');
+						const user = (res.body.users as IUser[]).find((user) => user.username === 'docubutler');
 
 						expect(user).to.have.all.keys('_id', 'avatarETag', 'username', 'name', 'status', 'utcOffset');
 					})
@@ -1984,8 +1984,8 @@ describe('[Users]', () => {
 				.post(api('users.update'))
 				.set(credentials)
 				.send({
-					userId: 'rocket.cat',
-					data: { email: 'nouser@rocket.cat' },
+					userId: 'docubutler',
+					data: { email: 'nouser@docubutler' },
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -3149,7 +3149,7 @@ describe('[Users]', () => {
 
 		it('should return an error when the user try to update info of another user and does not have the necessary permission', (done) => {
 			const userPreferences = {
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 				data: {
 					...preferences.data,
 				},
@@ -3196,7 +3196,7 @@ describe('[Users]', () => {
 		});
 		it('should set some preferences of another user successfully', (done) => {
 			const userPreferences = {
-				userId: 'rocket.cat',
+				userId: 'docubutler',
 				data: {
 					...preferences.data,
 				},
@@ -3211,7 +3211,7 @@ describe('[Users]', () => {
 					.expect((res) => {
 						expect(res.body.user).to.have.property('settings');
 						expect(res.body.user.settings).to.have.property('preferences');
-						expect(res.body.user._id).to.be.equal('rocket.cat');
+						expect(res.body.user._id).to.be.equal('docubutler');
 						expect(res.body).to.have.property('success', true);
 					})
 					.end(done);
@@ -4622,14 +4622,14 @@ describe('[Users]', () => {
 		it('should return other user status', (done) => {
 			void request
 				.get(api('users.getStatus'))
-				.query({ userId: 'rocket.cat' })
+				.query({ userId: 'docubutler' })
 				.set(credentials)
 				.expect('Content-Type', 'application/json')
 				.expect(200)
 				.expect((res) => {
 					expect(res.body).to.have.property('success', true);
 					expect(res.body).to.have.property('status');
-					expect(res.body._id).to.be.equal('rocket.cat');
+					expect(res.body._id).to.be.equal('docubutler');
 				})
 				.end(done);
 		});

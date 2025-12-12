@@ -105,7 +105,7 @@ export class AppUsersConverter {
 			case 'busy':
 				return UserStatusConnection.BUSY;
 			case undefined:
-				// This is needed for Livechat guests and Rocket.Cat user.
+				// This is needed for Livechat guests and docubutler user.
 				return UserStatusConnection.UNDEFINED;
 			default:
 				console.warn(

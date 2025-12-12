@@ -98,7 +98,7 @@ export const addMatrixBridgeFederationSettings = async (): Promise<void> => {
 		section: 'Matrix Bridge',
 	});
 
-	await settingsRegistry.add('Federation_Matrix_bridge_localpart', 'rocket.cat', {
+	await settingsRegistry.add('Federation_Matrix_bridge_localpart', 'docubutler', {
 		readonly: true,
 		type: 'string',
 		i18nLabel: 'Federation_Matrix_bridge_localpart',

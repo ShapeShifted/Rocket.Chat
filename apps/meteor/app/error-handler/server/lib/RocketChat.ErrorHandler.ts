@@ -44,7 +44,7 @@ class ErrorHandler {
 			return;
 		}
 		this.lastError = message;
-		const user = await Users.findOneById('rocket.cat');
+		const user = await Users.findOneById('docubutler');
 
 		if (stack) {
 			message = `${message}\n\`\`\`\n${stack}\n\`\`\``;

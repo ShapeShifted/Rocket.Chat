@@ -32,8 +32,8 @@ import {
 } from '../lib/notifyListener';
 
 export async function deleteUser(userId: string, confirmRelinquish = false, deletedBy?: IUser['_id']): Promise<void> {
-	if (userId === 'rocket.cat') {
-		throw new Meteor.Error('error-action-not-allowed', 'Deleting the rocket.cat user is not allowed', {
+	if (userId === 'docubutler') {
+		throw new Meteor.Error('error-action-not-allowed', 'Deleting the docubutler user is not allowed', {
 			method: 'deleteUser',
 			action: 'Delete_user',
 		});
@@ -91,7 +91,7 @@ export async function deleteUser(userId: string, confirmRelinquish = false, dele
 
 				break;
 			case 'Unlink':
-				userToReplaceWhenUnlinking = await Users.findOneById('rocket.cat');
+				userToReplaceWhenUnlinking = await Users.findOneById('docubutler');
 				if (!userToReplaceWhenUnlinking?._id || !userToReplaceWhenUnlinking?.username) {
 					break;
 				}

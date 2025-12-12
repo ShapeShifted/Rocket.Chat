@@ -21,10 +21,10 @@ Default.args = {
 	loading: false,
 	members: [
 		{
-			_id: 'rocket.cat',
-			username: 'rocket.cat',
+			_id: 'docubutler',
+			username: 'docubutler',
 			status: UserStatus.ONLINE,
-			name: 'Rocket.Cat',
+			name: 'docubutler',
 		},
 	],
 	text: 'filter',
@@ -53,10 +53,10 @@ WithABACRoom.args = {
 	loading: false,
 	members: [
 		{
-			_id: 'rocket.cat',
-			username: 'rocket.cat',
+			_id: 'docubutler',
+			username: 'docubutler',
 			status: UserStatus.ONLINE,
-			name: 'Rocket.Cat',
+			name: 'docubutler',
 		},
 	],
 	text: 'filter',

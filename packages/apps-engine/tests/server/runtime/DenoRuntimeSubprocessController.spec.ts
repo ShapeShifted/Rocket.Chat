@@ -99,7 +99,7 @@ export class DenuRuntimeSubprocessControllerTestFixture {
 		spy.andReturn(
 			Promise.resolve({
 				id: 'id',
-				username: 'rocket.cat',
+				username: 'docubutler',
 				isEnabled: true,
 				emails: [],
 				name: 'name',
@@ -122,18 +122,18 @@ export class DenuRuntimeSubprocessControllerTestFixture {
 				jsonrpc: '2.0',
 				id: 'test',
 				method: 'accessor:getReader:getUserReader:getByUsername',
-				params: ['rocket.cat'],
+				params: ['docubutler'],
 				serialize: () => '',
 			},
 		});
 
 		Expect(this.manager.getBridges().getUserBridge().doGetByUsername).toHaveBeenCalledWith(
-			'rocket.cat',
+			'docubutler',
 			'9c1d62ca-e40f-456f-8601-17c823a16c68',
 		);
 
 		Expect(id).toBe('test');
-		Expect((result as any).username).toEqual('rocket.cat');
+		Expect((result as any).username).toEqual('docubutler');
 	}
 
 	@AsyncTest('correctly identifies a call to the IEnvironmentReader accessor via IRead')

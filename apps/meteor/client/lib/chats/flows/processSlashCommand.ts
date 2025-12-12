@@ -34,9 +34,9 @@ const warnUnrecognizedSlashCommand = async (chat: ChatAPI, message: string): Pro
 		ts: new Date(),
 		msg: message,
 		u: {
-			_id: 'rocket.cat',
-			username: 'rocket.cat',
-			name: 'Rocket.Cat',
+			_id: 'docubutler',
+			username: 'docubutler',
+			name: 'docubutler',
 		},
 		private: true,
 		_updatedAt: new Date(),

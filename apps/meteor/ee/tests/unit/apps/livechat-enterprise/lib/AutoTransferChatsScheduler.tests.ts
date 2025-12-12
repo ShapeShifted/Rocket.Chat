@@ -87,12 +87,12 @@ const { AutoTransferChatSchedulerClass } = proxyquire
 
 describe('AutoTransferChats', () => {
 	describe('getSchedulerUser', () => {
-		it('should return rocket.cat user', async () => {
+		it('should return docubutler user', async () => {
 			const scheduler = new AutoTransferChatSchedulerClass();
-			mockUsers.findOneById.resolves({ _id: 'rocket.cat' });
+			mockUsers.findOneById.resolves({ _id: 'docubutler' });
 			const user = await scheduler.getSchedulerUser();
-			expect(user).to.be.deep.equal({ _id: 'rocket.cat', userType: 'user' });
-			expect(mockUsers.findOneById.calledWith('rocket.cat')).to.be.true;
+			expect(user).to.be.deep.equal({ _id: 'docubutler', userType: 'user' });
+			expect(mockUsers.findOneById.calledWith('docubutler')).to.be.true;
 		});
 	});
 
@@ -180,7 +180,7 @@ describe('AutoTransferChats', () => {
 		});
 		it('should return a room as inquiry when the routing method is not automatic', async () => {
 			mockLivechatRooms.findOneById.resolves({ _id: 1, open: true, servedBy: { _id: 2 }, departmentId: undefined });
-			mockUsers.findOneById.resolves({ _id: 'rocket.cat' });
+			mockUsers.findOneById.resolves({ _id: 'docubutler' });
 			settingsGet.returns(5);
 			const scheduler = new AutoTransferChatSchedulerClass();
 			await scheduler.init();
@@ -191,13 +191,13 @@ describe('AutoTransferChats', () => {
 				returnRoomAsInquiryMock.calledWith(
 					sinon.match({ _id: 1, open: true, servedBy: { _id: 2 } }),
 					undefined,
-					sinon.match({ scope: 'autoTransferUnansweredChatsToQueue', comment: '5', transferredBy: { _id: 'rocket.cat' } }),
+					sinon.match({ scope: 'autoTransferUnansweredChatsToQueue', comment: '5', transferredBy: { _id: 'docubutler' } }),
 				),
 			).to.be.true;
 		});
 		it('should do nothing if routing manager returns no agents for automatic algo', async () => {
 			mockLivechatRooms.findOneById.resolves({ _id: 1, open: true, servedBy: { _id: 2 }, departmentId: undefined });
-			mockUsers.findOneById.resolves({ _id: 'rocket.cat' });
+			mockUsers.findOneById.resolves({ _id: 'docubutler' });
 			routingConfigMock.returns({ autoAssignAgent: true });
 			getNextAgent.resolves(undefined);
 			settingsGet.returns(5);
@@ -211,7 +211,7 @@ describe('AutoTransferChats', () => {
 			expect(r).to.be.undefined;
 			expect(forwardRoomToAgent.notCalled).to.be.true;
 		});
-		it('should do nothing if cannot find rocket.cat', async () => {
+		it('should do nothing if cannot find docubutler', async () => {
 			mockLivechatRooms.findOneById.resolves({ _id: 1, open: true, servedBy: { _id: 2 }, departmentId: undefined });
 			mockUsers.findOneById.resolves(undefined);
 			routingConfigMock.returns({ autoAssignAgent: true });
@@ -229,7 +229,7 @@ describe('AutoTransferChats', () => {
 		});
 		it('should forward room to selected agent', async () => {
 			mockLivechatRooms.findOneById.resolves({ _id: 1, open: true, servedBy: { _id: 2 }, departmentId: undefined });
-			mockUsers.findOneById.resolves({ _id: 'rocket.cat' });
+			mockUsers.findOneById.resolves({ _id: 'docubutler' });
 			routingConfigMock.returns({ autoAssignAgent: true });
 			getNextAgent.resolves({ agentId: 3 });
 			settingsGet.returns(5);
@@ -246,7 +246,7 @@ describe('AutoTransferChats', () => {
 					sinon.match({ _id: 1, open: true, servedBy: { _id: 2 }, departmentId: undefined }),
 					sinon.match({
 						userId: 3,
-						transferredBy: { _id: 'rocket.cat', userType: 'user' },
+						transferredBy: { _id: 'docubutler', userType: 'user' },
 						transferredTo: { agentId: 3 },
 						scope: 'autoTransferUnansweredChatsToAgent',
 						comment: '5',

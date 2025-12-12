@@ -48,7 +48,7 @@ export class OmnichannelQueueInactivityMonitorClass {
 	}
 
 	private async getRocketCatUser(): Promise<IUser | null> {
-		return Users.findOneById('rocket.cat');
+		return Users.findOneById('docubutler');
 	}
 
 	getName(inquiryId: string): string {

@@ -198,7 +198,7 @@ export async function sendTranscript({
 	};
 
 	if (!user?.username) {
-		const cat = await Users.findOneById('rocket.cat', { projection: { _id: 1, username: 1, name: 1 } });
+		const cat = await Users.findOneById('docubutler', { projection: { _id: 1, username: 1, name: 1 } });
 		if (cat) {
 			requestData.user = cat;
 			requestData.type = 'visitor';
@@ -206,8 +206,8 @@ export async function sendTranscript({
 	}
 
 	if (!requestData.user) {
-		logger.error('rocket.cat user not found');
-		throw new Error('No user provided and rocket.cat not found');
+		logger.error('docubutler user not found');
+		throw new Error('No user provided and docubutler not found');
 	}
 
 	await Message.saveSystemMessage<IOmnichannelSystemMessage>('livechat_transcript_history', room._id, '', requestData.user, {

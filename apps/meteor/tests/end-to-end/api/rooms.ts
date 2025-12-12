@@ -1965,7 +1965,7 @@ describe('[Rooms]', () => {
 					prid: testChannel._id,
 					t_name: `discussion-create-from-tests-${testChannel.name}`,
 					reply: 'reply from discussion tests',
-					users: ['rocket.cat'],
+					users: ['docubutler'],
 				})
 				.expect(200)
 				.expect((res) => {
@@ -1984,7 +1984,7 @@ describe('[Rooms]', () => {
 					prid: testChannel._id,
 					t_name: `discussion-create-from-tests-${testChannel.name}`,
 					reply: 'reply from discussion tests',
-					users: ['rocket.cat'],
+					users: ['docubutler'],
 					pmid: messageSent._id,
 				})
 				.expect(200)
@@ -3004,13 +3004,13 @@ describe('[Rooms]', () => {
 			await deleteRoom({ type: 'c', roomId: testChannel._id });
 		});
 
-		it('should invite rocket.cat user to room', () => {
+		it('should invite docubutler user to room', () => {
 			return request
 				.post(api('channels.invite'))
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					username: 'rocket.cat',
+					username: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -3020,13 +3020,13 @@ describe('[Rooms]', () => {
 				});
 		});
 
-		it('should mute the rocket.cat user', () => {
+		it('should mute the docubutler user', () => {
 			return request
 				.post(api('rooms.muteUser'))
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					username: 'rocket.cat',
+					username: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -3035,7 +3035,7 @@ describe('[Rooms]', () => {
 				});
 		});
 
-		it('should contain rocket.cat user in mute list', () => {
+		it('should contain docubutler user in mute list', () => {
 			return request
 				.get(api('channels.info'))
 				.set(credentials)
@@ -3049,7 +3049,7 @@ describe('[Rooms]', () => {
 					expect(res.body).to.have.nested.property('channel.name', testChannel.name);
 					expect(res.body.channel).to.have.property('muted').and.to.be.an('array');
 					expect(res.body.channel.muted).to.have.lengthOf(1);
-					expect(res.body.channel.muted[0]).to.be.equal('rocket.cat');
+					expect(res.body.channel.muted[0]).to.be.equal('docubutler');
 				});
 		});
 	});
@@ -3079,7 +3079,7 @@ describe('[Rooms]', () => {
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					username: 'rocket.cat',
+					username: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -3093,13 +3093,13 @@ describe('[Rooms]', () => {
 			await deleteRoom({ type: 'c', roomId: testChannel._id });
 		});
 
-		it('should unmute the rocket.cat user in read-only room', () => {
+		it('should unmute the docubutler user in read-only room', () => {
 			return request
 				.post(api('rooms.unmuteUser'))
 				.set(credentials)
 				.send({
 					roomId: testChannel._id,
-					username: 'rocket.cat',
+					username: 'docubutler',
 				})
 				.expect('Content-Type', 'application/json')
 				.expect(200)
@@ -3108,7 +3108,7 @@ describe('[Rooms]', () => {
 				});
 		});
 
-		it('should contain rocket.cat user in unmute list', () => {
+		it('should contain docubutler user in unmute list', () => {
 			return request
 				.get(api('channels.info'))
 				.set(credentials)
@@ -3122,7 +3122,7 @@ describe('[Rooms]', () => {
 					expect(res.body).to.have.nested.property('channel.name', testChannel.name);
 					expect(res.body.channel).to.have.property('unmuted').and.to.be.an('array');
 					expect(res.body.channel.unmuted).to.have.lengthOf(1);
-					expect(res.body.channel.unmuted[0]).to.be.equal('rocket.cat');
+					expect(res.body.channel.unmuted[0]).to.be.equal('docubutler');
 				});
 		});
 	});

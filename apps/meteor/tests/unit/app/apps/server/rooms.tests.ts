@@ -32,10 +32,10 @@ describe('The AppMessagesConverter instance', () => {
 		const usersConverter = orchestrator.getConverters().get('users');
 
 		usersConverter.convertById = function convertUserByIdStub(id: string) {
-			return UsersMock.convertedData[id as 'rocket.cat'] || undefined;
+			return UsersMock.convertedData[id as 'docubutler'] || undefined;
 		};
 
-		usersConverter.convertToApp = function convertUserToAppStub(user: UsersMock['data']['rocket.cat']) {
+		usersConverter.convertToApp = function convertUserToAppStub(user: UsersMock['data']['docubutler']) {
 			return {
 				id: user._id,
 				username: user.username,

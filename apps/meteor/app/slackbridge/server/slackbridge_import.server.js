@@ -19,7 +19,7 @@ async function SlackBridgeImport({ command, params, message, userId }) {
 	msgStream.emit(message.rid, {
 		_id: Random.id(),
 		rid: message.rid,
-		u: { username: 'rocket.cat' },
+		u: { username: 'docubutler' },
 		ts: new Date(),
 		msg: i18n.t(
 			'SlackBridge_start',
@@ -38,7 +38,7 @@ async function SlackBridgeImport({ command, params, message, userId }) {
 					msgStream.emit(message.rid, {
 						_id: Random.id(),
 						rid: message.rid,
-						u: { username: 'rocket.cat' },
+						u: { username: 'docubutler' },
 						ts: new Date(),
 						msg: i18n.t(
 							'SlackBridge_error',
@@ -53,7 +53,7 @@ async function SlackBridgeImport({ command, params, message, userId }) {
 					msgStream.emit(message.rid, {
 						_id: Random.id(),
 						rid: message.rid,
-						u: { username: 'rocket.cat' },
+						u: { username: 'docubutler' },
 						ts: new Date(),
 						msg: i18n.t(
 							'SlackBridge_finish',
@@ -71,7 +71,7 @@ async function SlackBridgeImport({ command, params, message, userId }) {
 		msgStream.emit(message.rid, {
 			_id: Random.id(),
 			rid: message.rid,
-			u: { username: 'rocket.cat' },
+			u: { username: 'docubutler' },
 			ts: new Date(),
 			msg: i18n.t(
 				'SlackBridge_error',

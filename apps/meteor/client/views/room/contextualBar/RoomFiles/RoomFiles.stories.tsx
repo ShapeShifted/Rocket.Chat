@@ -24,8 +24,8 @@ Default.args = {
 			url: '#',
 			uploadedAt: new Date(),
 			user: {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 			},
 		},
 		{
@@ -34,8 +34,8 @@ Default.args = {
 			url: '#',
 			uploadedAt: new Date(),
 			user: {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 			},
 		},
 	],

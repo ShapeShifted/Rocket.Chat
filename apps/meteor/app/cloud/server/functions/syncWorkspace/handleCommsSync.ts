@@ -13,8 +13,8 @@ export const handleNpsOnWorkspaceSync = async (nps: Exclude<Serialized<Cloud.Wor
 		startAt,
 		expireAt: new Date(expireAt),
 		createdBy: {
-			_id: 'rocket.cat',
-			username: 'rocket.cat',
+			_id: 'docubutler',
+			username: 'docubutler',
 		},
 	});
 

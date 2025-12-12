@@ -17,8 +17,8 @@ export const getBannerForAdmins = (expireAt: Date): Omit<IBanner, '_id'> => {
 		startAt: new Date(),
 		roles: ['admin'],
 		createdBy: {
-			_id: 'rocket.cat',
-			username: 'rocket.cat',
+			_id: 'docubutler',
+			username: 'docubutler',
 		},
 		_updatedAt: new Date(),
 		surface: 'banner',

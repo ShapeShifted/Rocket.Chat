@@ -75,7 +75,7 @@ export const generateEml = async (): Promise<void> => {
 					data.users.push(sender._id);
 				}
 
-				// Get the user's email, can be nothing if it is an unconfigured bot account (like rocket.cat)
+				// Get the user's email, can be nothing if it is an unconfigured bot account (like docubutler)
 				if (sender.emails?.[0]?.address) {
 					rows.push(`${sender.name} &lt;${sender.emails[0].address}&gt;`);
 				} else {

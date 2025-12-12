@@ -51,7 +51,7 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'â¤',
+									unicode: 'â?',
 								},
 							],
 						},
@@ -93,7 +93,7 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'â°',
+									unicode: 'â?',
 								},
 								{
 									type: 'BOLD',
@@ -216,7 +216,7 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'âš ',
+									unicode: 'âš?',
 								},
 								{
 									type: 'PLAIN_TEXT',
@@ -230,12 +230,12 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'PLAIN_TEXT',
 									value:
-										'â†ª I am intentionally leaving some unicode symbols in here so we can also test the logic for generating and the PDF transcript would not be affected. Sadly I cannot test that the PDF generated has the proper style from here cause that would be nice. ',
+										'â†? I am intentionally leaving some unicode symbols in here so we can also test the logic for generating and the PDF transcript would not be affected. Sadly I cannot test that the PDF generated has the proper style from here cause that would be nice. ',
 								},
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'âš ',
+									unicode: 'âš?',
 								},
 							],
 						},
@@ -268,7 +268,7 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'âš ',
+									unicode: 'âš?',
 								},
 								{
 									type: 'PLAIN_TEXT',
@@ -290,7 +290,7 @@ export const bigConversationData: WorkerData = {
 								{
 									type: 'EMOJI',
 									value: undefined,
-									unicode: 'âš ',
+									unicode: 'âš?',
 								},
 							],
 						},
@@ -419,10 +419,10 @@ export const bigConversationData: WorkerData = {
 		{
 			msg: 'PDF Transcript successfully generated',
 			u: {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 
-				name: 'Rocket.Cat',
+				name: 'docubutler',
 			},
 			files: [
 				{
@@ -448,10 +448,10 @@ export const bigConversationData: WorkerData = {
 		{
 			msg: 'PDF Transcript successfully generated, this is a very long message that should be just fine. no all caps just wowow im drowning i vindicated im selfish im raw im right i swear im rigth when i look into your eyes and i am fly when im treating out so well, im sitting in the life for things that we could to urself oversized and overwhelmend and rendered me so isolatred and so motivated i am certain now that i am vidicated i am selfish i am wrong i am right i swear im right swear i knew it al allong',
 			u: {
-				_id: 'rocket.cat',
+				_id: 'docubutler',
 
-				username: 'rocket.cat',
-				name: 'Rocket.Cat',
+				username: 'docubutler',
+				name: 'docubutler',
 			},
 			files: [
 				{
@@ -745,7 +745,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 			],
 		},
 		{
-			msg: 'Here are the system requirements for the application:\n\n1. Hardware Requirements\n\nMinimum system requirements:\nâ€¢ Standard PC with Intel processor, at least 3.1 GHz\nâ€¢ 4 GB RAM\nâ€¢ At least 10 GB of free disk space\nâ€¢ Screen resolution of at least 1280 x 768 pixels and 65k colors\nâ€¢ DVD drive for installation (USB installation possible)\nâ€¢ Required interfaces for peripherals: RS-232, Ethernet, USB 2.0\nâ€¢ Printer: Any OS-supported printer\n\nÂ¹ Adapter required if no free RS-232 port is available.\nÂ² Ethernet adapter required if no free port is available.\n\nRecommended system:\nâ€¢ Intel Core i5, 3.4 GHz\nâ€¢ 8 GB (preferably 16 GB) RAM\nâ€¢ 500 GB SSD storage\nâ€¢ Screen resolution of 1920 x 1080 pixels\nâ€¢ DVD drive\nâ€¢ 1 serial RS-232 interface\nâ€¢ 2 Ã— 1-Gbit Ethernet interfaces\n\nSpecial requirements apply for advanced peripherals.\n\n2. Software Requirements\n\nâ€¢ Operating Systems:\n  - Windows 7 / 8 / 8.1 / 10 (latest service pack recommended)\n  - Future versions will support only Windows 10.\n  - Graphics driver must support OpenGL V2.1 or higher.\n\nâ€¢ Media Player:\n  - Some OS versions do not include the default media player.\n\nâ€¢ Office Integration:\n  - Spreadsheet and document software must be installed to use export features.',
+			msg: 'Here are the system requirements for the application:\n\n1. Hardware Requirements\n\nMinimum system requirements:\nâ€? Standard PC with Intel processor, at least 3.1 GHz\nâ€? 4 GB RAM\nâ€? At least 10 GB of free disk space\nâ€? Screen resolution of at least 1280 x 768 pixels and 65k colors\nâ€? DVD drive for installation (USB installation possible)\nâ€? Required interfaces for peripherals: RS-232, Ethernet, USB 2.0\nâ€? Printer: Any OS-supported printer\n\nÂ¹ Adapter required if no free RS-232 port is available.\nÂ² Ethernet adapter required if no free port is available.\n\nRecommended system:\nâ€? Intel Core i5, 3.4 GHz\nâ€? 8 GB (preferably 16 GB) RAM\nâ€? 500 GB SSD storage\nâ€? Screen resolution of 1920 x 1080 pixels\nâ€? DVD drive\nâ€? 1 serial RS-232 interface\nâ€? 2 Ã— 1-Gbit Ethernet interfaces\n\nSpecial requirements apply for advanced peripherals.\n\n2. Software Requirements\n\nâ€? Operating Systems:\n  - Windows 7 / 8 / 8.1 / 10 (latest service pack recommended)\n  - Future versions will support only Windows 10.\n  - Graphics driver must support OpenGL V2.1 or higher.\n\nâ€? Media Player:\n  - Some OS versions do not include the default media player.\n\nâ€? Office Integration:\n  - Spreadsheet and document software must be installed to use export features.',
 			ts: new Date('2025-04-02T13:01:04.324Z'),
 			u: {
 				_id: 'K4hFYDc2aFXhcRPGj',
@@ -756,42 +756,42 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Here are the system requirements for the application' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '1. Hardware Requirements' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Minimum system requirements:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Standard PC with Intel processor, at least 3.1 GHz' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ 4 GB RAM' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ At least 10 GB of free disk space' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Screen resolution of at least 1280 x 768 pixels and 65k colors' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ DVD drive for installation (USB installation possible)' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Required interfaces: RS-232, Ethernet, USB 2.0' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Printer: Any OS-supported printer' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Standard PC with Intel processor, at least 3.1 GHz' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? 4 GB RAM' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? At least 10 GB of free disk space' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Screen resolution of at least 1280 x 768 pixels and 65k colors' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? DVD drive for installation (USB installation possible)' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Required interfaces: RS-232, Ethernet, USB 2.0' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Printer: Any OS-supported printer' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Â¹ Adapter required if no free RS-232 port is available.' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Â² Ethernet adapter required if no free port is available.' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Recommended system:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Intel Core i5, 3.4 GHz' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ 8 GB (preferably 16 GB) RAM' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ 500 GB SSD storage' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Screen resolution of 1920 x 1080 pixels' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ DVD drive' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ 1 serial RS-232 interface' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ 2 Ã— 1-Gbit Ethernet interfaces' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Intel Core i5, 3.4 GHz' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? 8 GB (preferably 16 GB) RAM' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? 500 GB SSD storage' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Screen resolution of 1920 x 1080 pixels' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? DVD drive' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? 1 serial RS-232 interface' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? 2 Ã— 1-Gbit Ethernet interfaces' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Special requirements apply for advanced peripherals.' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '2. Software Requirements' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Operating Systems:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Operating Systems:' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '  - Windows 7 / 8 / 8.1 / 10 (latest service pack recommended)' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '  - Future versions will support only Windows 10.' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '  - Graphics driver must support OpenGL V2.1 or higher.' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Media Player:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Media Player:' }] },
 				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '  - Some OS versions do not include the default media player.' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
-				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€¢ Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
+				{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'â€? Office Integration:' }] },
 				{
 					type: 'PARAGRAPH',
 					value: [{ type: 'PLAIN_TEXT', value: '  - Spreadsheet and document software must be installed to use export features.' }],
@@ -799,7 +799,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 			],
 		},
 		{
-			msg: 'Here are the system requirements for Application X V1.91\n1. Hardware Requirements\n\nRecommended System:\nâ€¢ Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)\nâ€¢ 16 GB RAM\nâ€¢ 500 GB SSD\nâ€¢ Screen resolution 1920 x 1080\nâ€¢ 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)\n(â€¢ USB 2.0 interfaces when using USB devices)\n(â€¢ RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)\n\nSpecial requirements apply when using additional peripherals or starting multiple devices at once.\nSince 1.9.2024, Application X is available as a download from the customer portal and can be downloaded. No DVD is included by default.\n(https://www.example.com/)\n\n2. Software Requirements\n\nâ€¢ Operating Systems:\n  - Microsoft Windows 11 from Application X V1.6\n  - Microsoft Windows 7 up to Application X V1.5\n  - Microsoft Windows 10 for all Application X versions\n\nIt is generally recommended to install the latest service pack for the operating system.\n\nâ€¢ Required Programs:\n  - Media Player\n  - Microsoft Excel or Word if using optional export interfaces for these types',
+			msg: 'Here are the system requirements for Application X V1.91\n1. Hardware Requirements\n\nRecommended System:\nâ€? Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)\nâ€? 16 GB RAM\nâ€? 500 GB SSD\nâ€? Screen resolution 1920 x 1080\nâ€? 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)\n(â€? USB 2.0 interfaces when using USB devices)\n(â€? RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)\n\nSpecial requirements apply when using additional peripherals or starting multiple devices at once.\nSince 1.9.2024, Application X is available as a download from the customer portal and can be downloaded. No DVD is included by default.\n(https://www.example.com/)\n\n2. Software Requirements\n\nâ€? Operating Systems:\n  - Microsoft Windows 11 from Application X V1.6\n  - Microsoft Windows 7 up to Application X V1.5\n  - Microsoft Windows 10 for all Application X versions\n\nIt is generally recommended to install the latest service pack for the operating system.\n\nâ€? Required Programs:\n  - Media Player\n  - Microsoft Excel or Word if using optional export interfaces for these types',
 			ts: new Date('2025-04-02T13:03:06.045Z'),
 			u: {
 				_id: 'K4hFYDc2aFXhcRPGj',
@@ -843,7 +843,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)',
+							value: 'â€? Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)',
 						},
 					],
 				},
@@ -852,7 +852,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 16 GB RAM',
+							value: 'â€? 16 GB RAM',
 						},
 					],
 				},
@@ -861,7 +861,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 500 GB SSD',
+							value: 'â€? 500 GB SSD',
 						},
 					],
 				},
@@ -870,7 +870,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Screen resolution 1920 x 1080',
+							value: 'â€? Screen resolution 1920 x 1080',
 						},
 					],
 				},
@@ -879,7 +879,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)',
+							value: 'â€? 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)',
 						},
 					],
 				},
@@ -888,7 +888,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: '(â€¢ USB 2.0 interfaces when using USB devices)',
+							value: '(â€? USB 2.0 interfaces when using USB devices)',
 						},
 					],
 				},
@@ -897,7 +897,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: '(â€¢ RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)',
+							value: '(â€? RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)',
 						},
 					],
 				},
@@ -955,7 +955,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Operating Systems:',
+							value: 'â€? Operating Systems:',
 						},
 					],
 				},
@@ -1008,7 +1008,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Required Programs:',
+							value: 'â€? Required Programs:',
 						},
 					],
 				},
@@ -1033,7 +1033,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 			],
 		},
 		{
-			msg: 'Here are the system requirements for Application X V1.91\n1. Hardware Requirements\n\nRecommended System:\nâ€¢ Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)\nâ€¢ 16 GB RAM\nâ€¢ 500 GB SSD\nâ€¢ Screen resolution 1920 x 1080\nâ€¢ 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)\n(â€¢ USB 2.0 interfaces when using USB devices)\n(â€¢ RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)\n\nSpecial requirements apply when using additional peripherals or starting multiple devices at once.\nSince 1.9.2024, Application X is available as a download from the customer portal and can be downloaded. No DVD is included by default.\n(https://www.example.com/)\n\n2. Software Requirements\n\nâ€¢ Operating Systems:\n  - Microsoft Windows 11 from Application X V1.6\n  - Microsoft Windows 7 up to Application X V1.5\n  - Microsoft Windows 10 for all Application X versions\n\nIt is generally recommended to install the latest service pack for the operating system.\n\nâ€¢ Required Programs:\n  - Media Player\n  - Microsoft Excel or Word if using optional export interfaces for these types',
+			msg: 'Here are the system requirements for Application X V1.91\n1. Hardware Requirements\n\nRecommended System:\nâ€? Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)\nâ€? 16 GB RAM\nâ€? 500 GB SSD\nâ€? Screen resolution 1920 x 1080\nâ€? 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)\n(â€? USB 2.0 interfaces when using USB devices)\n(â€? RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)\n\nSpecial requirements apply when using additional peripherals or starting multiple devices at once.\nSince 1.9.2024, Application X is available as a download from the customer portal and can be downloaded. No DVD is included by default.\n(https://www.example.com/)\n\n2. Software Requirements\n\nâ€? Operating Systems:\n  - Microsoft Windows 11 from Application X V1.6\n  - Microsoft Windows 7 up to Application X V1.5\n  - Microsoft Windows 10 for all Application X versions\n\nIt is generally recommended to install the latest service pack for the operating system.\n\nâ€? Required Programs:\n  - Media Player\n  - Microsoft Excel or Word if using optional export interfaces for these types',
 			ts: new Date('2025-04-02T13:03:06.045Z'),
 			u: {
 				_id: 'K4hFYDc2aFXhcRPGj',
@@ -1077,7 +1077,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)',
+							value: 'â€? Intel Core-i5, 3.4 GHz (Turbo > 4 GHz)',
 						},
 					],
 				},
@@ -1086,7 +1086,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 16 GB RAM',
+							value: 'â€? 16 GB RAM',
 						},
 					],
 				},
@@ -1095,7 +1095,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 500 GB SSD',
+							value: 'â€? 500 GB SSD',
 						},
 					],
 				},
@@ -1104,7 +1104,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Screen resolution 1920 x 1080',
+							value: 'â€? Screen resolution 1920 x 1080',
 						},
 					],
 				},
@@ -1113,7 +1113,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)',
+							value: 'â€? 2 * 1-Gbit Ethernet interfaces (Communication with test machine and company network)',
 						},
 					],
 				},
@@ -1122,7 +1122,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: '(â€¢ USB 2.0 interfaces when using USB devices)',
+							value: '(â€? USB 2.0 interfaces when using USB devices)',
 						},
 					],
 				},
@@ -1131,7 +1131,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: '(â€¢ RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)',
+							value: '(â€? RS-232 interfaces when using RS-232 devices; USB-RS-232 adapter possible)',
 						},
 					],
 				},
@@ -1189,7 +1189,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Operating Systems:',
+							value: 'â€? Operating Systems:',
 						},
 					],
 				},
@@ -1242,7 +1242,7 @@ export const dataWith2ReallyBigMessages: WorkerData = {
 					value: [
 						{
 							type: 'PLAIN_TEXT',
-							value: 'â€¢ Required Programs:',
+							value: 'â€? Required Programs:',
 						},
 					],
 				},

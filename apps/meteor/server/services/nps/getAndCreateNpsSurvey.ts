@@ -54,8 +54,8 @@ export const getAndCreateNpsSurvey = async function getNpsSurvey(npsId: string) 
 			_updatedAt: new Date(), // Needed by the IRocketChatRecord interface
 			roles: surveyData.roles,
 			createdBy: {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
+				_id: 'docubutler',
+				username: 'docubutler',
 			},
 			view: surveyData.survey,
 			surface: 'banner',

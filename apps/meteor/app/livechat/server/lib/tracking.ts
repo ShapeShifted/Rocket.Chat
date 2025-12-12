@@ -16,7 +16,7 @@ export async function savePageHistory(token: string, roomId: string | undefined,
 	if (pageInfo.change !== settings.get<string>('Livechat_history_monitor_type')) {
 		return;
 	}
-	const user = await Users.findOneById('rocket.cat');
+	const user = await Users.findOneById('docubutler');
 
 	if (!user) {
 		throw new Error('error-invalid-user');

@@ -78,9 +78,9 @@ const room: IRoom = {
 	autoTranslate: true,
 	autoTranslateLanguage: 'pt-BR',
 	u: {
-		_id: 'rocket.cat',
-		name: 'rocket.cat',
-		username: 'rocket.cat',
+		_id: 'docubutler',
+		name: 'docubutler',
+		username: 'docubutler',
 	},
 	msgs: 123,
 	usersCount: 3,

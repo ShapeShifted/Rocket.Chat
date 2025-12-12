@@ -75,7 +75,7 @@ Meteor.methods<ServerMethods>({
 		} = room;
 		await RoutingManager.takeInquiry(inquiry, { agentId, username }, options, room);
 
-		const onHoldChatResumedBy = options.clientAction ? await Meteor.userAsync() : await Users.findOneById('rocket.cat');
+		const onHoldChatResumedBy = options.clientAction ? await Meteor.userAsync() : await Users.findOneById('docubutler');
 		if (!onHoldChatResumedBy) {
 			throw new Meteor.Error('error-invalid-user', 'Invalid user', {
 				method: 'livechat:resumeOnHold',

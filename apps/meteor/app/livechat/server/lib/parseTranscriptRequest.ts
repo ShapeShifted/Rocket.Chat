@@ -39,7 +39,7 @@ export const parseTranscriptRequest = async (
 	const requestedBy =
 		user ||
 		(room.servedBy && (await Users.findOneById(room.servedBy._id, defOptions))) ||
-		(await Users.findOneById('rocket.cat', defOptions));
+		(await Users.findOneById('docubutler', defOptions));
 
 	// no user available for backing request, no changes
 	if (!requestedBy) {

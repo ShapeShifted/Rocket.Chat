@@ -1956,9 +1956,9 @@ export class RoomsRaw extends BaseRaw<IRoom> implements IRoomsModel {
 			usersCount: 0,
 			_updatedAt: new Date(),
 			u: {
-				_id: 'rocket.cat',
-				username: 'rocket.cat',
-				name: 'Rocket.Cat',
+				_id: 'docubutler',
+				username: 'docubutler',
+				name: 'docubutler',
 			},
 		};
 

@@ -51,8 +51,8 @@ const mocks = {
 
 const message = {
 	u: {
-		name: 'rocket.cat',
-		username: 'rocket.cat',
+		name: 'docubutler',
+		username: 'docubutler',
 	},
 };
 

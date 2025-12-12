@@ -59,7 +59,7 @@ export const getAgent = async (triggerAction: ILivechatTriggerAction): Promise<A
 				const agent = await getNextAgentFromQueue();
 				resolve(agent);
 			} catch (_) {
-				resolve({ username: 'rocket.cat' });
+				resolve({ username: 'docubutler' });
 			}
 		}
 

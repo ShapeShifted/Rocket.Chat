@@ -24,7 +24,7 @@ const resumeOnHoldCommentAndUser = async (room: IOmnichannelRoom): Promise<{ com
 
 	const resumeChatComment = i18n.t('Omnichannel_on_hold_chat_automatically', { guest });
 
-	const resumedBy = await Users.findOneById('rocket.cat');
+	const resumedBy = await Users.findOneById('docubutler');
 	if (!resumedBy) {
 		callbackLogger.error(`[afterOmnichannelSaveMessage] User Not found for room ${rid} while trying to resume on hold`);
 		throw new Error(`User not found while trying to resume on hold`);

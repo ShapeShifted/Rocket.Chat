@@ -659,7 +659,7 @@ export class SlackImporter extends Importer {
 
 	_replaceSlackUserId(userId: string): string {
 		if (userId === 'USLACKBOT') {
-			return 'rocket.cat';
+			return 'docubutler';
 		}
 
 		return userId;

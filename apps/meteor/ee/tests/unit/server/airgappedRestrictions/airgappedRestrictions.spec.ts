@@ -105,7 +105,7 @@ describe('airgappedRestrictions', () => {
 		expect(airgappedRestrictionObj.isWarningPeriod.called).to.be.false;
 	});
 
-	it('should update setting and send rocket.cat message when in warning period', async () => {
+	it('should update setting and send docubutler message when in warning period', async () => {
 		airgappedRestrictionObj.emit('remainingDays', { days: 1 });
 		airgappedRestrictionObj.isWarningPeriod.returns(true);
 

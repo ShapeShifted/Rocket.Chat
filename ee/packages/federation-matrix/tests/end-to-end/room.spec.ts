@@ -232,7 +232,7 @@ import { SynapseClient } from '../helper/synapse-client';
 
 					// Verify the ephemeral message content
 					expect(ephemeralMessage.msg).toContain('You cannot add external users to a non-federated room');
-					expect(ephemeralMessage.u.username).toBe('rocket.cat');
+					expect(ephemeralMessage.u.username).toBe('docubutler');
 					expect(ephemeralMessage.private).toBe(true);
 					expect(ephemeralMessage.rid).toBe(nonFederatedChannel._id); // Verify it's for the correct room
 

@@ -2680,7 +2680,7 @@ export class UsersRaw extends BaseRaw<IUser, DefaultFields<IUser>> implements IU
 	getOldest(optionsParams?: FindOptions<IUser>) {
 		const query = {
 			_id: {
-				$ne: 'rocket.cat',
+				$ne: 'docubutler',
 			},
 		};
 

@@ -102,7 +102,7 @@ import { IS_EE } from '../../e2e/config/constants';
 				dmRoom = (
 					await createRoom({
 						type: 'd',
-						username: 'rocket.cat',
+						username: 'docubutler',
 					})
 				).body.room;
 			});

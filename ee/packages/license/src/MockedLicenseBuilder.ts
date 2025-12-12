@@ -74,7 +74,7 @@ export class MockedLicenseBuilder {
 			createdAt: new Date().toISOString(),
 			grantedBy: {
 				method: 'manual',
-				seller: 'Rocket.Cat',
+				seller: 'docubutler',
 			},
 			tags: [
 				{

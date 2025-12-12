@@ -146,7 +146,7 @@ export const validateOutgoingIntegration = async function (
 	const user = await Users.findOne({ username: integration.username });
 
 	if (!user) {
-		throw new Meteor.Error('error-invalid-user', 'Invalid user (did you delete the `rocket.cat` user?)', { function: 'validateOutgoing' });
+		throw new Meteor.Error('error-invalid-user', 'Invalid user (did you delete the `docubutler` user?)', { function: 'validateOutgoing' });
 	}
 
 	const integrationData: IOutgoingIntegration = {
