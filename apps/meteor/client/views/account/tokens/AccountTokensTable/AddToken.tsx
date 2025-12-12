@@ -13,10 +13,11 @@ type AddTokenFormData = {
 };
 
 type AddTokenProps = {
-	reload: () => void;
+	reload: () => Promise<void>;
+    disabled?: boolean;
 };
 
-const AddToken = ({ reload }: AddTokenProps) => {
+const AddToken = ({ reload, disabled }: AddTokenProps) => {
 	const { t } = useTranslation();
 	const userId = useUserId();
 	const setModal = useSetModal();
@@ -42,6 +43,9 @@ const AddToken = ({ reload }: AddTokenProps) => {
 
 	const handleAddToken = useCallback(
 		async ({ name: tokenName, bypassTwoFactor }: AddTokenFormData) => {
+			if (disabled) {
+				return;
+			}
 			try {
 				const token = await createTokenFn({ tokenName, bypassTwoFactor: bypassTwoFactor === 'bypass' });
 
@@ -69,7 +73,7 @@ const AddToken = ({ reload }: AddTokenProps) => {
 				dispatchToastMessage({ type: 'error', message: error });
 			}
 		},
-		[createTokenFn, dispatchToastMessage, reload, reset, setModal, t, userId],
+		[createTokenFn, dispatchToastMessage, reload, reset, setModal, t, userId, disabled],
 	);
 
 	const nameErrorId = useId();
@@ -89,6 +93,7 @@ const AddToken = ({ reload }: AddTokenProps) => {
 									data-qa='PersonalTokenField'
 									{...field}
 									placeholder={t('API_Add_Personal_Access_Token')}
+									disabled={disabled}
 								/>
 							)}
 						/>
@@ -96,11 +101,11 @@ const AddToken = ({ reload }: AddTokenProps) => {
 							<Controller
 								name='bypassTwoFactor'
 								control={control}
-								render={({ field }) => <Select {...field} options={twoFactorAuthOptions} />}
+								render={({ field }) => <Select {...field} options={twoFactorAuthOptions} disabled={disabled} />}
 							/>
 						</Box>
 					</Margins>
-					<Button primary type='submit'>
+					<Button primary type='submit' disabled={disabled}>
 						{t('Add')}
 					</Button>
 				</FieldRow>

@@ -10,11 +10,11 @@ import { twoFactorRequired } from '../../../../../app/2fa/server/twoFactorRequir
 declare module '@rocket.chat/ddp-client' {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	interface ServerMethods {
-		'personalAccessTokens:generateToken'(params: { tokenName: string; bypassTwoFactor: boolean }): Promise<string>;
+		'personalAccessTokens:generateToken'(params: { tokenName: string; bypassTwoFactor: boolean }): Promise<{token: string, userId: string}>;
 	}
 }
 
-export const generatePersonalAccessTokenOfUser = async ({ bypassTwoFactor, tokenName, userId }: {tokenName: string, userId: string, bypassTwoFactor: boolean}): Promise<string> => {
+export const generatePersonalAccessTokenOfUser = async ({ bypassTwoFactor, tokenName, userId }: {tokenName: string, userId: string, bypassTwoFactor: boolean}): Promise<{token: string, userId: string}> => {
 	if (!(await hasPermissionAsync(userId, 'create-personal-access-tokens'))) {
 		throw new Meteor.Error('not-authorized', 'Not Authorized', {
 			method: 'personalAccessTokens:generateToken',
@@ -43,7 +43,21 @@ export const generatePersonalAccessTokenOfUser = async ({ bypassTwoFactor, token
 			bypassTwoFactor,
 		},
 	});
-	return token;
+
+	await Users.update(
+        { _id: userId },
+        {
+            $push: {
+                'services.resume.personalAccessTokensFull': {
+                    name: tokenName,
+                    createdAt: new Date(),
+                    token, // full token value
+                },
+            },
+        },
+    );
+
+	return {token, userId};
 }
 
 Meteor.methods<ServerMethods>({
@@ -54,6 +68,16 @@ Meteor.methods<ServerMethods>({
 				method: 'personalAccessTokens:generateToken',
 			});
 		}
+		 const tokenExist = await Users.findPersonalAccessTokenByTokenNameAndUserId({
+            userId: uid,
+            tokenName,
+        });
+
+        if (tokenExist) {
+            throw new Meteor.Error('error-token-already-exists', 'A token with this name already exists', {
+                method: 'personalAccessTokens:generateToken',
+            });
+        }
 		
 		return generatePersonalAccessTokenOfUser({ tokenName, userId: uid, bypassTwoFactor });
 	}),

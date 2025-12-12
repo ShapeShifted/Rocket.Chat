@@ -51,6 +51,7 @@ const AccountTokensTable = (): ReactElement => {
 		return data?.tokens.slice(sliceStart, sliceStart + itemsPerPage);
 	}, [current, data?.tokens, itemsPerPage]);
 
+	const hasAnyToken = !!(data?.tokens && data.tokens.length > 0);
 	const closeModal = useCallback(() => setModal(null), [setModal]);
 
 	const headers = useMemo(
@@ -151,7 +152,8 @@ const AccountTokensTable = (): ReactElement => {
 
 	return (
 		<>
-			<AddToken reload={() => queryClient.invalidateQueries({ queryKey: miscQueryKeys.personalAccessTokens })} />
+			<AddToken reload={() => queryClient.invalidateQueries({ queryKey: miscQueryKeys.personalAccessTokens })}
+			disabled={hasAnyToken} />
 			{isPending && (
 				<GenericTable aria-busy>
 					<GenericTableHeader>{headers}</GenericTableHeader>
