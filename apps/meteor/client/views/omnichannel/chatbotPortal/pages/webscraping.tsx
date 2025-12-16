@@ -13,6 +13,7 @@ const WebScraping = (): React.ReactElement => {
   // Editor state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingUrl, setEditingUrl] = useState('');
+  const [editingIsOwnCompany, setEditingIsOwnCompany] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
 
@@ -39,6 +40,7 @@ const WebScraping = (): React.ReactElement => {
   const onStartAdd = () => {
     setEditingId(null);
     setEditingUrl('');
+    setEditingIsOwnCompany(false);
     setIsNew(true);
     setShowEditor(true);
   };
@@ -46,6 +48,7 @@ const WebScraping = (): React.ReactElement => {
   const onStartEdit = (w: Website) => {
     setEditingId(w.id);
     setEditingUrl(w.url);
+    setEditingIsOwnCompany(!!w.isOwnCompany);
     setIsNew(false);
     setShowEditor(true);
   };
@@ -54,6 +57,7 @@ const WebScraping = (): React.ReactElement => {
     setEditingId(null);
     setEditingUrl('');
     setIsNew(false);
+    setEditingIsOwnCompany(false);
     setShowEditor(false);
   };
 
@@ -61,9 +65,9 @@ const WebScraping = (): React.ReactElement => {
     if (!editingUrl.trim()) return;
     try {
       if (isNew) {
-        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim() });
+        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim(), isOwnCompany: editingIsOwnCompany });
       } else {
-        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim() });
+        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim(), isOwnCompany: editingIsOwnCompany });
       }
       await loadWebsites();
       onCancelEdit();
@@ -108,7 +112,7 @@ const WebScraping = (): React.ReactElement => {
             key={w.id}
             mb="x8"
             style={{
-              background: '#e4e7ea',
+              background: w.isOwnCompany ? '#9eeebeff' :'#e4e7ea',
               borderRadius: 8,
               padding: '16px 20px',
               boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
@@ -120,6 +124,19 @@ const WebScraping = (): React.ReactElement => {
             }}
           >
             <span style={{ fontSize: '1.08rem', color: '#1F2329', wordBreak: 'break-all' }}>{w.url}</span>
+            <span
+              title={w.isOwnCompany ? 'Own company website' : 'External website'}
+              style={{
+                marginLeft: 8,
+                marginRight: 8,
+                fontSize: 18,
+                color: w.isOwnCompany ? '#388e3c' : '#888',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+            </span>
             <div style={{ display: 'flex', gap: 8 }}>
               <button
                 onClick={() => onStartEdit(w)}
@@ -238,6 +255,18 @@ const WebScraping = (): React.ReactElement => {
                 autoFocus
                 placeholder="https://example.com"
               />
+            </div>
+            <div style={{ marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <input
+                type="checkbox"
+                id="is-own-company"
+                checked={editingIsOwnCompany}
+                onChange={e => setEditingIsOwnCompany(e.target.checked)}
+                style={{ accentColor: '#388e3c', width: 18, height: 18 }}
+              />
+              <label htmlFor="is-own-company" style={{ fontWeight: 500, fontSize: 15, cursor: 'pointer' }}>
+                Is this our own company website?
+              </label>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
               <Button onClick={onCancelEdit} style={{ background: '#f1f3f5', color: '#222' }}>Cancel</Button>
