@@ -7,6 +7,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 import { useRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+
 import Chart from './Chart';
 import { drawLineChart } from '../../../../../app/livechat/client/lib/chartHandler';
 import { secondsToHHMMSS } from '../../../../../lib/utils/secondsToHHMMSS';
@@ -34,9 +35,8 @@ const tooltipCallbacks = {
             if (rawDataset && rawDataset[dataIndex] !== undefined) {
                 // Format as MM:SS
                 const seconds = rawDataset[dataIndex];
-                const mmss =
-                    secondsToHHMMSS(seconds).substr(3); // "MM:SS"
-                return `${dataset.label}: ${mmss}`;
+                const hhmmss = secondsToHHMMSS(seconds); // "HH:MM:SS"
+                return `${dataset.label}: ${hhmmss}`;
             }
             // fallback to normalized value
             return `${dataset.label}: ${Number(ctx.raw).toFixed(2)}`;

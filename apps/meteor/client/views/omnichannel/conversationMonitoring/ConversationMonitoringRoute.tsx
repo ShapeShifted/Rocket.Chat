@@ -4,6 +4,7 @@ import { useEffectEvent } from '@rocket.chat/fuselage-hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useMemo, useEffect, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
+import { subDays, startOfDay, endOfDay } from 'date-fns';
 
 import { Page, PageHeader, PageScrollableContentWithShadow } from '../../../components/Page';
 import { getDateRange } from '../../../lib/utils/getDateRange';
@@ -13,7 +14,11 @@ import ChatsOverview from './overviews/ChatsOverview';
 import ConversationOverview from './overviews/ConversationOverview';
 import { omnichannelQueryKeys } from '../../../lib/queryKeys';
 
-const dateRange = getDateRange();
+const today = new Date();
+const dateRange = {
+    start: startOfDay(subDays(today, 6)).toISOString(), // 6 days ago, start of day
+    end: endOfDay(today).toISOString(),                 // today, end of day
+};
 
 const ConversationMonitoringRoute = () => {
     const { t } = useTranslation();
@@ -69,7 +74,7 @@ const ConversationMonitoringRoute = () => {
 
                     <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
                         <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
-                            {t('Chat Durations Across Different Time Period')}
+                            {t('Chat Durations Across One Week')}
                         </Box>
                         <ChatDurationChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
                     </Box>

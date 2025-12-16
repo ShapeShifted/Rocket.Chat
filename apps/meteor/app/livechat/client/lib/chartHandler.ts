@@ -175,7 +175,16 @@ export const drawDoughnutChart = async (
 			datasets: [
 				{
 					data: dataPoints, // data points corresponding to data labels, x-axis points
-					backgroundColor: ['#2de0a5', '#cbced1', '#f5455c', '#ffd21f'],
+					backgroundColor: [
+					'#2de0a5', // green
+					'#3b82f6', // blue
+					'#f5455c', // red
+					'#ffd21f', // yellow
+					'#a259f7', // purple
+					'#ff8c42', // orange
+					'#00bcd4', // cyan
+					'#ff6f91', // pink
+					],
 					borderWidth: 0,
 				},
 			],

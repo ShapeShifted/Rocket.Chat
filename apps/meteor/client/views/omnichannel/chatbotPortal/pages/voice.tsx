@@ -78,13 +78,13 @@ const VoiceProcessing: React.FC = () => {
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) {
+        const files = event.target.files;
+        if (!files || files.length === 0) {
             console.error("No file selected");
             return;
         }
         try {
-            await VoiceService.voiceProcess(file);
+            await VoiceService.voiceProcess(files);
             await load(page); // reload after upload
         } catch (error) {
             console.error('VoiceService error:', error);
@@ -163,6 +163,7 @@ const VoiceProcessing: React.FC = () => {
                         ref={fileInputRef}
                         style={{ display: 'none' }}
                         onChange={handleFileChange}
+                        multiple
                     />
                 </div>
             </div>

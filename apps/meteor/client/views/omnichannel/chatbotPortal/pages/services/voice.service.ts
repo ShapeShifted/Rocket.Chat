@@ -13,9 +13,11 @@ async function handleJsonResponse(res: Response) {
 }
 
 export const VoiceService = {
-    voiceProcess: (file: File): Promise<VoiceResponse> => {
+    voiceProcess: (files: FileList | File[]): Promise<VoiceResponse> => {
         const formData = new FormData();
+        Array.from(files).forEach((file) => {
         formData.append('audio', file);
+    });
 
         return fetch(`${BASE}/VoiceToChat`, {
             method: 'POST',
