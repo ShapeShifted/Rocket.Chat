@@ -56,7 +56,7 @@ const RealTimeMonitoringPage = () => {
 
 	return (
 		<Page>
-			<PageHeader title={t('Real_Time_Monitoring')} />
+			<PageHeader title={t('Agent Conversation Monitoring')} />
 			<PageScrollableContentWithShadow>
 				<Margins block='x4'>
 					<Box flexDirection='row' display='flex' justifyContent='space-between' alignSelf='center' w='full'>

@@ -37,6 +37,17 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
     const data = Object.values(issueTypeCounts);
     const labelsWithCounts = labels.map((label, idx) => `${label} (${data[idx]})`);
 
+     // Tooltip callback: show label without count in tooltip
+    const tooltipCallbacks = {
+        callbacks: {
+            label: function(context: any) {
+                // context.label is the legend label (with count), context.dataIndex is the index
+                // Show only the label without the count in tooltip
+                return labels[context.dataIndex] || '';
+            }
+        }
+    };
+
     useEffect(() => {
 
         // Destroy previous chart instance if exists
@@ -54,6 +65,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
             undefined,
             labelsWithCounts,
             data,
+             tooltipCallbacks            
         ).then((chart) => {
             chartInstance.current = chart;
         });
@@ -65,7 +77,7 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
                 chartInstance.current = null;
             }
         };
-    }, [labelsWithCounts, data, t]);
+    }, [labelsWithCounts, data, t, labels, tooltipCallbacks]);
 
 	if (!labels.length || !data.length) {
         return (

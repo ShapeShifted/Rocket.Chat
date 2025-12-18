@@ -161,6 +161,7 @@ export const drawDoughnutChart = async (
 	chartContext: chartjs.Chart<'doughnut'> | undefined,
 	dataLabels: string[],
 	dataPoints: number[],
+	tooltipCallbacks = {},
 ) => {
 	if (!chart) {
 		throw new Error('No chart element');
@@ -189,7 +190,7 @@ export const drawDoughnutChart = async (
 				},
 			],
 		},
-		options: doughnutChartConfiguration(title),
+		options: doughnutChartConfiguration(title, tooltipCallbacks),
 	});
 };
 

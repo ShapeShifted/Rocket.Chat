@@ -23,8 +23,14 @@ export const {
 	{
 		href: '/omnichannel/realtime-monitoring',
 		icon: 'live',
-		i18nLabel: 'Real_Time_Monitoring',
+		i18nLabel: 'Agent Conversation Monitoring',
 		permissionGranted: (): boolean => hasPermission('view-livechat-real-time-monitoring'),
+	},
+	{
+		href: '/omnichannel/conversation-monitoring',
+		i18nLabel: 'Chatbot Conversation Monitoring',
+		icon: 'file-sheets',
+		permissionGranted: (): boolean => hasPermission('view-statistics'),
 	},
 	{
 		href: '/omnichannel/managers',
@@ -92,10 +98,5 @@ export const {
 	icon: 'chat',
 	permissionGranted: (): boolean => hasPermission('view-statistics'),
 	},
-	{
-		href: '/omnichannel/conversation-monitoring',
-		i18nLabel: 'Conversation Monitoring',
-		icon: 'file-sheets',
-		permissionGranted: (): boolean => hasPermission('view-statistics'),
-	},
+
 ]);

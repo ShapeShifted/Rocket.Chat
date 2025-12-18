@@ -52,7 +52,7 @@ const ConversationMonitoringRoute = () => {
 
     return (
         <Page>
-            <PageHeader title={t('Conversation Monitoring')} />
+            <PageHeader title={t('Chatbot Conversation Monitoring')} />
             <PageScrollableContentWithShadow>
                 <Margins block='x4'>
                     <Box flexDirection='row' display='flex' justifyContent='space-between' alignSelf='center' w='full'>
