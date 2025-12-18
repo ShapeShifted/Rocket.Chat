@@ -5,7 +5,7 @@ services:
     platform: linux/amd64
     build:
       dockerfile: apps/meteor/.docker/Dockerfile.alpine
-      context: /tmp/build
+      context: .
     image: ghcr.io/${LOWERCASE_REPOSITORY}/rocket.chat:${DOCKER_TAG}
     environment:
       - TEST_MODE=true
