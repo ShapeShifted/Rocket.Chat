@@ -1,12 +1,13 @@
 version: '3.8'
 
 services:
-  builder:
+  init-env:
     image: node:22.16.0
     working_dir: /workspace
     volumes:
       - ./:/workspace
-    command: /bin/bash -c "corepack enable && corepack prepare yarn@stable --activate && yarn --version && cp .env.example .env && yarn install && yarn build"
+    entrypoint: ["/bin/sh", "-c", "cp -n .env.example .env || true"]
+    restart: "no"
     
   rocketchat:
     platform: linux/amd64

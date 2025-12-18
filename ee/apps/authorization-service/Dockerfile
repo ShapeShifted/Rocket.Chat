@@ -82,7 +82,12 @@ COPY ./ee/apps/${SERVICE}/package.json ee/apps/${SERVICE}/package.json
 
 ENV NODE_ENV=production
 
-WORKDIR /app/ee/apps/${SERVICE}
+RUN corepack enable \
+  && corepack prepare yarn@stable --activate \
+  && yarn --version \
+  && cd /app \
+  && yarn install --immutable --network-timeout 600000 \
+  && yarn build
 
 RUN yarn workspaces focus --production
 

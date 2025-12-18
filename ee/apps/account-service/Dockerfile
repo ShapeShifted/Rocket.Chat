@@ -7,6 +7,24 @@ RUN apk update && \
 
 WORKDIR /app
 
+# ensure Yarn config/plugins/releases/patches are available for an in-image build
+COPY ./.yarnrc.yml .
+COPY ./.yarn/plugins .yarn/plugins
+COPY ./.yarn/releases .yarn/releases
+COPY ./.yarn/patches .yarn/patches
+
+# copy repo package files and sources needed to build workspace artifacts
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY . .
+
+# Install & activate official Yarn, install deps and build workspaces to produce dist folders
+RUN corepack enable \
+  && corepack prepare yarn@stable --activate \
+  && yarn --version \
+  && yarn install --immutable --network-timeout 600000 \
+  && yarn build
+
 COPY ./packages/core-services/package.json packages/core-services/package.json
 COPY ./packages/core-services/dist packages/core-services/dist
 
