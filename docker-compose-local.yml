@@ -6,7 +6,7 @@ services:
     working_dir: /workspace
     volumes:
       - ./:/workspace
-    command: /bin/bash -c "cp .env.example .env && npm install -g yarn && yarn install && yarn build"
+    command: /bin/bash -c "corepack enable && corepack prepare yarn@stable --activate && yarn --version && cp .env.example .env && yarn install && yarn build"
     
   rocketchat:
     platform: linux/amd64
