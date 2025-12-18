@@ -143,6 +143,8 @@ const Analytics: React.FC = () => {
               setCalendarDate(e.target.value);
               if (e.target.value) {
                 load(1, e.target.value); // Automatically search when date changes
+              }else {
+                load(1, ''); // Reload default state when date is cleared
               }
             }}
             placeholder="yyyy-mm-dd"
