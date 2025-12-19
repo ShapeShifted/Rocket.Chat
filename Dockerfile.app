@@ -10,6 +10,10 @@ RUN apk add --no-cache python3 make g++ git curl bash
 
 # Copy minimal files first to maximize layer caching
 COPY package.json yarn.lock .yarnrc.yml ./
+# Copy project-local Yarn files (releases/plugins/patches) if present so
+# `yarn install --immutable` can use the pinned release rather than failing
+# when .yarn/releases is referenced from .yarnrc.yml
+COPY .yarn .yarn
 
 # Prepare Corepack + install dependencies at build time
 RUN corepack enable && corepack prepare yarn@stable --activate
