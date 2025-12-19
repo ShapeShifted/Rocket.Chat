@@ -13,7 +13,12 @@ const WebScraping = (): React.ReactElement => {
   // Editor state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingUrl, setEditingUrl] = useState('');
+  const [editingName, setEditingName] = useState('');
   const [editingIsOwnCompany, setEditingIsOwnCompany] = useState(false);
+  const [showNameTooltip, setShowNameTooltip] = useState(false);
+  const [showUrlTooltip, setShowUrlTooltip] = useState(false);
+  const [nameTouched, setNameTouched] = useState(false);
+  const [urlTouched, setUrlTouched] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
 
@@ -40,7 +45,12 @@ const WebScraping = (): React.ReactElement => {
   const onStartAdd = () => {
     setEditingId(null);
     setEditingUrl('');
+    setEditingName('');
     setEditingIsOwnCompany(false);
+    setShowNameTooltip(false);
+    setShowUrlTooltip(false);
+    setNameTouched(false);
+    setUrlTouched(false);
     setIsNew(true);
     setShowEditor(true);
   };
@@ -48,7 +58,12 @@ const WebScraping = (): React.ReactElement => {
   const onStartEdit = (w: Website) => {
     setEditingId(w.id);
     setEditingUrl(w.url);
+    setEditingName(w.name);
     setEditingIsOwnCompany(false);
+    setShowNameTooltip(false);
+    setShowUrlTooltip(false);
+    setNameTouched(false);
+    setUrlTouched(false);
     setIsNew(false);
     setShowEditor(true);
   };
@@ -56,18 +71,29 @@ const WebScraping = (): React.ReactElement => {
   const onCancelEdit = () => {
     setEditingId(null);
     setEditingUrl('');
+    setEditingName('');
     setIsNew(false);
     setEditingIsOwnCompany(false);
+    setShowNameTooltip(false);
+    setShowUrlTooltip(false);
+    setNameTouched(false);
+    setUrlTouched(false);
     setShowEditor(false);
   };
 
   const onSave = async () => {
-    if (!editingUrl.trim()) return;
+    const nameEmpty = !editingName || editingName.trim() === '';
+    const urlEmpty = !editingUrl || editingUrl.trim() === '';
+    if (nameEmpty || urlEmpty) {
+      setShowNameTooltip(nameEmpty);
+      setShowUrlTooltip(urlEmpty);
+      return;
+    }
     try {
       if (isNew) {
-        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim(), isOwnCompany: false });
+        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: false });
       } else {
-        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim(), isOwnCompany: false });
+        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: false });
       }
       await loadWebsites();
       onCancelEdit();
@@ -87,9 +113,9 @@ const WebScraping = (): React.ReactElement => {
   };
 
   return (
-    <Box style={{ maxWidth: 700, margin: '0 auto' }}>
+    <Box style={{ width: '100%', maxWidth: '100%', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif'  }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Websites for Scraping</h2>
+        <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Web Scraping</h2>
         <Button primary onClick={onStartAdd} style={{ fontWeight: 600, fontSize: '18px', borderRadius: 8 }}>
           Add Website
         </Button>
@@ -123,20 +149,21 @@ const WebScraping = (): React.ReactElement => {
               gap: 12,
             }}
           >
-            <span style={{ fontSize: '1.08rem', color: '#1F2329', wordBreak: 'break-all' }}>{w.url}</span>
-            <span
-              title= 'External website'
-              style={{
-                marginLeft: 8,
-                marginRight: 8,
-                fontSize: 18,
-                color: '#888',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
-            >
-            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+              {w.name ? (
+                <strong style={{ fontSize: '1.05rem', color: '#1F2329', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {w.name}
+                </strong>
+              ) : null}
+              <a
+                href={w.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '0.98rem', color: '#156ff5', wordBreak: 'break-all', textDecoration: 'underline' }}
+              >
+                {w.url}
+              </a>
+            </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button
                 onClick={() => onStartEdit(w)}
@@ -211,50 +238,186 @@ const WebScraping = (): React.ReactElement => {
               width: 'min(480px, 96%)',
               borderRadius: 12,
               padding: 28,
-              boxShadow: '0 12px 40px rgba(0,0,0,0.35)',
+              boxShadow: '0 12px 40px rgba(202, 178, 178, 0.35)',
             }}
           >
-            <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ margin: 0, fontWeight: 700, fontSize: '22px' }}>{isNew ? 'Add Website' : 'Edit Website'}</h3>
-              <button
-                aria-label="Close"
-                onClick={onCancelEdit}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: 20,
-                  cursor: 'pointer',
-                  padding: 6,
-                  color: '#333',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8
-                }}
-              >
-                <svg width="15" height="15" viewBox="0 0 120 120" fill="#1f2329" xmlns="http://www.w3.org/2000/svg">
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 0 }}>
+                <button
+                  aria-label="Close"
+                  onClick={onCancelEdit}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: 20,
+                    cursor: 'pointer',
+                    padding: 6,
+                    color: '#333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 120 120" fill="#1f2329" xmlns="http://www.w3.org/2000/svg">
                     <path d="M60 77.9348L21.9522 116.087C19.5435 118.478 16.4826 119.674 12.7696 119.674C9.05652 119.674 5.99565 118.478 3.58696 116.087C1.19565 113.696 0 110.652 0 106.957C0 103.261 1.19565 100.217 3.58696 97.8261L41.7391 59.6739L3.58696 21.9522C1.19565 19.5435 0 16.4826 0 12.7696C0 9.05652 1.19565 5.99565 3.58696 3.58695C5.97826 1.19565 9.02174 0 12.7174 0C16.413 0 19.4565 1.19565 21.8478 3.58695L60 41.7391L97.7217 3.58695C100.13 1.19565 103.191 0 106.904 0C110.617 0 113.678 1.19565 116.087 3.58695C118.696 6.19565 120 9.29565 120 12.887C120 16.4783 118.696 19.4652 116.087 21.8478L77.9348 59.6739L116.087 97.7217C118.478 100.13 119.674 103.191 119.674 106.904C119.674 110.617 118.478 113.678 116.087 116.087C113.478 118.696 110.383 120 106.8 120C103.217 120 100.226 118.696 97.8261 116.087L60 77.9348Z"/>
                   </svg> Close
-              </button>
+                </button>
+              </div>
+              <h3 style={{ margin: '6px 0 0 0', fontWeight: 700, fontSize: '28px' }}>{isNew ? 'Add Website' : 'Edit Website'}</h3>
+              <div style={{ color: '#999797ff', fontStyle: 'italic', fontSize: '0.95rem', marginTop: 4 }}>All fields are required</div>
             </div>
             <div style={{ marginBottom: 18 }}>
-              <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: '17px' }}>Website URL</label>
-              <input
-                type="text"
-                value={editingUrl}
-                onChange={e => setEditingUrl(e.target.value)}
-                style={{
-                  color: '#1F2329',
-                  width: '100%',
-                  padding: 10,
-                  borderRadius: 6,
-                  border: '1.5px solid #8e8e8e',
-                  fontSize: '1rem',
-                  boxSizing: 'border-box',
-                  fontFamily: 'Inter, sans-serif'
-                }}
-                autoFocus
-                placeholder="https://example.com"
-              />
+              <div style={{ marginBottom: 12, position: 'relative' }}>
+                <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: '17px' }}>Site Name</label>
+                <input
+                  type="text"
+                  value={editingName}
+                  onChange={e => { setEditingName(e.target.value); setShowNameTooltip(false); setNameTouched(true); }}
+                  onBlur={(e) => { setNameTouched(true); if (!e.currentTarget.value?.trim()) setShowNameTooltip(true); else setShowNameTooltip(false); }}
+                  style={{
+                    color: '#1F2329',
+                    width: '100%',
+                    padding: 10,
+                    borderRadius: 6,
+                    border: showNameTooltip ? '1.5px solid #e53e3e' : '1.5px solid #8e8e8e',
+                    fontSize: '1rem',
+                    boxSizing: 'border-box',
+                    fontFamily: 'Inter, sans-serif'
+                  }}
+                  autoFocus
+                  placeholder="Provide a sitename here"
+                />
+                {showNameTooltip && nameTouched && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 'calc(100% + 8px)',
+                      marginTop: 2,
+                      background: '#ffffff',
+                      color: '#222',
+                      border: '1px solid #222',
+                      borderRadius: 4,
+                      padding: '6px 12px',
+                      fontSize: '0.95rem',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      zIndex: 10,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      minWidth: '220px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        left: '16px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '10px solid transparent',
+                        borderRight: '10px solid transparent',
+                        borderBottom: '10px solid #222',
+                        zIndex: 10,
+                      }}
+                    />
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        left: '18px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '8px solid transparent',
+                        borderRight: '8px solid transparent',
+                        borderBottom: '8px solid #fff',
+                        zIndex: 11,
+                      }}
+                    />
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                    </svg>
+                    Please fill out this field.
+                  </div>
+                )}
+              </div>
+
+              <div style={{ position: 'relative' }}>
+                <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: '17px' }}>URL</label>
+                <input
+                  type="text"
+                  value={editingUrl}
+                  onChange={e => { setEditingUrl(e.target.value); setShowUrlTooltip(false); setUrlTouched(true); }}
+                  onBlur={(e) => { setUrlTouched(true); if (!e.currentTarget.value?.trim()) setShowUrlTooltip(true); else setShowUrlTooltip(false); }}
+                  style={{
+                    color: '#1F2329',
+                    width: '100%',
+                    padding: 10,
+                    borderRadius: 6,
+                    border: showUrlTooltip ? '1.5px solid #e53e3e' : '1.5px solid #8e8e8e',
+                    fontSize: '1rem',
+                    boxSizing: 'border-box',
+                    fontFamily: 'Inter, sans-serif'
+                  }}
+                  
+                  placeholder="https://www.example.com"
+                />
+                {showUrlTooltip && urlTouched && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 'calc(100% + 8px)',
+                      marginTop: 2,
+                      background: '#ffffff',
+                      color: '#222',
+                      border: '1px solid #222',
+                      borderRadius: 4,
+                      padding: '6px 12px',
+                      fontSize: '0.95rem',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      zIndex: 10,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      minWidth: '220px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        left: '16px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '10px solid transparent',
+                        borderRight: '10px solid transparent',
+                        borderBottom: '10px solid #222',
+                        zIndex: 10,
+                      }}
+                    />
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        left: '18px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '8px solid transparent',
+                        borderRight: '8px solid transparent',
+                        borderBottom: '8px solid #fff',
+                        zIndex: 11,
+                      }}
+                    />
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                    </svg>
+                    Please fill out this field.
+                  </div>
+                )}
+              </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>

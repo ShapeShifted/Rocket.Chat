@@ -433,6 +433,7 @@ const FactManager = (): ReactElement => {
                 </button>
               </div>
               <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Facts</h2>
+              <div style={{ color: '#999797ff', fontStyle: 'italic', fontSize: '0.95rem', marginTop: 4 }}>All fields are required</div>
             </div>
             <div style={{ marginBottom: 12, position: 'relative' }}>
               <label style={{ display: 'block', marginBottom: 6, fontWeight: 600 , fontSize: '20px'}}>Title</label>
