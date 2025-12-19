@@ -31,3 +31,30 @@ logs
 *.tgz
 *.pem
 *.key
+
+# --- app-specific exclusions to reduce build context ---
+# test/e2e/playwright/playground/coverage/docs/examples (not needed for build)
+apps/**/tests
+apps/**/tests/**
+apps/**/e2e
+apps/**/playwright*
+apps/**/storybook
+apps/uikit-playground
+apps/**/examples
+apps/**/example*
+apps/**/docs
+apps/**/docs/**
+
+# caches / local build artifacts for app packages
+apps/**/.cache
+apps/**/.cache/**
+apps/**/.turbo
+apps/**/.turbo/**
+apps/**/coverage
+apps/**/coverage/**
+
+# Meteor local build state (safe to exclude when building from source)
+apps/meteor/.meteor/local
+apps/meteor/.meteor/local/**
+apps/meteor/local
+apps/meteor/local/**

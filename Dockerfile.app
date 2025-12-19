@@ -15,9 +15,13 @@ COPY package.json yarn.lock .yarnrc.yml ./
 # when .yarn/releases is referenced from .yarnrc.yml
 COPY .yarn .yarn
 
+COPY . .
+
 # Prepare Corepack + install dependencies at build time
 RUN corepack enable && corepack prepare yarn@stable --activate
 RUN yarn install --immutable --network-timeout 600000 || yarn install --network-timeout 600000
+RUN npm install -g rimraf
+RUN npm install -g npm-run-all
 
 # Copy source and build
 COPY . .
