@@ -9,7 +9,7 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++ git curl bash
 
 # Copy minimal files first to maximize layer caching
-COPY package.json yarn.lock .yarnrc.yml .yarn/ .yarn/plugins/ .yarn/releases/ .yarn/patches/ ./
+COPY package.json yarn.lock .yarnrc.yml ./
 
 # Prepare Corepack + install dependencies at build time
 RUN corepack enable && corepack prepare yarn@stable --activate
