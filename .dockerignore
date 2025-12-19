@@ -5,7 +5,7 @@ dist
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
-.yarn/releases
+# .yarn/releases
 .yarn/patches
 .turbo
 .turborepo
