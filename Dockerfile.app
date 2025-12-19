@@ -1,4 +1,4 @@
-FROM node:22.16.0-alpine3.21
+FROM node:22.16.0-alpine3.21 AS builder
 
 LABEL maintainer="you@example.com"
 
@@ -8,18 +8,29 @@ WORKDIR /app
 # System deps commonly required to build native modules
 RUN apk add --no-cache python3 make g++ git curl bash
 
-# Copy minimal files first to maximize layer caching (if present)
-# These COPYs are permissive ¡ª build will continue if some files are missing.
+# Copy minimal files first to maximize layer caching
 COPY package.json yarn.lock .yarnrc.yml .yarn/ .yarn/plugins/ .yarn/releases/ .yarn/patches/ ./
-# Copy the rest of the repository
-COPY . .
 
-# Add entrypoint that performs env setup, installs, builds and starts the app
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Prepare Corepack + install dependencies at build time
+RUN corepack enable && corepack prepare yarn@stable --activate
+RUN yarn install --immutable --network-timeout 600000 || yarn install --network-timeout 600000
+
+# Copy source and build
+COPY . .
+RUN yarn build
+
+FROM node:22.16.0-alpine3.21 AS final
+WORKDIR /app
 
 ENV NODE_ENV=development
 ENV PORT=3000
+
+# Copy built application from builder stage
+COPY --from=builder /app /app
+
+# Add lightweight entrypoint (no install/build at container start)
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000
 
