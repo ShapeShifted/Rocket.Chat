@@ -5,13 +5,12 @@ import { usePermission, useRoute } from '@rocket.chat/ui-contexts';
 import { useTranslation } from 'react-i18next';
 
 import { GenericTableCell, GenericTableRow } from '../../../../../components/GenericTable';
-import { OmnichannelRoomIcon } from '../../../../../components/RoomIcon/OmnichannelRoomIcon';
 import { useTimeFromNow } from '../../../../../hooks/useTimeFromNow';
 import OmnichannelVerificationTag from '../../../components/OmnichannelVerificationTag';
 import RoomActivityIcon from '../../../components/RoomActivityIcon';
 import RemoveChatButton from '../../../currentChats/RemoveChatButton';
 import { useOmnichannelPriorities } from '../../../hooks/useOmnichannelPriorities';
-import { useOmnichannelSource } from '../../../hooks/useOmnichannelSource';
+
 import { PriorityIcon } from '../../../priorities/PriorityIcon';
 
 const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: string }) => {
@@ -30,7 +29,7 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 			return String(date);
 		}
 	};
-	const { getSourceLabel } = useOmnichannelSource();
+
 
 	const canRemoveClosedChats = usePermission('remove-closed-livechat-room');
 	const directoryRoute = useRoute('omnichannel-directory');
@@ -57,14 +56,14 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 
 	return (
 		<GenericTableRow key={_id} tabIndex={0} role='link' onClick={() => onRowClick(_id)} action qa-user-id={_id}>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>
 				<Box display='flex' flexDirection='column'>
 					<Box withTruncatedText>{fname}</Box>
 					{tags && (
-						<Box style={{ color: '#000' }} display='flex' flex-direction='row'>
+						<Box style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} display='flex' flex-direction='row'>
 							{tags.map((tag: string) => (
 								<Box mbs={4} mie={4} withTruncatedText overflow={tag.length > 10 ? 'hidden' : 'visible'} key={tag}>
-									<Tag style={{ display: 'inline', color: '#000' }} disabled>
+									<Tag style={{ display: 'inline', color: '#000', fontFamily: 'Inter, sans-serif' }} disabled>
 										{tag}
 									</Tag>
 								</Box>
@@ -73,31 +72,34 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 					)}
 				</Box>
 			</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{sessionId ?? '-'}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{sessionId ?? '-'}</GenericTableCell>
 		{isPriorityEnabled && (
-					<GenericTableCell style={{ color: '#000' }}>
+					<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>
 					<PriorityIcon level={priorityWeight} />
 				</GenericTableCell>
 			)}
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
-				<Box display='flex' alignItems='center'>
-					<OmnichannelRoomIcon size='x20' source={source} />
-					<Box mis={8}>{getSourceLabel(source)}</Box>
-				</Box>
-			</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{servedBy?.username}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }}>
+			{/* Channel column removed */}
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{servedBy?.username}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>
 				<Box display='flex'>
 					<OmnichannelVerificationTag verified={verified} />
 				</Box>
 			</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{department?.name}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{formatDate(ts)}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
-				<RoomActivityIcon room={room} />
-				{getStatusText(open, onHold)}
-			</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{department?.name}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{formatDate(ts)}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>
+			{/** status */}
+			{(() => {
+				const statusText = getStatusText(open, onHold);
+				return (
+					<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>
+						<RoomActivityIcon room={room} />
+						<Box style={{ color: statusText === t('Room_Status_Open') ? '#156FF5' : '#000', fontFamily: 'Inter, sans-serif' }} mis={8} display='inline'>
+							{statusText}
+						</Box>
+					</GenericTableCell>
+				);
+			})()}
 			{canRemoveClosedChats && <GenericTableCell style={{ color: '#000' }}>{!open && <RemoveChatButton _id={_id} />}</GenericTableCell>}
 		</GenericTableRow>
 	);

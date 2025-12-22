@@ -19,6 +19,10 @@ export const buildVersionUpdateMessage = async (
 		return;
 	}
 
+	 if (true) {
+        return;
+    }
+
 	const lastCheckedVersion = settings.get<string>('Update_LatestAvailableVersion');
 
 	if (!lastCheckedVersion) {

@@ -135,6 +135,8 @@ export async function createRoom({
 
 	await Messages.setRoomIdByToken(visitor.token, room._id);
 
+	// No direct sessionId persistence here; visitor.token is used as visitor identifier now.
+
 	return room;
 }
 
@@ -158,7 +160,8 @@ export async function saveRoomInfo(
 	userId?: string,
 ) {
 	livechatLogger.debug(`Saving room information on room ${roomData._id}`);
-	const { livechatData = {} } = roomData;
+	let { livechatData = {} } = roomData;
+	// No top-level sessionId handling: session IDs are no longer accepted directly.
 	const customFields: Record<string, string> = {};
 
 	if ((!userId || (await hasPermissionAsync(userId, 'edit-livechat-room-customfields'))) && Object.keys(livechatData).length) {

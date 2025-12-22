@@ -42,31 +42,31 @@ const ChatsTable = () => {
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
 
 	const getSessionIdFromRoom = (room: any): string | undefined =>
-		room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionId ?? undefined;
+		// New flow: the visitor's token is used as the session identifier.
+		room?.v?.token ?? room?.visitor?.token ?? room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionId ?? room?.livechatData?.sessionToken ?? undefined;
 
 	const [defaultQuery] = useState(hashKey([query]));
 	const queryHasChanged = defaultQuery !== hashKey([query]);
 
 	const headers = (
 		<>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='fname' direction={sortDirection} active={sortBy === 'fname'} onClick={setSort} sort='fname'>
-				{t('Name')}
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='fname' direction={sortDirection} active={sortBy === 'fname'} onClick={setSort} sort='fname'>
+				<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Name')}</span>
 			</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='sessionId'>{t('Session_ID')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='sessionId'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Session_ID')}</span></GenericTableHeaderCell>
 			{isPriorityEnabled && (
-				<GenericTableHeaderCell style={{ color: '#000' }} key='priorityWeight' alignItems='center'>
-					{t('Priority')}
+				<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='priorityWeight' alignItems='center'>
+					<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Priority')}</span>
 				</GenericTableHeaderCell>
 			)}
-			<GenericTableHeaderCell style={{ color: '#000' }} key='source.type'>{t('Channel')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='servedBy'>{t('Agent')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} w='x100'>{t('Verification')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='department.name'>{t('Department')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='ts' direction={sortDirection} active={sortBy === 'ts'} onClick={setSort} sort='ts'>
-				{t('Started_At')}
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='servedBy'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Agent')}</span></GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} w='x100'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Verification')}</span></GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='department.name'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Department')}</span></GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='ts' direction={sortDirection} active={sortBy === 'ts'} onClick={setSort} sort='ts'>
+				<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Started_At')}</span>
 			</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='lm'>{t('Last_Message')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000' }} key='status'>{t('Status')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='lm'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Last_Message')}</span></GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='status'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Status')}</span></GenericTableHeaderCell>
 			{canRemoveClosedChats && <GenericTableHeaderCell key='remove' w='x60' data-qa='current-chats-header-remove' />}
 		</>
 	);
@@ -94,7 +94,7 @@ const ChatsTable = () => {
 			)}
 			{isSuccess && data?.rooms.length > 0 && (
 				<>
-					<GenericTable fixed={false} style={{ color: '#000' }}>
+					<GenericTable fixed={false} style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>
 						<GenericTableHeader>{headers}</GenericTableHeader>
 						<GenericTableBody>
 							{data?.rooms.map((room) => (

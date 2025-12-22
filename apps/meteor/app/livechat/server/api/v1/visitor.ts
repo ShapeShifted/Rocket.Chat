@@ -44,6 +44,8 @@ API.v1.addRoute(
 
 			const { customFields, id, token, name, email, department, phone, username, connectionData } = this.bodyParams.visitor;
 
+			livechatLogger.debug(`Received visitor payload: token=${token}, id=${id ?? 'n/a'}`);
+
 			if (!token?.trim()) {
 				throw new Meteor.Error('error-invalid-token', 'Token cannot be empty', { method: 'livechat/visitor' });
 			}
@@ -56,10 +58,12 @@ API.v1.addRoute(
 				...(department && { department }),
 				...(username && { username }),
 				...(connectionData && { connectionData }),
+				// session id is no longer directly accepted; token is used as the visitor identifier
 				...(phone && typeof phone === 'string' && { phone: { number: phone as string } }),
 				connectionData: normalizeHttpHeaderData(this.request.headers),
 			};
 
+			livechatLogger.debug(`Registering visitor with payload: ${JSON.stringify({ token: guest.token, name: guest.name, phone: guest.phone })}`);
 			const visitor = await registerGuest(guest, { shouldConsiderIdleAgent: settings.get<boolean>('Livechat_enabled_when_agent_idle') });
 			if (!visitor) {
 				throw new Meteor.Error('error-livechat-visitor-registration', 'Error registering visitor', {
@@ -67,30 +71,45 @@ API.v1.addRoute(
 				});
 			}
 
+			livechatLogger.debug(`Visitor registration result: _id=${visitor._id}`);
+
+			const persistedVisitor = await VisitorsRaw.findOneEnabledById(visitor._id);
+			livechatLogger.debug(`Persisted visitor fetched: _id=${persistedVisitor?._id ?? 'n/a'}`);
+
 			const extraQuery = await callbacks.run('livechat.applyRoomRestrictions', {}, { userId: this.userId });
 			// If it's updating an existing visitor, it must also update the roomInfo
 			const rooms = await LivechatRooms.findOpenByVisitorToken(visitor?.token, {}, extraQuery).toArray();
 			await Promise.all(
-				rooms.map(
-					(room: IRoom) =>
-						visitor &&
-						saveRoomInfo(room, {
-							_id: visitor._id,
-							name: visitor.name,
-							phone: visitor.phone?.[0]?.phoneNumber,
-							livechatData: visitor.livechatData as { [k: string]: string },
-						}),
-				),
+				rooms.map(async (room: IRoom) => {
+					if (!visitor) {
+						return Promise.resolve();
+					}
+					try {
+						await saveRoomInfo(
+							{
+								_id: room._id,
+								livechatData: visitor.livechatData as { [k: string]: string },
+							} as any,
+							{
+								_id: visitor._id,
+								name: visitor.name,
+								phone: visitor.phone?.[0]?.phoneNumber,
+							} as any,
+						);
+					} catch (e) {
+						livechatLogger.error(`Failed to persist room info for room ${room._id}: ${e}`);
+					}
+				}),
 			);
 
 			if (!Array.isArray(customFields) || !customFields.length) {
-				return API.v1.success({ visitor });
+				return API.v1.success({ visitor: persistedVisitor ?? visitor});
 			}
 
 			const result = await setMultipleVisitorCustomFields(visitor, customFields);
 
 			if (!result) {
-				return API.v1.success({ visitor });
+				return API.v1.success({ visitor: persistedVisitor ?? visitor });
 			}
 
 			return API.v1.success({ visitor: await VisitorsRaw.findOneEnabledById(visitor._id) });
