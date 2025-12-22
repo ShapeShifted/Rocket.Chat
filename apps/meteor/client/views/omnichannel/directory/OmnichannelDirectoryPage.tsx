@@ -41,13 +41,25 @@ const OmnichannelDirectoryPage = () => {
 				<Page>
 					<PageHeader title={t('Omnichannel_Contact_Center')} />
 					<Tabs flexShrink={0}>
-						<Tabs.Item selected={tab === 'chats'} onClick={() => handleTabClick('chats')}>
+						<Tabs.Item
+							selected={tab === 'chats'}
+							onClick={() => handleTabClick('chats')}
+							style={{ color: tab === 'chats' ? undefined : '#000' }}
+						>
 							{t('Chats')}
 						</Tabs.Item>
-						<Tabs.Item selected={tab === 'contacts'} onClick={() => handleTabClick('contacts')}>
+						<Tabs.Item
+							selected={tab === 'contacts'}
+							onClick={() => handleTabClick('contacts')}
+							style={{ color: tab === 'contacts' ? undefined : '#000' }}
+						>
 							{t('Contacts')}
 						</Tabs.Item>
-						<Tabs.Item selected={tab === 'calls'} onClick={() => handleTabClick('calls')}>
+						<Tabs.Item
+							selected={tab === 'calls'}
+							onClick={() => handleTabClick('calls')}
+							style={{ color: tab === 'calls' ? undefined : '#000' }}
+						>
 							{t('Calls')}
 						</Tabs.Item>
 					</Tabs>

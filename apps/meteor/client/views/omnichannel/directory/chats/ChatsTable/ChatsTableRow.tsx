@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 import { GenericTableCell, GenericTableRow } from '../../../../../components/GenericTable';
 import { useTimeFromNow } from '../../../../../hooks/useTimeFromNow';
-import OmnichannelVerificationTag from '../../../components/OmnichannelVerificationTag';
 import RoomActivityIcon from '../../../components/RoomActivityIcon';
 import RemoveChatButton from '../../../currentChats/RemoveChatButton';
 import { useOmnichannelPriorities } from '../../../hooks/useOmnichannelPriorities';
@@ -80,11 +79,7 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 			)}
 			{/* Channel column removed */}
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{servedBy?.username}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>
-				<Box display='flex'>
-					<OmnichannelVerificationTag verified={verified} />
-				</Box>
-			</GenericTableCell>
+
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{department?.name}</GenericTableCell>
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{formatDate(ts)}</GenericTableCell>
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>

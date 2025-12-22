@@ -60,7 +60,7 @@ const ChatsTable = () => {
 				</GenericTableHeaderCell>
 			)}
 			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='servedBy'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Agent')}</span></GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} w='x100'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Verification')}</span></GenericTableHeaderCell>
+
 			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='department.name'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Department')}</span></GenericTableHeaderCell>
 			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='ts' direction={sortDirection} active={sortBy === 'ts'} onClick={setSort} sort='ts'>
 				<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Started_At')}</span>
