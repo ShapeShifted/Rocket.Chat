@@ -25,12 +25,11 @@ import { useStarredMessagesRoomAction } from './hooks/roomActions/useStarredMess
 import { useTeamChannelsRoomAction } from './hooks/roomActions/useTeamChannelsRoomAction';
 import { useTeamInfoRoomAction } from './hooks/roomActions/useTeamInfoRoomAction';
 import { useThreadRoomAction } from './hooks/roomActions/useThreadRoomAction';
-import { useUploadedFilesListRoomAction } from './hooks/roomActions/useUploadedFilesListRoomAction';
 import { useUserInfoGroupRoomAction } from './hooks/roomActions/useUserInfoGroupRoomAction';
 import { useUserInfoRoomAction } from './hooks/roomActions/useUserInfoRoomAction';
 import { useVideoCallRoomAction } from './hooks/roomActions/useVideoCallRoomAction';
 import { useWebRTCVideoRoomAction } from './hooks/roomActions/useWebRTCVideoRoomAction';
-import { useCannedResponsesRoomAction } from './views/omnichannel/hooks/useCannedResponsesRoomAction';
+// Removed: useUploadedFilesListRoomAction and useCannedResponsesRoomAction to hide Files and Canned Responses buttons
 import { useContactProfileRoomAction } from './views/omnichannel/hooks/useContactProfileRoomAction';
 import { useOmnichannelExternalFrameRoomAction } from './views/omnichannel/hooks/useOmnichannelExternalFrameRoomAction';
 import { useRoomInfoRoomAction } from './views/omnichannel/hooks/useRoomInfoRoomAction';
@@ -46,7 +45,6 @@ export const roomActionHooks = [
 	useThreadRoomAction,
 	useAutotranslateRoomAction,
 	useCallsRoomAction,
-	useCannedResponsesRoomAction,
 	useCleanHistoryRoomAction,
 	useContactProfileRoomAction,
 	useDiscussionsRoomAction,
@@ -65,7 +63,6 @@ export const roomActionHooks = [
 	useRoomInfoRoomAction,
 	useStarredMessagesRoomAction,
 	useTeamChannelsRoomAction,
-	useUploadedFilesListRoomAction,
 	useVoIPRoomInfoRoomAction,
 	useWebRTCVideoRoomAction,
 	useAppsRoomStarActions,
