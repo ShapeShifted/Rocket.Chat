@@ -29,7 +29,7 @@ export const useChatsQuery = () => {
 
 	return useCallback(
 		(
-			{ guest, servedBy, department, status, from, to, tags, units, ...customFields }: ChatsFiltersQuery,
+			{ guest, servedBy, department, status, from, to, tags, units, priority, ...customFields }: ChatsFiltersQuery,
 			[column, direction]: [string, 'asc' | 'desc'],
 			current: number,
 			itemsPerPage: 25 | 50 | 100,

@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react';
 export type ChatsFiltersQuery = {
 	guest: string;
 	servedBy: PaginatedMultiSelectOption[];
+	priority?: string;
 	status: string;
 	department: PaginatedMultiSelectOption[];
 	from: string;
@@ -17,6 +18,7 @@ export type ChatsFiltersQuery = {
 export const initialValues: ChatsFiltersQuery = {
 	guest: '',
 	servedBy: [],
+	priority: '',
 	status: 'all',
 	department: [],
 	from: '',
@@ -34,8 +36,10 @@ export type ChatsContextValue = {
 		to: string | undefined;
 		guest: string | undefined;
 		servedBy: string | undefined;
+		priority?: string | undefined;
 		department: string | undefined;
 		status: string | undefined;
+		agents?: string | undefined;
 		tags: string | undefined;
 	};
 	removeFilter: (filter: keyof ChatsFiltersQuery) => void;
@@ -52,6 +56,7 @@ export const ChatsContext = createContext<ChatsContextValue>({
 		to: undefined,
 		guest: undefined,
 		servedBy: undefined,
+		priority: undefined,
 		department: undefined,
 		status: undefined,
 		tags: undefined,

@@ -28,18 +28,31 @@ const ChatsTable = () => {
 	const { filtersQuery: filters } = useChatsContext();
 
 	const { enabled: isPriorityEnabled } = useOmnichannelPriorities();
+	const { data: priorities } = useOmnichannelPriorities();
 
 	const chatsQuery = useChatsQuery();
 
 	const { current, itemsPerPage, setItemsPerPage: onSetItemsPerPage, setCurrent: onSetCurrent, ...paginationProps } = usePagination();
 	const { sortBy, sortDirection, setSort } = useSort<'fname' | 'ts'>('ts', 'desc');
 
+	const effectiveItemsPerPage = filters.priority ? 100000 : itemsPerPage;
+
 	const query = useMemo(
-		() => chatsQuery(filters, [sortBy, sortDirection], current, itemsPerPage),
-		[itemsPerPage, filters, sortBy, sortDirection, current, chatsQuery],
-	);
+			() => chatsQuery(filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage as any),
+			[effectiveItemsPerPage, filters, sortBy, sortDirection, current, chatsQuery],
+		);
 
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
+
+	// Apply client-side priority filter when user selects a priority id
+	let rooms = data?.rooms ?? [];
+	if (filters.priority) {
+		const selected = priorities?.find((p: any) => p._id === filters.priority);
+		const weight = selected?.sortItem;
+		if (typeof weight !== 'undefined') {
+			rooms = rooms.filter((r: any) => r.priorityWeight === weight);
+		}
+	}
 
 	const getSessionIdFromRoom = (room: any): string | undefined =>
 		// New flow: the visitor's token is used as the session identifier.
@@ -92,12 +105,12 @@ const ChatsTable = () => {
 					linkText={t('Learn_more_about_conversations')}
 				/>
 			)}
-			{isSuccess && data?.rooms.length > 0 && (
+			{isSuccess && rooms.length > 0 && (
 				<>
 					<GenericTable fixed={false} style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>
 						<GenericTableHeader>{headers}</GenericTableHeader>
 						<GenericTableBody>
-							{data?.rooms.map((room) => (
+							{rooms.map((room: any) => (
 								<ChatsTableRow key={room._id} {...room} sessionId={getSessionIdFromRoom(room)} />
 							))}
 						</GenericTableBody>
@@ -106,7 +119,7 @@ const ChatsTable = () => {
 						divider
 						current={current}
 						itemsPerPage={itemsPerPage}
-						count={data?.total || 0}
+						count={filters.priority ? rooms.length : data?.total || 0}
 						onSetItemsPerPage={onSetItemsPerPage}
 						onSetCurrent={onSetCurrent}
 						{...paginationProps}

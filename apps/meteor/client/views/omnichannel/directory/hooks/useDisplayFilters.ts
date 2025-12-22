@@ -1,6 +1,7 @@
 import type { PaginatedMultiSelectOption } from '@rocket.chat/fuselage';
 import type { TranslationKey } from '@rocket.chat/ui-contexts';
 import { useTranslation } from 'react-i18next';
+import { useOmnichannelPriorities } from '../../hooks/useOmnichannelPriorities';
 
 import { useFormatDate } from '../../../../hooks/useFormatDate';
 import type { ChatsFiltersQuery } from '../contexts/ChatsContext';
@@ -17,7 +18,9 @@ export const useDisplayFilters = (filtersQuery: ChatsFiltersQuery) => {
 	const { t } = useTranslation();
 	const formatDate = useFormatDate();
 
-	const { guest, servedBy, status, department, from, to, tags, units, ...customFields } = filtersQuery;
+	const { guest, servedBy, status, department, from, to, tags, units, priority, ...customFields } = filtersQuery;
+
+	const { data: priorities } = useOmnichannelPriorities();
 
 	const displayCustomFields = Object.entries(customFields).reduce(
 		(acc, [key, value]) => {
@@ -31,7 +34,14 @@ export const useDisplayFilters = (filtersQuery: ChatsFiltersQuery) => {
 		from: from !== '' ? `${t('From')}: ${formatDate(from)}` : undefined,
 		to: to !== '' ? `${t('To')}: ${formatDate(to)}` : undefined,
 		guest: guest !== '' ? `${t('Text')}: ${guest}` : undefined,
-		servedBy: servedBy.length ? `${t('Served_By')}: ${parseMultiSelect(servedBy)}` : undefined,
+		priority: priority
+			? `${t('Priority')}: ${(() => {
+				const p = priorities?.find((pr: any) => pr._id === priority);
+				if (!p) return priority;
+				return p.dirty && p.name ? p.name : t(p.i18n as unknown as TranslationKey);
+			})()}`
+			: undefined,
+		servedBy: servedBy.length ? `${t('Agent')}: ${parseMultiSelect(servedBy)}` : undefined,
 		department: department.length ? `${t('Department')}: ${parseMultiSelect(department)}` : undefined,
 		status: status !== 'all' ? `${t('Status')}: ${t(statusTextMap[status])}` : undefined,
 		tags: tags.length > 0 ? `${t('Tags')}: ${tags.map((tag) => tag.label).join(', ')}` : undefined,

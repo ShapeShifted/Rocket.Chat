@@ -7,19 +7,17 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import {
-	ContextualbarHeader,
-	ContextualbarIcon,
-	ContextualbarTitle,
-	ContextualbarClose,
-	ContextualbarScrollableContent,
-	ContextualbarFooter,
-	ContextualbarDialog,
+ 	ContextualbarHeader,
+ 	ContextualbarTitle,
+ 	ContextualbarClose,
+ 	ContextualbarScrollableContent,
+ 	ContextualbarFooter,
+ 	ContextualbarDialog,
 } from '../../../../components/Contextualbar';
 import { useHasLicenseModule } from '../../../../hooks/useHasLicenseModule';
-import { CurrentChatTags } from '../../additionalForms';
-import AutoCompleteUnits from '../../additionalForms/AutoCompleteUnits';
 import AutoCompleteDepartmentMultiple from '../../components/AutoCompleteDepartmentMultiple';
 import AutoCompleteMultipleAgent from '../../components/AutoCompleteMultipleAgent';
+import { useOmnichannelPriorities } from '../../hooks/useOmnichannelPriorities';
 import type { ChatsFiltersQuery } from '../contexts/ChatsContext';
 import { useChatsContext } from '../contexts/ChatsContext';
 
@@ -64,14 +62,18 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 	const servedByFieldId = useId();
 	const statusFieldId = useId();
 	const departmentFieldId = useId();
-	const tagsFieldId = useId();
-	const unitsFieldId = useId();
+	const priorityFieldId = useId();
+
+	const { data: priorities } = useOmnichannelPriorities();
+
+	const priorityOptions = (
+		[['', t('Unprioritized')], ...(priorities?.map(({ _id, dirty, name, i18n }: any) => [_id, dirty && name ? name : t(i18n)]) ?? [])]
+	) as [string, string][];
 
 	return (
 		<ContextualbarDialog onClose={onClose}>
 			<ContextualbarHeader>
-				<ContextualbarIcon name='customize' />
-				<ContextualbarTitle>{t('Filters')}</ContextualbarTitle>
+				<ContextualbarTitle>{t('Filter')}</ContextualbarTitle>
 				<ContextualbarClose onClick={onClose} />
 			</ContextualbarHeader>
 			<ContextualbarScrollableContent is='form' id={formId} onSubmit={handleSubmit(handleSubmitFilters)}>
@@ -82,7 +84,7 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 							name='from'
 							control={control}
 							render={({ field }) => (
-								<InputBox type='date' id={fromFieldId} placeholder={t('From')} max={format(new Date(), 'yyyy-MM-dd')} {...field} />
+								<InputBox type='date' id={fromFieldId} placeholder='mm/dd/yyyy' max={format(new Date(), 'yyyy-MM-dd')} {...field} />
 							)}
 						/>
 					</FieldRow>
@@ -94,39 +96,39 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 							name='to'
 							control={control}
 							render={({ field }) => (
-								<InputBox type='date' id={toFieldId} placeholder={t('To')} max={format(new Date(), 'yyyy-MM-dd')} {...field} />
+								<InputBox type='date' id={toFieldId} placeholder='mm/dd/yyyy' max={format(new Date(), 'yyyy-MM-dd')} {...field} />
 							)}
 						/>
 					</FieldRow>
 				</Field>
+				<Field>
+					<FieldLabel htmlFor={priorityFieldId}>{t('Priority')}</FieldLabel>
+					<FieldRow>
+						<Controller
+							name='priority'
+							control={control}
+							render={({ field }) => <Select {...field} id={priorityFieldId} options={priorityOptions} />}
+						/>
+					</FieldRow>
+				</Field>
+
 				{canViewLivechatRooms && (
 					<Field>
 						<FieldLabel is='span' id={servedByFieldId}>
-							{t('Served_By')}
+							{t('Agent')}
 						</FieldLabel>
 						<FieldRow>
 							<Controller
 								name='servedBy'
 								control={control}
 								render={({ field: { value, onChange } }) => (
-									<AutoCompleteMultipleAgent aria-labelledby={servedByFieldId} value={value} onChange={onChange} />
+									<AutoCompleteMultipleAgent aria-labelledby={servedByFieldId} value={value} onChange={onChange} placeholder={t('Select_an_option')} />
 								)}
 							/>
 						</FieldRow>
 					</Field>
 				)}
-				<Field>
-					<FieldLabel is='span' id={statusFieldId}>
-						{t('Status')}
-					</FieldLabel>
-					<Controller
-						name='status'
-						control={control}
-						render={({ field }) => (
-							<Select {...field} aria-labelledby={statusFieldId} options={statusOptions} placeholder={t('Select_an_option')} />
-						)}
-					/>
-				</Field>
+				{/* Status moved below Department to match requested order */}
 				<Field>
 					<FieldLabel is='span' id={departmentFieldId}>
 						{t('Department')}
@@ -148,33 +150,18 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 					</FieldRow>
 				</Field>
 				<Field>
-					<FieldLabel id={tagsFieldId}>{t('Tags')}</FieldLabel>
-					<FieldRow>
-						<Controller
-							name='tags'
-							control={control}
-							render={({ field: { value, onChange } }) => (
-								<CurrentChatTags aria-labelledby={tagsFieldId} value={value} handler={onChange} viewAll />
-							)}
-						/>
-					</FieldRow>
+					<FieldLabel is='span' id={statusFieldId}>
+						{t('Status')}
+					</FieldLabel>
+					<Controller
+						name='status'
+						control={control}
+						render={({ field }) => (
+							<Select {...field} aria-labelledby={statusFieldId} options={statusOptions} placeholder={t('Select_an_option')} style={{ fontWeight: 'normal' }} />
+						)}
+					/>
 				</Field>
-				{isEnterprise && (
-					<Field>
-						<FieldLabel is='span' id={unitsFieldId}>
-							{t('Units')}
-						</FieldLabel>
-						<FieldRow>
-							<Controller
-								name='units'
-								control={control}
-								render={({ field: { value, onChange } }) => (
-									<AutoCompleteUnits aria-labelledby={unitsFieldId} value={value} onChange={onChange} />
-								)}
-							/>
-						</FieldRow>
-					</Field>
-				)}
+				{/* Tags and Units filters removed per request */}
 				{canViewCustomFields &&
 					contactCustomFields?.map((customField) => {
 						if (customField.type === 'select') {
