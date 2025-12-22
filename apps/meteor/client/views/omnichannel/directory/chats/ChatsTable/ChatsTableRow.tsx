@@ -93,9 +93,13 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 				const statusText = getStatusText(open, onHold);
 				return (
 					<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>
-						<RoomActivityIcon room={room} />
-						<Box style={{ color: statusText === t('Room_Status_Open') ? '#156FF5' : '#000', fontFamily: 'Inter, sans-serif' }} mis={8} display='inline'>
-							{statusText}
+						<Box display='flex' alignItems='center'>
+							<Box style={{ color: statusText === t('Room_Status_Open') ? '#156FF5' : '#000', fontFamily: 'Inter, sans-serif' }}>
+								{statusText}
+							</Box>
+							<Box mis={8} display='inline'>
+								<RoomActivityIcon room={room} />
+							</Box>
 						</Box>
 					</GenericTableCell>
 				);
