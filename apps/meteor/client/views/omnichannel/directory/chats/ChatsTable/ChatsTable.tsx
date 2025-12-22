@@ -41,28 +41,32 @@ const ChatsTable = () => {
 
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
 
+	const getSessionIdFromRoom = (room: any): string | undefined =>
+		room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionId ?? undefined;
+
 	const [defaultQuery] = useState(hashKey([query]));
 	const queryHasChanged = defaultQuery !== hashKey([query]);
 
 	const headers = (
 		<>
-			<GenericTableHeaderCell key='fname' direction={sortDirection} active={sortBy === 'fname'} onClick={setSort} sort='fname'>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='fname' direction={sortDirection} active={sortBy === 'fname'} onClick={setSort} sort='fname'>
 				{t('Name')}
 			</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='sessionId'>{t('Session_ID')}</GenericTableHeaderCell>
 			{isPriorityEnabled && (
-				<GenericTableHeaderCell key='priorityWeight' alignItems='center'>
+				<GenericTableHeaderCell style={{ color: '#000' }} key='priorityWeight' alignItems='center'>
 					{t('Priority')}
 				</GenericTableHeaderCell>
 			)}
-			<GenericTableHeaderCell key='source.type'>{t('Channel')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell key='servedBy'>{t('Agent')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell w='x100'>{t('Verification')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell key='department.name'>{t('Department')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell key='ts' direction={sortDirection} active={sortBy === 'ts'} onClick={setSort} sort='ts'>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='source.type'>{t('Channel')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='servedBy'>{t('Agent')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} w='x100'>{t('Verification')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='department.name'>{t('Department')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='ts' direction={sortDirection} active={sortBy === 'ts'} onClick={setSort} sort='ts'>
 				{t('Started_At')}
 			</GenericTableHeaderCell>
-			<GenericTableHeaderCell key='lm'>{t('Last_Message')}</GenericTableHeaderCell>
-			<GenericTableHeaderCell key='status'>{t('Status')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='lm'>{t('Last_Message')}</GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000' }} key='status'>{t('Status')}</GenericTableHeaderCell>
 			{canRemoveClosedChats && <GenericTableHeaderCell key='remove' w='x60' data-qa='current-chats-header-remove' />}
 		</>
 	);
@@ -90,9 +94,13 @@ const ChatsTable = () => {
 			)}
 			{isSuccess && data?.rooms.length > 0 && (
 				<>
-					<GenericTable fixed={false}>
+					<GenericTable fixed={false} style={{ color: '#000' }}>
 						<GenericTableHeader>{headers}</GenericTableHeader>
-						<GenericTableBody>{data?.rooms.map((room) => <ChatsTableRow key={room._id} {...room} />)}</GenericTableBody>
+						<GenericTableBody>
+							{data?.rooms.map((room) => (
+								<ChatsTableRow key={room._id} {...room} sessionId={getSessionIdFromRoom(room)} />
+							))}
+						</GenericTableBody>
 					</GenericTable>
 					<Pagination
 						divider

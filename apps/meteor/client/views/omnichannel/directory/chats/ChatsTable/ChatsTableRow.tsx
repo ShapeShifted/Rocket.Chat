@@ -14,11 +14,22 @@ import { useOmnichannelPriorities } from '../../../hooks/useOmnichannelPrioritie
 import { useOmnichannelSource } from '../../../hooks/useOmnichannelSource';
 import { PriorityIcon } from '../../../priorities/PriorityIcon';
 
-const ChatsTableRow = (room: IOmnichannelRoomWithDepartment) => {
+const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: string }) => {
 	const { t } = useTranslation();
-	const { _id, fname, tags, servedBy, ts, department, open, priorityWeight, lm, onHold, source, verified } = room;
+	const { _id, fname, tags, servedBy, ts, department, open, priorityWeight, lm, onHold, source, verified, sessionId } = room as any;
 	const { enabled: isPriorityEnabled } = useOmnichannelPriorities();
 	const getTimeFromNow = useTimeFromNow(true);
+
+	const formatDate = (date?: string | Date | number): string => {
+		if (!date) {
+			return '-';
+		}
+		try {
+			return new Date(date).toLocaleString();
+		} catch {
+			return String(date);
+		}
+	};
 	const { getSourceLabel } = useOmnichannelSource();
 
 	const canRemoveClosedChats = usePermission('remove-closed-livechat-room');
@@ -46,14 +57,14 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment) => {
 
 	return (
 		<GenericTableRow key={_id} tabIndex={0} role='link' onClick={() => onRowClick(_id)} action qa-user-id={_id}>
-			<GenericTableCell withTruncatedText>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
 				<Box display='flex' flexDirection='column'>
 					<Box withTruncatedText>{fname}</Box>
 					{tags && (
-						<Box color='hint' display='flex' flex-direction='row'>
+						<Box style={{ color: '#000' }} display='flex' flex-direction='row'>
 							{tags.map((tag: string) => (
 								<Box mbs={4} mie={4} withTruncatedText overflow={tag.length > 10 ? 'hidden' : 'visible'} key={tag}>
-									<Tag style={{ display: 'inline' }} disabled>
+									<Tag style={{ display: 'inline', color: '#000' }} disabled>
 										{tag}
 									</Tag>
 								</Box>
@@ -62,31 +73,32 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment) => {
 					)}
 				</Box>
 			</GenericTableCell>
-			{isPriorityEnabled && (
-				<GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{sessionId ?? '-'}</GenericTableCell>
+		{isPriorityEnabled && (
+					<GenericTableCell style={{ color: '#000' }}>
 					<PriorityIcon level={priorityWeight} />
 				</GenericTableCell>
 			)}
-			<GenericTableCell withTruncatedText>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
 				<Box display='flex' alignItems='center'>
 					<OmnichannelRoomIcon size='x20' source={source} />
 					<Box mis={8}>{getSourceLabel(source)}</Box>
 				</Box>
 			</GenericTableCell>
-			<GenericTableCell withTruncatedText>{servedBy?.username}</GenericTableCell>
-			<GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{servedBy?.username}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }}>
 				<Box display='flex'>
 					<OmnichannelVerificationTag verified={verified} />
 				</Box>
 			</GenericTableCell>
-			<GenericTableCell withTruncatedText>{department?.name}</GenericTableCell>
-			<GenericTableCell withTruncatedText>{getTimeFromNow(ts)}</GenericTableCell>
-			<GenericTableCell withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>
-			<GenericTableCell withTruncatedText>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{department?.name}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{formatDate(ts)}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000' }} withTruncatedText>
 				<RoomActivityIcon room={room} />
 				{getStatusText(open, onHold)}
 			</GenericTableCell>
-			{canRemoveClosedChats && <GenericTableCell>{!open && <RemoveChatButton _id={_id} />}</GenericTableCell>}
+			{canRemoveClosedChats && <GenericTableCell style={{ color: '#000' }}>{!open && <RemoveChatButton _id={_id} />}</GenericTableCell>}
 		</GenericTableRow>
 	);
 };

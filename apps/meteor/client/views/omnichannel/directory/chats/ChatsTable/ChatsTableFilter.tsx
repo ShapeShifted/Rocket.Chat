@@ -70,7 +70,6 @@ const ChatsTableFilter = () => {
 							context: 'filters',
 						})
 					}
-					icon='customize'
 				>
 					{t('Filters')}
 				</Button>
