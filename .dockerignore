@@ -1,0 +1,12 @@
+.git
+.gitignore
+LICENSE
+README.md
+docker-compose.yml
+tests/e2e/test-failures/
+apps/meteor/.meteor/local
+node_modules
+.meteor/local
+apps/meteor/local
+dist
+bundle
