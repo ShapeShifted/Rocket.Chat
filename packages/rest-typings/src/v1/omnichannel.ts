@@ -4953,4 +4953,11 @@ export type OmnichannelEndpoints = {
 	'/v1/livechat/webhook.test': {
 		POST: () => void;
 	};
+	'/v1/livechat/archived-conversation.importAll': {
+		GET: (params?: { dryRun?: string }) => {
+			count: number;
+			importedIds: string[];
+			dryRun: boolean;
+		};
+	};
 };

@@ -44,10 +44,11 @@ const ChatsTable = () => {
 
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
 
-	const importConversations = useEndpoint('GET', '/v1/livechat/archived-conversation.importAll');
+	// @ts-ignore - Endpoint not typed correctly in @rocket.chat/rest-typings
+	const importConversations = useEndpoint('GET', '/v1/livechat/archived-conversation.importAll') as any;
 
 	useEffect(() => {
-		(importConversations as any)({})
+		importConversations({})
 			.then(() => {
 				refetch();
 			})
