@@ -1,7 +1,9 @@
-import { LivechatRooms, LivechatVisitors, Messages } from '@rocket.chat/models';
+import { LivechatRooms, LivechatVisitors, Messages, LivechatDepartment } from '@rocket.chat/models';
 import { Random } from '@rocket.chat/random';
 import { UserStatus, OmnichannelSourceType, IOmnichannelRoom } from '@rocket.chat/core-typings';
 import { API } from '../../../../api/server';
+
+import { LivechatPriorityWeight } from '@rocket.chat/core-typings/src/ILivechatPriority';
 
 API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true }, {
 	async get() {
@@ -24,6 +26,12 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 
 		let importedCount = 0;
 		const importedIds: string[] = [];
+
+		// Pre-fetch the chatbot department
+		const defaultDept = await LivechatDepartment.findOne({ enableChatbotDepartment: true } as any, {
+			projection: { _id: 1, name: 1 }
+		});
+
 
 		for (const conv of conversations) {
 			// Extract context if present
@@ -75,6 +83,14 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 			const lm = new Date(conv.lastActivity || conv.lastMessage?.ts || conv.lm || conv.endTime || new Date());
 			const sessionId = conv.sessionId || context.sessionId || conv.session_id;
 
+
+			// Fetch Department ID
+			let departmentId = conv.department?._id || conv.departmentId
+			if (!departmentId && defaultDept) {
+				departmentId = defaultDept._id;
+			}
+
+
 			const roomData: any = {
 				msgs: (context.conversationHistory || conv.messages || []).length || 0,
 				usersCount: 2,
@@ -91,12 +107,12 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 				cl: true,
 				open: false,
 				servedBy: {
-					_id: conv.agent?.id || 'rocket.cat',
-					username: conv.agent?.username || 'rocket.cat',
+					_id: 'DB Engage',
+					username: 'DB Engage',
 					ts,
 				},
-				departmentId: conv.department?._id || conv.departmentId,
-				priorityWeight: conv.priorityWeight,
+				departmentId,
+				priorityWeight: LivechatPriorityWeight.NOT_SPECIFIED,
 				source: {
 					type: OmnichannelSourceType.API,
 					alias: 'knowledge-import',

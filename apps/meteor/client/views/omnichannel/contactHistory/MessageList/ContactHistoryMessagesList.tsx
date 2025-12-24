@@ -35,7 +35,6 @@ import { useRecordList } from '../../../../hooks/lists/useRecordList';
 import { AsyncStatePhase } from '../../../../lib/asyncState';
 import { isMessageNewDay } from '../../../room/MessageList/lib/isMessageNewDay';
 import { isMessageSequential } from '../../../room/MessageList/lib/isMessageSequential';
-// import { Logger } from '@rocket.chat/logger';
 
 const logger = {
 	warn: (...args: any[]) => console.warn('ContactHistoryMessagesList', ...args),
@@ -77,15 +76,6 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 
 	const { phase, error, items: messages, itemCount: totalItemCount } = useRecordList(messageList);
 	const messageGroupingPeriod = useSetting('Message_GroupingPeriod', 300);
-
-	logger.warn('=== DEBUG LOGS ===');
-	logger.warn('phase:', phase);
-	logger.warn('error:', error);
-	logger.warn('messages array length:', messages?.length || 0);
-	logger.warn('messages content:', messages);
-	logger.warn('totalItemCount:', totalItemCount);
-	logger.warn('messageList state:', messageList);
-	logger.warn('=== END DEBUG LOGS ===');
 
 	return (
 		<ContextualbarDialog onClose={onClose}>
@@ -150,7 +140,6 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 								overscan={25}
 								data={messages}
 								itemContent={(index, data): ReactElement => {
-									logger.warn(`Rendering message ${index}:`, data);
 									const lastMessage = messages[index - 1];
 									const isSequential = isMessageSequential(data, lastMessage, messageGroupingPeriod);
 									const isNewDay = isMessageNewDay(data, lastMessage);
