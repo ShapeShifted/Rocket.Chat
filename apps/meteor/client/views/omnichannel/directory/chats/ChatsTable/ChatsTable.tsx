@@ -75,10 +75,13 @@ const ChatsTable = () => {
 
 	const headers = (
 		<>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='source'>
+				<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('')}</span>
+			</GenericTableHeaderCell>
 			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='fname' direction={sortDirection} active={sortBy === 'fname'} onClick={setSort} sort='fname'>
 				<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Name')}</span>
 			</GenericTableHeaderCell>
-			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='sessionId'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Session_ID')}</span></GenericTableHeaderCell>
+			<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='sessionId'><span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Issue')}</span></GenericTableHeaderCell>
 			{isPriorityEnabled && (
 				<GenericTableHeaderCell style={{ color: '#000', fontWeight: 'normal', fontSize: '0.95rem', fontFamily: 'Inter, sans-serif' }} key='priorityWeight' alignItems='center'>
 					<span style={{ color: '#000', fontFamily: 'Inter, sans-serif' }}>{t('Priority')}</span>

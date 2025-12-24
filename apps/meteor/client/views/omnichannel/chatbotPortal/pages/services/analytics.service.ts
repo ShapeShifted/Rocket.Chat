@@ -17,6 +17,9 @@ export const AnalyticsService = {
   getAnalytics: (page = 1, limit = 8): Promise<AnalyticsResponse> =>
     fetch(`${BASE}/analytics?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
 
+  getAllAnalytics: (): Promise<AnalyticsResponse> =>
+    fetch(`${BASE}/analytics/all`, { credentials: 'include' }).then(handleJsonResponse),
+
   getConversations: (page = 1, limit = 8): Promise<ConversationResponse> =>
       fetch(`${BASE}/archived-conversations?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
 
