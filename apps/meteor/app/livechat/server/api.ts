@@ -12,3 +12,4 @@ import '../imports/server/rest/visitors';
 import '../imports/server/rest/dashboards';
 import '../imports/server/rest/queue';
 import '../imports/server/rest/businessHours';
+import '../imports/server/rest/archivedConversations';

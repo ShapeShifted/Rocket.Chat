@@ -17,6 +17,7 @@ import {
 	MessageSystemBody,
 	MessageSystemTimestamp,
 	Bubble,
+	Box,
 } from '@rocket.chat/fuselage';
 import { UserAvatar } from '@rocket.chat/ui-avatar';
 import { useUserDisplayName } from '@rocket.chat/ui-client';
@@ -117,9 +118,15 @@ const ContactHistoryMessage = ({ message, sequential, isNewDay, showUserAvatar }
 						</MessageHeaderTemplate>
 					)}
 					{!!quotes?.length && <Attachments attachments={quotes} />}
-					{!message.blocks && message.md && (
+					{!message.blocks && (message.md || message.msg) && (
 						<MessageBody data-qa-type='message-body' dir='auto'>
-							<MessageContentBody md={message.md} mentions={message.mentions} channels={message.channels} />
+							{message.md ? (
+								<MessageContentBody md={message.md} mentions={message.mentions} channels={message.channels} />
+							) : (
+								<Box color='default' fontScale='p2'>
+									{message.msg}
+								</Box>
+							)}
 						</MessageBody>
 					)}
 					{message.blocks && <UiKitMessageBlock rid={message.rid} mid={message._id} blocks={message.blocks} />}

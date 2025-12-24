@@ -195,8 +195,8 @@ const ConversationManager = (): ReactElement => {
             ) : (
               conversations.map((box, idx) => (
                 <tr key={box.sessionId ?? `box-${idx}`} style={{ borderBottom: '1px solid #8e8e8e', textAlign: 'center' }}>
-                  <td style={{ padding: '14px 0px 14px 72px', fontWeight: 500, textAlign: 'center' }}>{box.sessionId ?? '！'}</td>
-                  <td style={{ padding: '14px 0px 14px 72px', fontWeight: 500, textAlign: 'center' }}>{box.phoneId ?? '！'}</td>
+                  <td style={{ padding: '14px 0px 14px 72px', fontWeight: 500, textAlign: 'center' }}>{box.sessionId ?? ''}</td>
+                  <td style={{ padding: '14px 0px 14px 72px', fontWeight: 500, textAlign: 'center' }}>{box.phoneId ?? ''}</td>
                   <td style={{ padding: '14px 16px', textAlign: 'center' }}>
                     <Button
                       primary
@@ -334,8 +334,8 @@ const ConversationManager = (): ReactElement => {
                 fontSize: '1.1rem',
                 whiteSpace: 'nowrap'
               }}>
-                <span>Mobile Number: {selectedBox.phoneId ?? '！'}</span>
-                <span>Session: {selectedBox.sessionId ?? '！'}</span>
+                <span>Mobile Number: {selectedBox.phoneId ?? ''}</span>
+                <span>Session: {selectedBox.sessionId ?? ''}</span>
               </div>
             </div>
             <div style={{

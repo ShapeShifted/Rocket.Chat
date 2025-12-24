@@ -35,6 +35,11 @@ import { useRecordList } from '../../../../hooks/lists/useRecordList';
 import { AsyncStatePhase } from '../../../../lib/asyncState';
 import { isMessageNewDay } from '../../../room/MessageList/lib/isMessageNewDay';
 import { isMessageSequential } from '../../../room/MessageList/lib/isMessageSequential';
+// import { Logger } from '@rocket.chat/logger';
+
+const logger = {
+	warn: (...args: any[]) => console.warn('ContactHistoryMessagesList', ...args),
+};
 
 type ContactHistoryMessagesListProps = {
 	chatId: string;
@@ -47,6 +52,7 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 	const [text, setText] = useState('');
 	const showUserAvatar = !!useUserPreference<boolean>('displayAvatars');
 	const userId = useUserId();
+
 
 	const { ref, contentBoxSize: { inlineSize = 378, blockSize = 1 } = {} } = useResizeObserver<HTMLElement>({
 		debounceDelay: 200,
@@ -71,6 +77,15 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 
 	const { phase, error, items: messages, itemCount: totalItemCount } = useRecordList(messageList);
 	const messageGroupingPeriod = useSetting('Message_GroupingPeriod', 300);
+
+	logger.warn('=== DEBUG LOGS ===');
+	logger.warn('phase:', phase);
+	logger.warn('error:', error);
+	logger.warn('messages array length:', messages?.length || 0);
+	logger.warn('messages content:', messages);
+	logger.warn('totalItemCount:', totalItemCount);
+	logger.warn('messageList state:', messageList);
+	logger.warn('=== END DEBUG LOGS ===');
 
 	return (
 		<ContextualbarDialog onClose={onClose}>
@@ -115,7 +130,7 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 				)}
 				{phase !== AsyncStatePhase.LOADING && totalItemCount === 0 && <ContextualbarEmptyContent title={t('No_results_found')} />}
 				<Box flexGrow={1} flexShrink={1} overflow='hidden' display='flex' ref={ref}>
-					{!error && totalItemCount > 0 && history.length > 0 && (
+					{!error && totalItemCount > 0 && messages.length > 0 && (
 						<VirtualizedScrollbars>
 							<Virtuoso
 								totalCount={totalItemCount}
@@ -135,6 +150,7 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 								overscan={25}
 								data={messages}
 								itemContent={(index, data): ReactElement => {
+									logger.warn(`Rendering message ${index}:`, data);
 									const lastMessage = messages[index - 1];
 									const isSequential = isMessageSequential(data, lastMessage, messageGroupingPeriod);
 									const isNewDay = isMessageNewDay(data, lastMessage);

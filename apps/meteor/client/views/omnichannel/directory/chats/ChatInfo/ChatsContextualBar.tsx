@@ -1,8 +1,6 @@
 import { useRoute, useRouteParameter } from '@rocket.chat/ui-contexts';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import ChatInfo from './ChatInfo';
 import RoomEdit from './RoomEdit';
 import {
 	ContextualbarHeader,
@@ -13,19 +11,16 @@ import {
 } from '../../../../../components/Contextualbar';
 import { useRoom } from '../../../../room/contexts/RoomContext';
 import { useRoomToolbox } from '../../../../room/contexts/RoomToolboxContext';
+import ContactHistoryMessagesList from '../../../contactHistory/MessageList/ContactHistoryMessagesList';
 
 const PATH = 'live';
-
-const HEADER_DATA = {
-	info: { icon: 'info-circled', title: 'Room_Info' },
-	edit: { icon: 'pencil', title: 'edit-room' },
-} as const;
 
 const ChatsContextualBar = () => {
 	const { t } = useTranslation();
 
 	const context = useRouteParameter('context') as 'edit' | 'info' | undefined;
 	const directoryRoute = useRoute(PATH);
+	const liveRoute = useRoute('live');
 	const room = useRoom();
 	const { closeTab } = useRoomToolbox();
 
@@ -33,22 +28,24 @@ const ChatsContextualBar = () => {
 		directoryRoute.push({ id: room._id, tab: 'room-info' });
 	};
 
-	const { icon, title } = useMemo(() => HEADER_DATA[context ?? 'info'] || HEADER_DATA.info, [context]);
+	const handleOpenChat = () => {
+		liveRoute.push({ id: room._id });
+	};
 
-	return (
-		<ContextualbarDialog>
-			<ContextualbarHeader>
-				<ContextualbarIcon name={icon} />
-				<ContextualbarTitle>{t(title)}</ContextualbarTitle>
-				<ContextualbarClose onClick={closeTab} />
-			</ContextualbarHeader>
-			{context === 'edit' ? (
+	if (context === 'edit') {
+		return (
+			<ContextualbarDialog>
+				<ContextualbarHeader>
+					<ContextualbarIcon name='pencil' />
+					<ContextualbarTitle>{t('edit-room')}</ContextualbarTitle>
+					<ContextualbarClose onClick={closeTab} />
+				</ContextualbarHeader>
 				<RoomEdit id={room._id} onClose={handleRoomEditBarCloseButtonClick} />
-			) : (
-				<ChatInfo route={PATH} id={room._id} />
-			)}
-		</ContextualbarDialog>
-	);
+			</ContextualbarDialog>
+		);
+	}
+
+	return <ContactHistoryMessagesList chatId={room._id} onClose={closeTab} onOpenRoom={handleOpenChat} />;
 };
 
 export default ChatsContextualBar;

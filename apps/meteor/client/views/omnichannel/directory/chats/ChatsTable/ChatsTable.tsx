@@ -1,7 +1,7 @@
 import { Pagination, States, StatesIcon, StatesTitle, StatesActions, StatesAction } from '@rocket.chat/fuselage';
-import { usePermission } from '@rocket.chat/ui-contexts';
+import { usePermission, useEndpoint } from '@rocket.chat/ui-contexts';
 import { hashKey } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ChatFilterByText from './ChatsTableFilter';
@@ -44,6 +44,18 @@ const ChatsTable = () => {
 
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
 
+	const importConversations = useEndpoint('GET', '/v1/livechat/archived-conversation.importAll');
+
+	useEffect(() => {
+		(importConversations as any)({})
+			.then(() => {
+				refetch();
+			})
+			.catch((error: any) => {
+				console.error('Failed to import conversations:', error);
+			});
+	}, [importConversations, refetch]);
+
 	// Apply client-side priority filter when user selects a priority id
 	let rooms = data?.rooms ?? [];
 	if (filters.priority) {
@@ -56,10 +68,10 @@ const ChatsTable = () => {
 
 	const getSessionIdFromRoom = (room: any): string | undefined =>
 		// New flow: the visitor's token is used as the session identifier.
-		room?.v?.token ?? room?.visitor?.token ?? room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionId ?? room?.livechatData?.sessionToken ?? undefined;
+		room?.livechatData?.sessionId ?? room?.v?.token ?? room?.visitor?.token ?? room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionToken ?? undefined;
 
-	const [defaultQuery] = useState(hashKey([query]));
-	const queryHasChanged = defaultQuery !== hashKey([query]);
+	const [defaultQuery] = useState(hashKey([filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage]));
+	const queryHasChanged = defaultQuery !== hashKey([filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage]);
 
 	const headers = (
 		<>

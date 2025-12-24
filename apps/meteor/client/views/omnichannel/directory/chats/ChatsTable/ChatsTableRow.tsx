@@ -90,7 +90,7 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{department?.name}</GenericTableCell>
 			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{formatDate(ts)}</GenericTableCell>
-			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{getTimeFromNow(lm)}</GenericTableCell>
+			<GenericTableCell style={{ color: '#000', fontFamily: 'Inter, sans-serif' }} withTruncatedText>{formatDate(lm)}</GenericTableCell>
 			{/** status */}
 			{(() => {
 				const statusText = getStatusText(open, onHold);

@@ -43,7 +43,8 @@ export const PRIORITIES_CONFIG: Record<number, PrioritiesConfig> = {
 export const useOmnichannelPrioritiesConfig = (level: LivechatPriorityWeight, showUnprioritized: boolean) => {
 	const { t } = useTranslation();
 
-	const { iconName, color, variant } = PRIORITIES_CONFIG[level];
+	const priorityConfig = PRIORITIES_CONFIG[level] || PRIORITIES_CONFIG[LivechatPriorityWeight.NOT_SPECIFIED];
+	const { iconName, color, variant } = priorityConfig;
 	const { data: priorities } = useOmnichannelPriorities();
 
 	const name = useMemo(() => {

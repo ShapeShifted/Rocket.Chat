@@ -13,6 +13,10 @@ async function handleJsonResponse(res: Response) {
 }
 
 export const ConversationService = {
+  // preferred correct name
+  getAllConversations: (): Promise<ConversationResponse> =>
+    fetch(`${BASE}/archived-conversations/all`, { credentials: 'include' }).then(handleJsonResponse),
+
   getConversations: (page = 1, limit = 8): Promise<ConversationResponse> =>
     fetch(`${BASE}/archived-conversations?page=${page}&limit=${limit}`, { credentials: 'include' }).then(handleJsonResponse),
 
