@@ -55,7 +55,6 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 	// Assuming source.alias === 'knowledge-import' identifies fetched conversations
 	const isImported = source?.alias === 'knowledge-import';
 
-
 	const canRemoveClosedChats = usePermission('remove-closed-livechat-room');
 	const directoryRoute = useRoute('omnichannel-directory');
 
@@ -117,7 +116,7 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 						{fname}
 					</Box>
 					{tags && tags.length > 0 && (
-						<Box display='flex' flexWrap='wrap' gap={4} marginTop={4}>
+						<Box display='flex' flexWrap='wrap' style={{ gap: '4px' , marginTop: 4}}>
 							{tags.slice(0, 2).map((tag: string) => (
 								<Tag 
 									key={tag}
@@ -191,8 +190,8 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 				color: '#000', 
 				fontFamily: 'Inter, sans-serif',
 				fontSize: '14px'
-			}} withTruncatedText title={servedBy?.username}>
-				{servedBy?.username || '-'}
+			}} withTruncatedText title={isImported ? 'DB Engage' : servedBy?.username}>
+				{isImported ? 'DB Engage' : servedBy?.username || '-'}
 			</GenericTableCell>
 
 			{/* Department Column */}
@@ -257,6 +256,8 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 					);
 				})()}
 			</GenericTableCell>
+
+			
 			
 			{/* Actions Column */}
 			{canRemoveClosedChats && (

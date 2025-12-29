@@ -13,6 +13,7 @@ type AutoCompleteMultipleAgentProps = Omit<
 	excludeId?: string;
 	showIdleAgents?: boolean;
 	onlyAvailable?: boolean;
+	haveDbEngage?: boolean;
 	value: PaginatedMultiSelectOption[];
 	onChange: (value: PaginatedMultiSelectOption[]) => void;
 };
@@ -25,6 +26,7 @@ const AutoCompleteMultipleAgent = ({
 	showIdleAgents = true,
 	onlyAvailable = false,
 	withTitle = false,
+	haveDbEngage = false,
 	onChange,
 	...props
 }: AutoCompleteMultipleAgentProps): ReactElement => {
@@ -37,6 +39,7 @@ const AutoCompleteMultipleAgent = ({
 		onlyAvailable,
 		excludeId,
 		showIdleAgents,
+		haveDbEngage,
 	});
 
 	return (

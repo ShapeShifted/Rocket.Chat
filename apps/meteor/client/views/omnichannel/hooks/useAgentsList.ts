@@ -11,6 +11,7 @@ type AgentsListOptions = {
 	showIdleAgents?: boolean;
 	onlyAvailable?: boolean;
 	limit?: number;
+	haveDbEngage?: boolean;
 };
 
 type AgentOption = {
@@ -31,6 +32,7 @@ export const useAgentsList = (options: AgentsListOptions) => {
 		excludeId,
 		haveAll,
 		haveNoAgentsSelectedOption,
+		haveDbEngage,
 		limit = DEFAULT_QUERY_LIMIT,
 	} = options;
 
@@ -41,7 +43,7 @@ export const useAgentsList = (options: AgentsListOptions) => {
 	});
 
 	return useInfiniteQuery({
-		queryKey: ['/v1/livechat/users/agent', { filter, onlyAvailable, showIdleAgents, excludeId, haveAll, haveNoAgentsSelectedOption }],
+		queryKey: ['/v1/livechat/users/agent', { filter, onlyAvailable, showIdleAgents, excludeId, haveAll, haveNoAgentsSelectedOption, haveDbEngage }],
 		queryFn: async ({ pageParam: offset = 0 }) => {
 			const { users, ...data } = await getAgents({
 				...(filter && { text: filter }),
@@ -74,6 +76,14 @@ export const useAgentsList = (options: AgentsListOptions) => {
 					label: t('Empty_no_agent_selected'),
 					value: 'no-agent-selected',
 					_id: 'no-agent-selected',
+				});
+			}
+
+			if (haveDbEngage) {
+				items.unshift({
+					label: 'DB Engage',
+					value: 'DB Engage',
+					_id: 'DB Engage',
 				});
 			}
 

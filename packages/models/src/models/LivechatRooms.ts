@@ -1294,7 +1294,15 @@ export class LivechatRoomsRaw extends BaseRaw<IOmnichannelRoom> implements ILive
 		const query: Filter<IOmnichannelRoom> = {
 			t: 'l',
 			...extraQuery,
-			...(agents && { 'servedBy._id': { $in: agents } }),
+			...(agents && !agents.includes('DB Engage') && { 'servedBy._id': { $in: agents } }),
+			...(agents && agents.includes('DB Engage') && {
+				$or: [
+					...(agents.filter((agent) => agent !== 'DB Engage').length > 0
+						? [{ 'servedBy._id': { $in: agents.filter((agent) => agent !== 'DB Engage') } }]
+						: []),
+					{ 'source.alias': 'knowledge-import' },
+				],
+			}),
 			...(roomName && isRoomNameExactTerm
 				? { fname: roomNameQuery } // exact match
 				: roomName && { fname: new RegExp(escapeRegExp(roomName), 'i') }), // regex match

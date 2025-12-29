@@ -122,7 +122,7 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 								name='servedBy'
 								control={control}
 								render={({ field: { value, onChange } }) => (
-									<AutoCompleteMultipleAgent aria-labelledby={servedByFieldId} value={value} onChange={onChange} placeholder={t('Select_an_option')} />
+									<AutoCompleteMultipleAgent aria-labelledby={servedByFieldId} value={value} onChange={onChange} placeholder={t('Select_an_option')} haveDbEngage />
 								)}
 							/>
 						</FieldRow>
