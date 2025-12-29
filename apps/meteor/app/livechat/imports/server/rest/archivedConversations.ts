@@ -2,6 +2,7 @@ import { LivechatRooms, LivechatVisitors, Messages, LivechatDepartment } from '@
 import { Random } from '@rocket.chat/random';
 import { UserStatus, OmnichannelSourceType, IOmnichannelRoom } from '@rocket.chat/core-typings';
 import { API } from '../../../../api/server';
+import { LivechatPriority } from '@rocket.chat/models';
 
 import { LivechatPriorityWeight } from '@rocket.chat/core-typings/src/ILivechatPriority';
 
@@ -90,6 +91,23 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 				departmentId = defaultDept._id;
 			}
 
+			let priorityId = conv.priorityId || conv.priority?._id;
+			let priorityWeight = conv.priorityWeight || conv.priority?.sortItem || LivechatPriorityWeight.NOT_SPECIFIED;
+
+			// If we have priorityId but not weight, fetch it
+			if (priorityId && !priorityWeight) {
+				const priority = await LivechatPriority.findOneById(priorityId);
+				if (priority) {
+					priorityWeight = priority.sortItem;
+				}
+			}
+
+			const existingRoom = await LivechatRooms.findOneById(rid, { projection: { priorityWeight: 1 } });
+			if (existingRoom && existingRoom.priorityWeight && existingRoom.priorityWeight !== LivechatPriorityWeight.NOT_SPECIFIED) {
+				if (priorityWeight === LivechatPriorityWeight.NOT_SPECIFIED) {
+					priorityWeight = existingRoom.priorityWeight;
+				}
+			}
 
 			const roomData: any = {
 				msgs: (context.conversationHistory || conv.messages || []).length || 0,
@@ -112,7 +130,8 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 					ts,
 				},
 				departmentId,
-				priorityWeight: LivechatPriorityWeight.NOT_SPECIFIED,
+				priorityWeight: priorityWeight,
+				...(priorityId && { priorityId: priorityId }),
 				source: {
 					type: OmnichannelSourceType.API,
 					alias: 'knowledge-import',
