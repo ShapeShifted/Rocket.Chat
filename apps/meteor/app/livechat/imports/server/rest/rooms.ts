@@ -30,7 +30,7 @@ API.v1.addRoute(
 		async get() {
 			const { offset, count } = await getPaginationItems(this.queryParams);
 			const { sort, fields } = await this.parseJsonQuery();
-			const { agents, departmentId, open, tags, roomName, onhold, queued, units } = this.queryParams;
+			const { agents, departmentId, open, tags, roomName, onhold, queued, units, priority } = this.queryParams;
 			const { createdAt, customFields, closedAt } = this.queryParams;
 
 			const createdAtParam = validateDateParams('createdAt', createdAt);
@@ -71,6 +71,7 @@ API.v1.addRoute(
 					onhold,
 					queued,
 					units,
+					priority: Array.isArray(priority) ? priority : priority ? [priority] : undefined,
 					options: { offset, count, sort, fields },
 					callerId: this.userId,
 				}),

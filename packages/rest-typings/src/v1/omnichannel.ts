@@ -3165,6 +3165,7 @@ export type GETLivechatRoomsParams = PaginatedRequest<{
 	queued?: string | boolean;
 	tags?: string[];
 	units?: string[];
+	priority?: string | string[];
 }>;
 
 const GETLivechatRoomsParamsSchema = {
@@ -3246,6 +3247,9 @@ const GETLivechatRoomsParamsSchema = {
 			items: {
 				type: 'string',
 			},
+		},
+		priority: {
+			oneOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }],
 		},
 	},
 	additionalProperties: false,

@@ -36,6 +36,9 @@ export const useDisplayFilters = (filtersQuery: ChatsFiltersQuery) => {
 		guest: guest !== '' ? `${t('Text')}: ${guest}` : undefined,
 		priority: priority
 			? `${t('Priority')}: ${(() => {
+				if (priority === 'without-priority') {
+					return t('Unprioritized');
+				}
 				const p = priorities?.find((pr: any) => pr._id === priority);
 				if (!p) return priority;
 				return p.dirty && p.name ? p.name : t(p.i18n as unknown as TranslationKey);

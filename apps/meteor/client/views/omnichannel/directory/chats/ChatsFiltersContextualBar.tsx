@@ -65,7 +65,11 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 	const { data: priorities } = useOmnichannelPriorities();
 
 	const priorityOptions = (
-		[['', t('Unprioritized')], ...(priorities?.map(({ _id, dirty, name, i18n }: any) => [_id, dirty && name ? name : t(i18n)]) ?? [])]
+		[
+			['', t('All')],
+			['without-priority', t('Unprioritized')],
+			...(priorities?.map(({ _id, dirty, name, i18n }: any) => [_id, dirty && name ? name : t(i18n)]) ?? []),
+		]
 	) as [string, string][];
 
 	return (

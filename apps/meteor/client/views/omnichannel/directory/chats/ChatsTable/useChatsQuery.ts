@@ -19,6 +19,7 @@ type CurrentChatQuery = {
 	count?: number;
 	queued?: boolean;
 	units?: string[];
+	priority?: string[];
 };
 
 const sortDir = (sortDir: 'asc' | 'desc'): 1 | -1 => (sortDir === 'asc' ? 1 : -1);
@@ -79,6 +80,10 @@ export const useChatsQuery = () => {
 
 			if (units?.length) {
 				query.units = units.map((u) => u.value as string);
+			}
+
+			if (priority) {
+				query.priority = [priority];
 			}
 
 			if (customFields && Object.keys(customFields).length > 0) {

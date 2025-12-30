@@ -1271,6 +1271,7 @@ export class LivechatRoomsRaw extends BaseRaw<IOmnichannelRoom> implements ILive
 		queued,
 		options = {},
 		extraQuery = {},
+		priority,
 	}: {
 		agents?: string[];
 		roomName?: string;
@@ -1285,6 +1286,7 @@ export class LivechatRoomsRaw extends BaseRaw<IOmnichannelRoom> implements ILive
 		roomIds?: string[];
 		onhold?: boolean;
 		queued?: boolean;
+		priority?: string[];
 		options?: { offset?: number; count?: number; sort?: { [k: string]: SortDirection } };
 		extraQuery?: Filter<IOmnichannelRoom>;
 	}) {
@@ -1312,6 +1314,19 @@ export class LivechatRoomsRaw extends BaseRaw<IOmnichannelRoom> implements ILive
 			...(visitorId && visitorId !== 'undefined' && { 'v._id': visitorId }),
 		};
 
+		if (priority) {
+			const arrayPriority = ([] as string[]).concat(priority);
+			const hasUnprioritized = arrayPriority.includes('without-priority');
+			const priorityIds = arrayPriority.filter((p) => p !== 'without-priority');
+
+			if (hasUnprioritized && priorityIds.length > 0) {
+				query.$or = [{ priorityId: { $in: priorityIds } }, { priorityId: { $exists: false } }];
+			} else if (hasUnprioritized) {
+				query.priorityId = { $exists: false };
+			} else {
+				query.priorityId = { $in: priorityIds };
+			}
+		}
 
 		if (open) {
 			query.servedBy = { $exists: true };

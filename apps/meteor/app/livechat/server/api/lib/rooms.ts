@@ -16,6 +16,7 @@ export async function findRooms({
 	onhold,
 	queued,
 	units,
+	priority,
 	options: { offset, count, fields, sort },
 	callerId,
 }: {
@@ -36,6 +37,7 @@ export async function findRooms({
 	onhold?: string | boolean;
 	queued?: string | boolean;
 	units?: Array<string>;
+	priority?: Array<string>;
 	options: { offset: number; count: number; fields: Record<string, number>; sort: Record<string, number> };
 	callerId: string;
 }): Promise<PaginatedResult<{ rooms: Array<IOmnichannelRoom> }>> {
@@ -51,6 +53,7 @@ export async function findRooms({
 		customFields,
 		onhold: ['t', 'true', '1'].includes(`${onhold}`),
 		queued: ['t', 'true', '1'].includes(`${queued}`),
+		priority,
 		options: {
 			sort: sort || { ts: -1 },
 			offset,
