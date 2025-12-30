@@ -1307,14 +1307,17 @@ export class LivechatRoomsRaw extends BaseRaw<IOmnichannelRoom> implements ILive
 				? { fname: roomNameQuery } // exact match
 				: roomName && { fname: new RegExp(escapeRegExp(roomName), 'i') }), // regex match
 			...(departmentId && departmentId !== 'undefined' && { departmentId: { $in: ([] as string[]).concat(departmentId) } }),
-			...(open !== undefined && { open: { $exists: open }, onHold: { $ne: true } }),
+			...(open !== undefined && { open: { $exists: true, $eq: open }, onHold: { $ne: true } }),
 			...(served !== undefined && { servedBy: { $exists: served } }),
 			...(visitorId && visitorId !== 'undefined' && { 'v._id': visitorId }),
 		};
 
+
 		if (open) {
 			query.servedBy = { $exists: true };
 		}
+
+		
 
 		if (createdAt) {
 			query.ts = {};

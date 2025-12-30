@@ -45,8 +45,6 @@ const ChatsFiltersContextualBar = ({ onClose }: ChatsFiltersContextualBarProps) 
 		['all', t('All')],
 		['closed', t('Closed')],
 		['opened', t('Room_Status_Open')],
-		['onhold', t('On_Hold_Chats')],
-		['queued', t('Queued')],
 	];
 
 	const handleSubmitFilters = (data: ChatsFiltersQuery) => setFiltersQuery(({ guest }) => ({ ...data, guest }));
