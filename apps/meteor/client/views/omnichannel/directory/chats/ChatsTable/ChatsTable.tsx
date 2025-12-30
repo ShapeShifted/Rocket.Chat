@@ -35,12 +35,10 @@ const ChatsTable = () => {
 	const { current, itemsPerPage, setItemsPerPage: onSetItemsPerPage, setCurrent: onSetCurrent, ...paginationProps } = usePagination();
 	const { sortBy, sortDirection, setSort } = useSort<'fname' | 'ts'>('ts', 'desc');
 
-	const effectiveItemsPerPage = filters.priority ? 100000 : itemsPerPage;
-
 	const query = useMemo(
-			() => chatsQuery(filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage as any),
-			[effectiveItemsPerPage, filters, sortBy, sortDirection, current, chatsQuery],
-		);
+		() => chatsQuery(filters, [sortBy, sortDirection], current, itemsPerPage as any),
+		[itemsPerPage, filters, sortBy, sortDirection, current, chatsQuery],
+	);
 
 	const { data, isLoading, isSuccess, isError, refetch } = useCurrentChats(query);
 
@@ -57,22 +55,14 @@ const ChatsTable = () => {
 			});
 	}, [importConversations, refetch]);
 
-	// Apply client-side priority filter when user selects a priority id
-	let rooms = data?.rooms ?? [];
-	if (filters.priority) {
-		const selected = priorities?.find((p: any) => p._id === filters.priority);
-		const weight = selected?.sortItem;
-		if (typeof weight !== 'undefined') {
-			rooms = rooms.filter((r: any) => r.priorityWeight === weight);
-		}
-	}
+	const rooms = data?.rooms ?? [];
 
 	const getSessionIdFromRoom = (room: any): string | undefined =>
 		// New flow: the visitor's token is used as the session identifier.
 		room?.livechatData?.sessionId ?? room?.v?.token ?? room?.visitor?.token ?? room?.sessionId ?? room?.v?.sessionId ?? room?.visitor?.sessionId ?? room?.livechatData?.sessionToken ?? undefined;
 
-	const [defaultQuery] = useState(hashKey([filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage]));
-	const queryHasChanged = defaultQuery !== hashKey([filters, [sortBy, sortDirection], filters.priority ? 0 : current, effectiveItemsPerPage]);
+	const [defaultQuery] = useState(hashKey([filters, [sortBy, sortDirection], current, itemsPerPage]));
+	const queryHasChanged = defaultQuery !== hashKey([filters, [sortBy, sortDirection], current, itemsPerPage]);
 
 	const headers = (
 		<>
@@ -135,7 +125,7 @@ const ChatsTable = () => {
 						divider
 						current={current}
 						itemsPerPage={itemsPerPage}
-						count={filters.priority ? rooms.length : data?.total || 0}
+						count={data?.total || 0}
 						onSetItemsPerPage={onSetItemsPerPage}
 						onSetCurrent={onSetCurrent}
 						{...paginationProps}
