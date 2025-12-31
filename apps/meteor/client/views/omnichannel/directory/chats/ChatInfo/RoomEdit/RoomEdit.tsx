@@ -135,17 +135,6 @@ function RoomEdit({ room, visitor, reload, reloadInfo, onClose }: RoomEditProps)
 					<CustomFieldsForm formName='livechatData' formControl={control} metadata={customFieldsMetadata} />
 				)}
 
-				<Field>
-					<FieldLabel htmlFor={topicField}>{t('Topic')}</FieldLabel>
-					<FieldRow>
-						<TextInput {...register('topic')} id={topicField} flexGrow={1} />
-					</FieldRow>
-				</Field>
-
-				<Field>
-					<Tags tags={tagsField.value} handler={tagsField.onChange} department={room.departmentId} />
-				</Field>
-
 				{SlaPoliciesSelect && !!slaPolicies?.length && (
 					<SlaPoliciesSelect label={t('SLA_Policy')} value={slaIdField.value} options={slaPolicies} onChange={slaIdField.onChange} />
 				)}

@@ -49,7 +49,7 @@ const ChatsTableRow = (room: IOmnichannelRoomWithDepartment & { sessionId?: stri
 		if (acc) return acc;
 		const session = entry.sessions?.find((s: any) => s.sessionId === sessionId);
 		return session ? session.classifiedIssueType : null;
-	}, null) || sessionId || '-';
+	}, null) || '-';
 
 	// Determine if the chat is from the knowledge import (API) or direct
 	// Assuming source.alias === 'knowledge-import' identifies fetched conversations

@@ -25,7 +25,6 @@ import {
 } from '../../../components/Contextualbar';
 import { useHasLicenseModule } from '../../../hooks/useHasLicenseModule';
 import { omnichannelQueryKeys } from '../../../lib/queryKeys';
-import { ContactManagerInput } from '../additionalForms';
 import { useCustomFieldsMetadata } from '../directory/hooks/useCustomFieldsMetadata';
 
 type ContactNewEditProps = {
@@ -308,16 +307,6 @@ const EditContactInfo = ({ contactData, onClose, onCancel }: ContactNewEditProps
 					>
 						{t('Add_phone')}
 					</Button>
-				</Field>
-				<Field>
-					<FieldLabel>{t('Contact_Manager')}</FieldLabel>
-					<FieldRow>
-						<Controller
-							name='contactManager'
-							control={control}
-							render={({ field: { value, onChange } }) => <ContactManagerInput value={value} onChange={onChange} />}
-						/>
-					</FieldRow>
 				</Field>
 				<Divider />
 				{canViewCustomFields && <CustomFieldsForm formName='customFields' formControl={control} metadata={customFieldsMetadata} />}

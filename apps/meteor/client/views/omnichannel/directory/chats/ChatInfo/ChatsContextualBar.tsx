@@ -18,8 +18,8 @@ import ContactHistoryMessagesList from '../../../contactHistory/MessageList/Cont
 const PATH = 'live';
 
 const HEADER_DATA = {
-	info: { icon: 'info-circled', title: 'Room_Info' },
-	edit: { icon: 'pencil', title: 'edit-room' },
+	info: { icon: 'info-circled', title: 'Session Information' },
+	edit: { icon: 'pencil', title: 'Edit Session' },
 	history: { icon: 'history', title: 'Conversation' },
 } as const;
 

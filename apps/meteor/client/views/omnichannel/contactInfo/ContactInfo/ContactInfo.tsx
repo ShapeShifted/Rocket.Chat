@@ -15,7 +15,6 @@ import {
 import { useFormatDate } from '../../../../hooks/useFormatDate';
 import { useContactRoute } from '../../hooks/useContactRoute';
 import { useValidCustomFields } from '../hooks/useValidCustomFields';
-import ContactInfoChannels from '../tabs/ContactInfoChannels';
 import ContactInfoDetails from '../tabs/ContactInfoDetails';
 import ContactInfoHistory from '../tabs/ContactInfoHistory';
 
@@ -87,9 +86,6 @@ const ContactInfo = ({ contact, onClose }: ContactInfoProps) => {
 				<TabsItem onClick={() => handleNavigate({ context: 'details' })} selected={context === 'details'}>
 					{t('Details')}
 				</TabsItem>
-				<TabsItem onClick={() => handleNavigate({ context: 'channels' })} selected={context === 'channels'}>
-					{t('Channels')}
-				</TabsItem>
 				<TabsItem onClick={() => handleNavigate({ context: 'history' })} selected={context === 'history'}>
 					{t('History')}
 				</TabsItem>
@@ -104,7 +100,6 @@ const ContactInfo = ({ contact, onClose }: ContactInfoProps) => {
 					customFieldEntries={customFieldEntries}
 				/>
 			)}
-			{context === 'channels' && <ContactInfoChannels contact={contact} />}
 			{context === 'history' && <ContactInfoHistory contact={contact} />}
 		</ContextualbarDialog>
 	);
