@@ -35,6 +35,7 @@ import { useRecordList } from '../../../../hooks/lists/useRecordList';
 import { AsyncStatePhase } from '../../../../lib/asyncState';
 import { isMessageNewDay } from '../../../room/MessageList/lib/isMessageNewDay';
 import { isMessageSequential } from '../../../room/MessageList/lib/isMessageSequential';
+import { useOmnichannelRoomInfo } from '../../directory/hooks/useOmnichannelRoomInfo';
 
 const logger = {
 	warn: (...args: any[]) => console.warn('ContactHistoryMessagesList', ...args),
@@ -70,6 +71,20 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 
 	const { itemsList: messageList, loadMoreItems } = useHistoryMessageList(query, userId);
 
+	const { data: room } = useOmnichannelRoomInfo(chatId);
+
+	const getSessionIdFromRoom = (room: any): string | undefined =>
+		room?.livechatData?.sessionId ??
+		room?.v?.token ??
+		room?.visitor?.token ??
+		room?.sessionId ??
+		room?.v?.sessionId ??
+		room?.visitor?.sessionId ??
+		room?.livechatData?.sessionToken ??
+		undefined;
+
+	const sessionId = getSessionIdFromRoom(room);
+
 	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		setText(event.currentTarget.value);
 	};
@@ -88,13 +103,17 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 			<ContextualbarContent paddingInline={0}>
 				<Box
 					display='flex'
-					flexDirection='row'
-					p={24}
+					flexDirection='column'
+					pi={6}
+					pb={6}
 					borderBlockEndWidth='default'
 					borderBlockEndStyle='solid'
 					borderBlockEndColor='extra-light'
 					flexShrink={0}
 				>
+					<Box mb='x8' fontScale='p2' color='default' style={{ fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }}>
+						Session ID: {sessionId || t('N/A')}
+					</Box>
 					<Box display='flex' flexDirection='row' flexGrow={1} mi='neg-x4'>
 						<Margins inline={4}>
 							<TextInput

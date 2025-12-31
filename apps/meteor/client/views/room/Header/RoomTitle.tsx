@@ -1,15 +1,28 @@
 import { isTeamRoom, type IRoom } from '@rocket.chat/core-typings';
+import { Box } from '@rocket.chat/fuselage';
 import { useButtonPattern, useEffectEvent } from '@rocket.chat/fuselage-hooks';
 import { useDocumentTitle } from '@rocket.chat/ui-client';
 import type { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import HeaderIconWithRoom from './HeaderIconWithRoom';
 import { HeaderTitle, HeaderTitleButton } from '../../../components/Header';
 import { useRoomToolbox } from '../contexts/RoomToolboxContext';
 
+const getSessionIdFromRoom = (room: any): string | undefined =>
+	room?.livechatData?.sessionId ??
+	room?.v?.token ??
+	room?.visitor?.token ??
+	room?.sessionId ??
+	room?.v?.sessionId ??
+	room?.visitor?.sessionId ??
+	room?.livechatData?.sessionToken ??
+	undefined;
+
 const RoomTitle = ({ room }: { room: IRoom }): ReactElement => {
 	useDocumentTitle(room.name, false);
 	const { openTab } = useRoomToolbox();
+	const { t } = useTranslation();
 
 	const handleOpenRoomInfo = useEffectEvent(() => {
 		if (isTeamRoom(room)) {
@@ -37,10 +50,20 @@ const RoomTitle = ({ room }: { room: IRoom }): ReactElement => {
 
 	const buttonProps = useButtonPattern(handleOpenRoomInfo);
 
+	const sessionId = getSessionIdFromRoom(room);
+
 	return (
 		<HeaderTitleButton {...buttonProps} mie={4}>
 			<HeaderIconWithRoom room={room} />
-			<HeaderTitle is='h1'>{room.name}</HeaderTitle>
+			<HeaderTitle is='h1'>
+				{room.name}
+				{sessionId && (
+					<Box is='span' fontScale='p2' color='default' style={{ fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }}>
+						{' '}
+						Session ID: {sessionId || t('N/A')}
+					</Box>
+				)}
+			</HeaderTitle>
 		</HeaderTitleButton>
 	);
 };
