@@ -1,6 +1,6 @@
-import type { ILivechatContact, IOmnichannelRoom } from '@rocket.chat/core-typings';
+import type { ILivechatContact, IOmnichannelRoom, ILivechatDepartment } from '@rocket.chat/core-typings';
 import type { FindPaginated } from '@rocket.chat/model-typings';
-import { LivechatContacts, LivechatRooms } from '@rocket.chat/models';
+import { LivechatContacts, LivechatDepartment, LivechatRooms } from '@rocket.chat/models';
 import { makeFunction } from '@rocket.chat/patch-injection';
 import type { PaginatedResult, VisitorSearchChatsResult } from '@rocket.chat/rest-typings';
 import type { FindOptions, Sort, FindCursor } from 'mongodb';
@@ -54,7 +54,15 @@ export const getContactHistory = makeFunction(
 				tags: 1,
 				source: 1,
 				lastMessage: 1,
+				closingMessage: 1,
 				verified: 1,
+				departmentId: 1,
+				priorityWeight: 1,
+				lm: 1,
+				open: 1,
+				onHold: 1,
+				sessionId: 1,
+				livechatData: 1,
 			},
 		};
 
@@ -66,8 +74,28 @@ export const getContactHistory = makeFunction(
 
 		const [total, history] = await Promise.all([totalCount, cursor.toArray()]);
 
+		const departments = (
+			await LivechatDepartment.find(
+				{
+					_id: { $in: history.map((room) => room.departmentId).filter(Boolean) as string[] },
+				},
+				{ projection: { name: 1 } },
+			).toArray()
+		).reduce((acc, dep) => {
+			acc[dep._id] = dep;
+			return acc;
+		}, {} as Record<string, ILivechatDepartment>);
+
 		return {
-			history,
+			history: history.map((room) => {
+				if (room.departmentId) {
+					return {
+						...room,
+						department: departments[room.departmentId],
+					};
+				}
+				return room;
+			}),
 			count: history.length,
 			offset,
 			total,

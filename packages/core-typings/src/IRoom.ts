@@ -317,6 +317,7 @@ export interface IOmnichannelRoom extends IOmnichannelGenericRoom {
 	autoTransferOngoing?: boolean;
 
 	verified?: boolean;
+	sessionId?: string;
 }
 
 export interface IVoipRoom extends IOmnichannelGenericRoom {

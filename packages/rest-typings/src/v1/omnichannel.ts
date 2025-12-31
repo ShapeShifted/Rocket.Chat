@@ -1087,7 +1087,14 @@ export type ContactSearchChatsResult = Pick<
 	| 'source'
 	| 'lastMessage'
 	| 'verified'
->;
+	| 'departmentId'
+	| 'priorityWeight'
+	| 'lm'
+	| 'open'
+	| 'onHold'
+	| 'sessionId'
+	| 'livechatData'
+> & { department?: IOmnichannelRoomWithDepartment['department'] };
 
 export type VisitorSearchChatsResult = Pick<
 	IOmnichannelRoom,
