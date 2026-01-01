@@ -3,6 +3,7 @@ import { Box, Button, ButtonGroup, Callout, IconButton, Tabs, TabsItem } from '@
 import { UserAvatar } from '@rocket.chat/ui-avatar';
 import { usePermission, useRouteParameter, useSetModal } from '@rocket.chat/ui-contexts';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 import ReviewContactModal from './ReviewContactModal';
 import {

@@ -32,9 +32,10 @@ type ContactHistoryMessagesListProps = {
 	chatId: string;
 	onBack: () => void;
 	onOpenRoom?: () => void;
+	sessionId?: string;
 };
 
-const ContactInfoHistoryMessages = ({ chatId, onBack, onOpenRoom }: ContactHistoryMessagesListProps) => {
+const ContactInfoHistoryMessages = ({ chatId, onBack, onOpenRoom, sessionId }: ContactHistoryMessagesListProps) => {
 	const { t } = useTranslation();
 	const [text, setText] = useState('');
 	const showUserAvatar = !!useUserPreference<boolean>('displayAvatars');
@@ -63,13 +64,16 @@ const ContactInfoHistoryMessages = ({ chatId, onBack, onOpenRoom }: ContactHisto
 			<ContextualbarContent paddingInline={0}>
 				<Box
 					display='flex'
-					flexDirection='row'
-					p={24}
+					flexDirection='column'
+					p={12}
 					borderBlockEndWidth='default'
 					borderBlockEndStyle='solid'
 					borderBlockEndColor='extra-light'
 					flexShrink={0}
 				>
+					<Box pis={12} fontFamily='inter' fontScale='p1' color='default'>
+						{t('Session ID')}: {sessionId}
+					</Box>
 					<Box display='flex' alignItems='center' flexDirection='row' flexGrow={1} mi='neg-x4'>
 						<Margins inline={4}>
 							<TextInput
@@ -120,7 +124,13 @@ const ContactInfoHistoryMessages = ({ chatId, onBack, onOpenRoom }: ContactHisto
 									const isSequential = isMessageSequential(data, lastMessage, messageGroupingPeriod);
 									const isNewDay = isMessageNewDay(data, lastMessage);
 									return (
-										<ContactHistoryMessage message={data} sequential={isSequential} isNewDay={isNewDay} showUserAvatar={showUserAvatar} />
+										<ContactHistoryMessage
+											message={data}
+											sequential={isSequential}
+											isNewDay={isNewDay}
+											showUserAvatar={showUserAvatar}
+											sessionId={sessionId}
+										/>
 									);
 								}}
 							/>

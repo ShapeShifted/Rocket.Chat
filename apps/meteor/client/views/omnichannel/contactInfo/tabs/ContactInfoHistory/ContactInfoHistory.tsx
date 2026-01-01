@@ -5,7 +5,7 @@ import { useLocalStorage } from '@rocket.chat/fuselage-hooks';
 import { useEndpoint, useSetModal } from '@rocket.chat/ui-contexts';
 import { useQuery } from '@tanstack/react-query';
 import type { Key } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -15,18 +15,19 @@ import { VirtualizedScrollbars } from '../../../../../components/CustomScrollbar
 import { useHasLicenseModule } from '../../../../../hooks/useHasLicenseModule';
 import { useOmnichannelSource } from '../../../hooks/useOmnichannelSource';
 import AdvancedContactModal from '../../AdvancedContactModal';
+import ContactInfoHistoryMessages from './ContactInfoHistoryMessages';
 
 type ContactInfoHistoryProps = {
 	contact: Serialized<ILivechatContact>;
-	setChatId: (chatId: string) => void;
 };
 
 const isFilterBlocked = (hasLicense: boolean, fieldValue: Key) => !hasLicense && fieldValue !== 'all';
 
-const ContactInfoHistory = ({ contact, setChatId }: ContactInfoHistoryProps) => {
+const ContactInfoHistory = ({ contact }: ContactInfoHistoryProps) => {
 	const { t } = useTranslation();
 	const setModal = useSetModal();
 	const [storedType, setStoredType] = useLocalStorage<string>('contact-history-type', 'all');
+	const [chat, setChat] = useState<{ id: string; sessionId: string } | null>(null);
 
 	const hasLicense = useHasLicenseModule('contact-id-verification') as boolean;
 	const type = isFilterBlocked(hasLicense, storedType) ? 'all' : storedType;
@@ -70,27 +71,6 @@ const ContactInfoHistory = ({ contact, setChatId }: ContactInfoHistoryProps) => 
 
 	return (
 		<ContextualbarContent paddingInline={0}>
-			<Box
-				display='flex'
-				flexDirection='row'
-				p={24}
-				borderBlockEndWidth='default'
-				borderBlockEndStyle='solid'
-				borderBlockEndColor='extra-light'
-				flexShrink={0}
-			>
-				<Box display='flex' flexDirection='row' flexGrow={1} mi='neg-x4'>
-					<Margins inline={4}>
-						<Select
-							value={type}
-							onChange={handleChangeFilter}
-							placeholder={t('Filter')}
-							options={historyFilterOptions}
-							disabled={type === 'all' && data?.history.length === 0}
-						/>
-					</Margins>
-				</Box>
-			</Box>
 			{isLoading && (
 				<Box pi={24} pb={12}>
 					<Throbber size='x12' />
@@ -105,7 +85,7 @@ const ContactInfoHistory = ({ contact, setChatId }: ContactInfoHistoryProps) => 
 			{data?.history.length === 0 && (
 				<ContextualbarEmptyContent icon='history' title={t('No_history_yet')} subtitle={t('No_history_yet_description')} />
 			)}
-			{!isError && data?.history && data.history.length > 0 && (
+			{!isError && data?.history && data.history.length > 0 && !chat && (
 				<>
 					<Box pi={24} pb={12}>
 						<Box is='span' color='hint' fontScale='p2'>
@@ -118,12 +98,28 @@ const ContactInfoHistory = ({ contact, setChatId }: ContactInfoHistoryProps) => 
 								totalCount={data.history.length}
 								overscan={25}
 								data={data?.history}
-								itemContent={(index, data) => <ContactInfoHistoryItem key={index} onClick={() => setChatId(data._id)} {...data} />}
+								itemContent={(index, data) => (
+									<ContactInfoHistoryItem
+										key={index}
+										onClick={() =>
+											setChat({
+												id: data._id,
+												sessionId:
+													data.sessionId ||
+													data.livechatData?.sessionId ||
+													data.v?.token ||
+													data.livechatData?.sessionToken,
+											})
+										}
+										{...data}
+									/>
+								)}
 							/>
 						</VirtualizedScrollbars>
 					</Box>
 				</>
 			)}
+			{chat && <ContactInfoHistoryMessages chatId={chat.id} sessionId={chat.sessionId} onBack={() => setChat(null)} />}
 		</ContextualbarContent>
 	);
 };

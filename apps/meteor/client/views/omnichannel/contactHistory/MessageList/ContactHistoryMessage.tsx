@@ -37,9 +37,10 @@ type ContactHistoryMessageProps = {
 	sequential: boolean;
 	isNewDay: boolean;
 	showUserAvatar: boolean;
+	sessionId?: string;
 };
 
-const ContactHistoryMessage = ({ message, sequential, isNewDay, showUserAvatar }: ContactHistoryMessageProps) => {
+const ContactHistoryMessage = ({ message, sequential, isNewDay, showUserAvatar, sessionId }: ContactHistoryMessageProps) => {
 	const { t } = useTranslation();
 	const { triggerProps, openUserCard } = useUserCard();
 
@@ -114,6 +115,7 @@ const ContactHistoryMessage = ({ message, sequential, isNewDay, showUserAvatar }
 								@{message.u.username}
 							</MessageUsername>
 							<MessageTimestamp title={formatTime(message.ts)}>{formatTime(message.ts)}</MessageTimestamp>
+							<span style={{ marginLeft: '8px', color: '#9EA2A8', fontSize: '12px' }}>Session ID: {sessionId}</span>
 							<StatusIndicators message={message} />
 						</MessageHeaderTemplate>
 					)}
