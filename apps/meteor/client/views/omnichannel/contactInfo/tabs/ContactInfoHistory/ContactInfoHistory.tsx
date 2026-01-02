@@ -2,7 +2,7 @@ import type { ILivechatContact, Serialized } from '@rocket.chat/core-typings';
 import { OmnichannelSourceType } from '@rocket.chat/core-typings';
 import { Box, Margins, Throbber, States, StatesIcon, StatesTitle, Select } from '@rocket.chat/fuselage';
 import { useLocalStorage } from '@rocket.chat/fuselage-hooks';
-import { useEndpoint, useSetModal } from '@rocket.chat/ui-contexts';
+import { useEndpoint, useSetModal, useRouter } from '@rocket.chat/ui-contexts';
 import { useQuery } from '@tanstack/react-query';
 import type { Key } from 'react';
 import { useMemo, useState } from 'react';
@@ -26,6 +26,7 @@ const isFilterBlocked = (hasLicense: boolean, fieldValue: Key) => !hasLicense &&
 const ContactInfoHistory = ({ contact }: ContactInfoHistoryProps) => {
 	const { t } = useTranslation();
 	const setModal = useSetModal();
+	const router = useRouter();
 	const [storedType, setStoredType] = useLocalStorage<string>('contact-history-type', 'all');
 	const [chat, setChat] = useState<{ id: string; sessionId: string } | null>(null);
 
@@ -101,16 +102,17 @@ const ContactInfoHistory = ({ contact }: ContactInfoHistoryProps) => {
 								itemContent={(index, data) => (
 									<ContactInfoHistoryItem
 										key={index}
-										onClick={() =>
-											setChat({
-												id: data._id,
-												sessionId:
-													data.sessionId ||
-													data.livechatData?.sessionId ||
-													data.v?.token ||
-													data.livechatData?.sessionToken,
-											})
-										}
+										onClick={() => router.navigate(`/live/${data._id}`)}
+										// onClick={() =>
+										// 	setChat({
+										// 		id: data._id,
+										// 		sessionId:
+										// 			data.sessionId ||
+										// 			data.livechatData?.sessionId ||
+										// 			data.v?.token ||
+										// 			data.livechatData?.sessionToken,
+										// 	})
+										// }
 										{...data}
 									/>
 								)}
