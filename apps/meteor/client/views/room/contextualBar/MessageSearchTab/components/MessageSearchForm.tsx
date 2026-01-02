@@ -53,14 +53,11 @@ const MessageSearchForm = ({ provider, onSearch }: MessageSearchFormProps) => {
 			<Field>
 				<TextInput
 					addon={<Icon name='magnifier' size='x20' />}
-					placeholder={t('Search_Messages')}
-					aria-label={t('Search_Messages')}
+					placeholder={t('Search')}
+					aria-label={t('Search')}
 					autoComplete='off'
 					{...register('searchText')}
 				/>
-				{provider.description && (
-					<FieldHint dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(t(provider.description as TranslationKey)) }} />
-				)}
 			</Field>
 			{globalSearchEnabled && (
 				<Field>

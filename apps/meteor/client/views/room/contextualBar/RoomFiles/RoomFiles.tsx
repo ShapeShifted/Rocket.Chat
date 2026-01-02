@@ -61,23 +61,20 @@ const RoomFiles = ({
 
 	return (
 		<ContextualbarDialog>
-			<ContextualbarHeader>
-				<ContextualbarIcon name='attachment' />
-				<ContextualbarTitle>{t('Files')}</ContextualbarTitle>
-				{onClickClose && <ContextualbarClose onClick={onClickClose} />}
-			</ContextualbarHeader>
-			<ContextualbarSection>
-				<TextInput
-					data-qa-files-search
-					placeholder={t('Search_Files')}
-					value={text}
-					onChange={setText}
-					addon={<Icon name='magnifier' size='x20' />}
-				/>
-				<Box w='x144' mis={8}>
-					<Select onChange={setType} value={type} options={options} />
-				</Box>
-			</ContextualbarSection>
+			{type === 'all' && (
+				<>
+					<ContextualbarHeader>
+						<ContextualbarIcon name='attachment' />
+						<ContextualbarTitle>{t('Files')}</ContextualbarTitle>
+						{onClickClose && <ContextualbarClose onClick={onClickClose} />}
+					</ContextualbarHeader>
+					<ContextualbarSection>
+						<Box w='x144' mis={8}>
+							<Select onChange={setType} value={type} options={options} />
+						</Box>
+					</ContextualbarSection>
+				</>
+			)}
 			<ContextualbarContent paddingInline={0}>
 				{loading && (
 					<Box p={24}>
