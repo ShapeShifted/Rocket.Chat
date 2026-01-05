@@ -401,30 +401,30 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
               boxShadow: '0 12px 40px rgba(0,0,0,0.35)',
             }}
           >
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 0 }}>
-                <button
-                  aria-label="Close"
-                  onClick={onCancelEdit}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    fontSize: 20,
-                    cursor: 'pointer',
-                    padding: 6,
-                    color: '#333',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <svg width="15" height="15" viewBox="0 0 120 120" fill="#1f2329" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M60 77.9348L21.9522 116.087C19.5435 118.478 16.4826 119.674 12.7696 119.674C9.05652 119.674 5.99565 118.478 3.58696 116.087C1.19565 113.696 0 110.652 0 106.957C0 103.261 1.19565 100.217 3.58696 97.8261L41.7391 59.6739L3.58696 21.9522C1.19565 19.5435 0 16.4826 0 12.7696C0 9.05652 1.19565 5.99565 3.58696 3.58695C5.97826 1.19565 9.02174 0 12.7174 0C16.413 0 19.4565 1.19565 21.8478 3.58695L60 41.7391L97.7217 3.58695C100.13 1.19565 103.191 0 106.904 0C110.617 0 113.678 1.19565 116.087 3.58695C118.696 6.19565 120 9.29565 120 12.887C120 16.4783 118.696 19.4652 116.087 21.8478L77.9348 59.6739L116.087 97.7217C118.478 100.13 119.674 103.191 119.674 106.904C119.674 110.617 118.478 113.678 116.087 116.087C113.478 118.696 110.383 120 106.8 120C103.217 120 100.226 118.696 97.8261 116.087L60 77.9348Z"/>
-                  </svg> Close
-                </button>
-              </div>
-              <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>FAQs</h2>
+            <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>FAQs</h2>
                 <div style={{ color: '#999797ff', fontStyle: 'italic', fontSize: '0.95rem', marginTop: 4 }}>All fields are required</div>
+              </div>
+              <button
+                aria-label="Close"
+                onClick={onCancelEdit}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 20,
+                  cursor: 'pointer',
+                  padding: 6,
+                  color: '#333',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 120 120" fill="#1f2329" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M60 77.9348L21.9522 116.087C19.5435 118.478 16.4826 119.674 12.7696 119.674C9.05652 119.674 5.99565 118.478 3.58696 116.087C1.19565 113.696 0 110.652 0 106.957C0 103.261 1.19565 100.217 3.58696 97.8261L41.7391 59.6739L3.58696 21.9522C1.19565 19.5435 0 16.4826 0 12.7696C0 9.05652 1.19565 5.99565 3.58696 3.58695C5.97826 1.19565 9.02174 0 12.7174 0C16.413 0 19.4565 1.19565 21.8478 3.58695L60 41.7391L97.7217 3.58695C100.13 1.19565 103.191 0 106.904 0C110.617 0 113.678 1.19565 116.087 3.58695C118.696 6.19565 120 9.29565 120 12.887C120 16.4783 118.696 19.4652 116.087 21.8478L77.9348 59.6739L116.087 97.7217C118.478 100.13 119.674 103.191 119.674 106.904C119.674 110.617 118.478 113.678 116.087 116.087C113.478 118.696 110.383 120 106.8 120C103.217 120 100.226 118.696 97.8261 116.087L60 77.9348Z"/>
+                </svg> Close
+              </button>
             </div>
             <div style={{ marginBottom: 12 , position: 'relative'}}>
               <label style={{ display: 'block', color: '#1F2329', marginBottom: 6, fontWeight: 600, fontSize: '16px' }}>Topic Name</label>
@@ -444,9 +444,9 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     left: 0,
                     top: 'calc(100% + 8px)',
                     marginTop: 2,
-                    background: '#ffffff',
-                    color: '#222',
-                    border: '1px solid #222',
+                    background: '#156FF5',
+                    color: '#fff',
+                    border: '1px solid transparent',
                     borderRadius: 4,
                     padding: '6px 12px',
                     fontSize: '0.95rem',
@@ -467,7 +467,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     height: 0,
                     borderLeft: '10px solid transparent',
                     borderRight: '10px solid transparent',
-                    borderBottom: '10px solid #222', // outline color
+                    borderBottom: '10px solid transparent', // outline color
                     zIndex: 10,
                   }}
                 />
@@ -480,13 +480,13 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     height: 0,
                     borderLeft: '8px solid transparent',
                     borderRight: '8px solid transparent',
-                    borderBottom: '8px solid #fff', // fill color
+                    borderBottom: '8px solid #156FF5', // fill color
                     zIndex: 11,
                   }}
                 />
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="22" height="22" rx="2" fill="#FF8C00"/>
-                  <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                  <rect width="22" height="22" rx="2" fill="#FFF"/>
+                  <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="#156ff5"/>
                   </svg> Please fill out this field.
                 </div>
               )}
@@ -530,9 +530,9 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                         left: 0,
                         top: 'calc(100% + 8px)',
                         marginTop: 2,
-                        background: '#ffffff',
-                        color: '#222',
-                        border: '1px solid #222',
+                        background: '#156FF5',
+                        color: '#FFF',
+                        border: '1px solid transparent',
                         borderRadius: 4,
                         padding: '6px 12px',
                         fontSize: '0.95rem',
@@ -553,7 +553,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                         height: 0,
                         borderLeft: '10px solid transparent',
                         borderRight: '10px solid transparent',
-                        borderBottom: '10px solid #222', // outline color
+                        borderBottom: '10px solid transparent', // outline color
                         zIndex: 10,
                       }}
                     />
@@ -566,13 +566,13 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                         height: 0,
                         borderLeft: '8px solid transparent',
                         borderRight: '8px solid transparent',
-                        borderBottom: '8px solid #fff', // fill color
+                        borderBottom: '8px solid #156FF5', // fill color
                         zIndex: 11,
                       }}
                       />
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
-                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                      <rect width="22" height="22" rx="2" fill="#FFF"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="#156FF5"/>
                       </svg>
                       Please fill out this field.
                     </div>
@@ -594,9 +594,9 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                         left: 0,
                         top: 'calc(100% + 8px)',
                         marginTop: 2,
-                        background: '#ffffff',
-                        color: '#222',
-                        border: '1px solid #222',
+                        background: '#156FF5',
+                        color: '#fff',
+                        border: '1px solid transparent',
                         borderRadius: 4,
                         padding: '6px 12px',
                         fontSize: '0.95rem',
@@ -617,7 +617,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     height: 0,
                     borderLeft: '10px solid transparent',
                     borderRight: '10px solid transparent',
-                    borderBottom: '10px solid #222', // outline color
+                    borderBottom: '10px solid transparent', // outline color
                     zIndex: 10,
                   }}
                 />
@@ -630,13 +630,13 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     height: 0,
                     borderLeft: '8px solid transparent',
                     borderRight: '8px solid transparent',
-                    borderBottom: '8px solid #fff', // fill color
+                    borderBottom: '8px solid #156FF5', // fill color
                     zIndex: 11,
                   }}
                   />
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect width="22" height="22" rx="2" fill="#FF8C00"/>
-                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="white"/>
+                      <rect width="22" height="22" rx="2" fill="#FFF"/>
+                      <path d="M12.3402 4.90909L12.0909 14.0753H9.75142L9.49574 4.90909H12.3402ZM10.9212 18.1662C10.4993 18.1662 10.1371 18.017 9.83452 17.7188C9.53196 17.4162 9.38281 17.054 9.38707 16.6321C9.38281 16.2145 9.53196 15.8565 9.83452 15.5582C10.1371 15.2599 10.4993 15.1108 10.9212 15.1108C11.326 15.1108 11.6818 15.2599 11.9886 15.5582C12.2955 15.8565 12.451 16.2145 12.4553 16.6321C12.451 16.9134 12.3764 17.1712 12.2315 17.4055C12.0909 17.6357 11.9055 17.821 11.6754 17.9616C11.4453 18.098 11.1939 18.1662 10.9212 18.1662Z" fill="#156FF5"/>
                       </svg>
                       Please fill out this field.
                     </div>
