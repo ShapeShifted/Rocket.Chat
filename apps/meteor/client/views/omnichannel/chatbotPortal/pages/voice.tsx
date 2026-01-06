@@ -92,10 +92,10 @@ const VoiceProcessing: React.FC = () => {
     };
 
     return (
-        <Box style={{ maxWidth: 900, margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
+        <Box style={{ width: '100%', margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
             {/* Header with title, search, and submit file button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8, fontFamily: 'Inter, sans-serif' }}>
-                <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' ,fontFamily: 'Inter, sans-serif',}}>Voice Transcriptions</h2>
+                <h2 style={{ marginLeft: '15px', fontWeight: 700, fontSize: '28px' ,fontFamily: 'Inter, sans-serif',}}>Voice Transcriptions</h2>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 24,fontFamily: 'Inter, sans-serif', }}>
                     {/* Search box */}
                     <div style={{ position: 'relative', width: 220,fontFamily: 'Inter, sans-serif', }}>
@@ -176,8 +176,8 @@ const VoiceProcessing: React.FC = () => {
                 aria-live="polite"
                 style={{
                     maxHeight: '70vh',
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
+                    overflowY: 'auto',  
+                    paddingLeft: 8,
                     paddingRight: 8,
                     boxSizing: 'border-box',
                     fontFamily: 'Inter, sans-serif',
@@ -186,12 +186,12 @@ const VoiceProcessing: React.FC = () => {
                 {transcriptions.map((t) => (
                     <Box
                         key={t._id ?? t.sessionId}
-                        mb="x8"
+                        mb="x16"
                         style={{
-                            background: '#e4e7ea',
+                            background: '#fff',
                             borderRadius: 8,
                             padding: '18px 20px',
-                            boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                            boxShadow: '0 1px 5px 1px rgba(0,0,0,0.2)',
                             position: 'relative',
                         }}
                     >
