@@ -35,5 +35,6 @@ export const AnalyticsService = {
       { credentials: 'include' }
     ).then(handleJsonResponse),
 
-  
+    getRoomBySessionId: (sessionId: string): Promise<any> =>
+    fetch(`/api/v1/livechat/visitor/${sessionId}/room`, { credentials: 'include' }).then(handleJsonResponse),
 };
