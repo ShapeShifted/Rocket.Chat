@@ -16,13 +16,15 @@ const Header = ({ title, onClose, children, ...props }: HeaderProps) => {
 			{(title || onClose) && (
 				<Box display='flex' flexDirection='row' alignItems='center' pi={24} justifyContent='space-between' flexGrow={1}>
 					{title && (
-						<Box color='default' fontScale='p2b' flexShrink={1} withTruncatedText>
+						<Box color='inherit' fontScale='p2b' flexShrink={1} withTruncatedText>
 							{title}
 						</Box>
 					)}
-					{onClose && <IconButton small aria-label={t('Close')} icon='cross' onClick={onClose} />}
+					{onClose && <IconButton small aria-label={t('Close')} icon='cross' color='white' onClick={onClose} />}
+					
 				</Box>
 			)}
+			<Box paddingBlockStart='8px' borderBlockEndWidth='x1' borderBlockEndColor='#fff' w='full' />
 			{children}
 		</Box>
 	);

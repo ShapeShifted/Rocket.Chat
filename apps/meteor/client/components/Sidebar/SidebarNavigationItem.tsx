@@ -36,7 +36,7 @@ const SidebarNavigationItem = ({
 
 	return (
 		<SidebarGenericItem active={isActive} href={path} externalUrl={externalUrl}>
-			{icon && <Icon name={icon} size='x20' mi={4} />}
+			{/* {icon && <Icon name={icon} size='x20' mi={4} color='white' />} */}
 			<Box
 				withTruncatedText
 				fontScale='p2'
@@ -46,6 +46,7 @@ const SidebarNavigationItem = ({
 				alignItems='center'
 				justifyContent='space-between'
 				width='100%'
+				color='white'
 			>
 				{label} {tag && <Tag>{tag}</Tag>}
 			</Box>

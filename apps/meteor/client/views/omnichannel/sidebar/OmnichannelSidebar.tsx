@@ -16,7 +16,7 @@ const OmnichannelSidebar = () => {
 
 	return (
 		<SettingsProvider>
-			<Sidebar>
+			<Sidebar backgroundColor='#2B2D3A' color='#ffffff'>
 				<Sidebar.Header onClose={sidebar.close} title={t('Omnichannel')} />
 				<Sidebar.Content>
 					<SidebarItemsAssemblerProps items={items} currentPath={currentPath} />

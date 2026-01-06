@@ -23,9 +23,10 @@ const SidebarGenericItem = ({ href, active, externalUrl, children, ...props }: S
 		is='a'
 		href={href}
 		{...(externalUrl && { target: '_blank', rel: 'noopener noreferrer' })}
+		{...(active && { style: { backgroundColor: '#1d74f5' } })}
 		{...props}
 	>
-		<Box display='flex' flexDirection='row' alignItems='center' pb={8} width='100%'>
+		<Box display='flex' flexDirection='row' alignItems='center' pb={8} width='100%' color='inherit'>
 			{children}
 		</Box>
 	</SidebarItem>
