@@ -51,40 +51,88 @@ const ConversationMonitoringRoute = () => {
     );
 
     return (
-        <Page>
+        <Page bg='#f8f8f8'>
             <PageHeader title={t('Chatbot Conversation Monitoring')} />
+            <Box borderBlockEndWidth='x2' borderBlockEndColor='#8e8e8e' w='full' />
             <PageScrollableContentWithShadow>
                 <Margins block='x4'>
-                    <Box flexDirection='row' display='flex' justifyContent='space-between' alignSelf='center' w='full'>
-                        
-                    </Box>
-                    <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
-                        <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
+                    <Box display='flex' flexDirection='row' alignItems='stretch' flexWrap='wrap' style={{ gap: '16px' }}>
+                        <Box
+                            display='flex'
+                            flexDirection='column'
+                            flexGrow={1}
+                            flexShrink={1}
+                            minWidth='250px'
+                            alignItems='stretch'
+                            bg='white'
+                            paddingBlockStart={12}
+                            pis={10}
+                            borderRadius='x8'
+                        >
+                        <Box fontScale="h3"  color='black' style={{ lineHeight: 1 }}>
                             {t('Conversation Overview')}
                         </Box>
-                        <ConversationOverview flexGrow={1} flexShrink={1} width='100%' departmentId={departmentId} dateRange={dateRange} />
-                    </Box>
-    
+                        <ConversationOverview flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
+                        </Box>
+
+                <Box
+                    display='flex'
+                    flexDirection='column'
+                    flexGrow={1}
+                    flexShrink={1}
+                    minWidth='250px'
+                    alignItems='stretch'
+                    bg='white'
+                    paddingBlockStart={12}
+                    pis={10}
+                    paddingInlineEnd={6}
+                    borderRadius='x8'
+                >
                     <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
                         <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
                             {t('Chat Durations Overview')}
                         </Box>
                         <ChatsOverview flexGrow={1} flexShrink={1} width='100%' departmentId={departmentId} dateRange={dateRange} />
                     </Box>
+                </Box>
 
+                <Box
+                display='flex'
+                flexDirection='column'
+                flexGrow={1}
+                flexShrink={1}
+                minWidth='250px'
+                alignItems='stretch'
+                bg='white'
+                paddingBlockStart={12}
+                pis={10}
+                borderRadius='x8'
+                >
                     <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
                         <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
-                            {t('Chat Durations Across One Week')}
-                        </Box>
-                        <ChatDurationChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
-                    </Box>
-
-                    <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
-                        <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
-                            {t('Types of Issues Reported')}
+                            {t('Issues Reported')}
                         </Box>
                         <AnalyticsOverview flexGrow={1} flexShrink={1} width='100%' departmentId={departmentId} dateRange={dateRange} />
                     </Box>
+                </Box>
+
+            </Box>
+                         <Box display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='250px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'>
+                        <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
+                            {t('Chat Duration Analysis')}
+                        </Box>
+                        <ChatDurationChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
+                    </Box>
+                    
                 </Margins>
             </PageScrollableContentWithShadow>
         </Page>
