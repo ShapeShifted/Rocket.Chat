@@ -35,9 +35,9 @@ const init = (canvas: HTMLCanvasElement, context: chartjs.Chart<'line'> | undefi
 	drawLineChart(
 		canvas,
 		context,
-		[t('Avg_reaction_time'), t('Longest_reaction_time'), t('Avg_response_time'), t('Longest_response_time')],
+		[t('Avg_response_time'), t('Longest_response_time')],
 		labels,
-		[initialData, initialData.slice(), initialData.slice(), initialData.slice()],
+		[initialData, initialData.slice()],
 		{ legends: true, anim: true, smallTicks: true, displayColors: false, tooltipCallbacks },
 	);
 

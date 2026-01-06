@@ -55,57 +55,127 @@ const RealTimeMonitoringPage = () => {
 	);
 
 	return (
-		<Page>
-			<PageHeader title={t('Agent Conversation Monitoring')} />
+		<Page bg='#f8f8f8'>
+			<PageHeader title={t('Agent Conversation Monitoring')}>
+				<Box display='flex' flexDirection='row' mis='auto' alignItems='center'>
+					<Label mie={4}>{t('Departments:')}</Label>
+					<AutoCompleteDepartment
+						mie={4}
+						value={departmentId}
+						onChange={setDepartment}
+						placeholder={t('All')}
+						label={t('All')}
+						onlyMyDepartments
+						withTitle={false}
+						renderItem={({ label, ...props }) => <Option {...props} label={<span style={{ whiteSpace: 'normal' }}>{label}</span>} />}
+					/>
+					<Label mie={4}>{t('Update every:')}</Label>
+					<Select options={reloadOptions} placeholder={t('All')} onChange={useEffectEvent((val: Key) => setReloadFrequency(val as number))} value={reloadFrequency} />
+				</Box>
+			</PageHeader>
+			<Box borderBlockEndWidth='x2' borderBlockEndColor='#8e8e8e' w='full' />
 			<PageScrollableContentWithShadow>
 				<Margins block='x4'>
-					<Box flexDirection='row' display='flex' justifyContent='space-between' alignSelf='center' w='full'>
-						<Box maxWidth='50%' display='flex' mi={4} flexGrow={1} flexDirection='column'>
-							<Label mb={4}>{t('Departments')}</Label>
-							<AutoCompleteDepartment
-								value={departmentId}
-								onChange={setDepartment}
-								placeholder={t('All')}
-								label={t('All')}
-								onlyMyDepartments
-								withTitle={false}
-								renderItem={({ label, ...props }) => <Option {...props} label={<span style={{ whiteSpace: 'normal' }}>{label}</span>} />}
-							/>
+
+					<Box display='flex' flexDirection='row' alignItems='stretch' flexWrap='wrap' style={{ gap: '16px' }}>
+						<Box
+							display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='250px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'
+						>
+							<Box fontScale='h3' color='black' style={{ lineHeight: 1 }}>
+								Conversation Overview
+							</Box>
+							<Box flexGrow={1} flexShrink={1}>
+								<ConversationOverview departmentId={departmentId} dateRange={dateRange} />
+							</Box>
 						</Box>
-						<Box maxWidth='50%' display='flex' mi={4} flexGrow={1} flexDirection='column'>
-							<Label mb={4}>{t('Update_every')}</Label>
-							<Select
-								options={reloadOptions}
-								onChange={useEffectEvent((val: Key) => setReloadFrequency(val as number))}
-								value={reloadFrequency}
-							/>
+						<Box
+							display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='250px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'
+						>
+							<Box fontScale='h3' color='black' style={{ lineHeight: 1 }}>
+								Abandonment Overview
+							</Box>
+							<Box flexGrow={1} flexShrink={1}>
+								<ChatsOverview departmentId={departmentId} dateRange={dateRange} />
+							</Box>
+						</Box>
+						<Box
+							display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='400px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'
+						>
+							<Box fontScale='h3' color='black' style={{ lineHeight: 1 }} mb='x1'>
+								Conversation Status Overview
+							</Box>
+							<Box flexGrow={1} flexShrink={1}>
+								<ChatsChart flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
+							</Box>
 						</Box>
 					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<ConversationOverview flexGrow={1} flexShrink={1} width='50%' departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<ChatsChart flexGrow={1} flexShrink={1} width='50%' mie={2} departmentId={departmentId} dateRange={dateRange} />
-						<ChatsPerAgentChart flexGrow={1} flexShrink={1} width='50%' mis={2} departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<ChatsOverview flexGrow={1} flexShrink={1} width='50%' departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<AgentStatusChart flexGrow={1} flexShrink={1} width='50%' mie={2} departmentId={departmentId} />
-						<ChatsPerDepartmentChart flexGrow={1} flexShrink={1} width='50%' mis={2} departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<AgentsOverview flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' w='full' flexShrink={1}>
-						<ChatDurationChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1}>
-						<ProductivityOverview flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
-					</Box>
-					<Box display='flex' w='full' flexShrink={1}>
-						<ResponseTimesChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
+					
+						<Box
+							display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='250px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'
+						>
+							<Box fontScale='h3' color='black' style={{ lineHeight: 1 }}>
+								Service Time Analysis
+							</Box>
+							<Box flexGrow={1} flexShrink={1} display='flex' flexDirection='row' w='full' alignItems='stretch' bg='white'>
+								<AgentsOverview departmentId={departmentId} dateRange={dateRange} />
+								<ChatDurationChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
+							</Box>
+						</Box>
+					<Box
+							display='flex'
+							flexDirection='column'
+							flexGrow={1}
+							flexShrink={1}
+							minWidth='250px'
+							alignItems='stretch'
+							bg='white'
+							paddingBlockStart={12}
+							pis={10}
+							borderRadius='x8'
+						>
+							<Box fontScale='h3' color='black' style={{ lineHeight: 1 }}>
+								Response Time Analysis
+							</Box>
+						<Box display='flex' flexDirection='row' w='full' alignItems='stretch' flexShrink={1} bg='white'>
+							<ProductivityOverview flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
+							<ResponseTimesChart flexGrow={1} flexShrink={1} w='100%' departmentId={departmentId} dateRange={dateRange} />
+						</Box>
 					</Box>
 				</Margins>
 			</PageScrollableContentWithShadow>

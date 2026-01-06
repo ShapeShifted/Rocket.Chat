@@ -22,10 +22,20 @@ const lineChartConfiguration = ({
 				bottom: 0,
 			},
 		},
-		legend: {
-			display: false,
-		},
 		plugins: {
+			legend: {
+				display: legends,
+				...(legends && {
+					labels: {
+						boxWidth: 16,
+						font: {
+							size: 11,
+							weight: 'bold',
+						},
+						color: '#000000',
+					},
+				}),
+			},
 			tooltip: {
 				usePointStyle: true,
 				enabled: true,
@@ -38,20 +48,39 @@ const lineChartConfiguration = ({
 		scales: {
 			xAxis: {
 				title: {
-					display: false,
+					display: true,
+					text: t('Time (24 hour system)'),
+					font: {
+						weight: 'bold',
+					},
+					color: '#000000',
 				},
 				grid: {
 					display: true,
 					color: 'rgba(0, 0, 0, 0.03)',
+				},
+				ticks: {
+					color: '#000000',
 				},
 			},
 			yAxis: {
 				title: {
-					display: false,
+					display: true,
+					text: t('Duration'),
+					font: {
+						weight: 'bold',
+					},
+					color: '#000000',
 				},
 				grid: {
 					display: true,
 					color: 'rgba(0, 0, 0, 0.03)',
+				},
+				ticks: {
+					color: '#000000',
+					callback(val: any) {
+						return val;
+					},
 				},
 			},
 		},
@@ -62,9 +91,7 @@ const lineChartConfiguration = ({
 		responsive: true,
 		maintainAspectRatio: false,
 		...(!anim ? { animation: { duration: 0 } } : {}),
-		...(legends ? { legend: { display: true, labels: { boxWidth: 20, fontSize: 8 } } } : {}),
 	};
-
 	return config;
 };
 
@@ -84,11 +111,13 @@ const doughnutChartConfiguration = (
 			position: 'right',
 			labels: {
 				boxWidth: 20,
+				color: '#000000',
 			},
 		},
 		title: {
 			display: true,
 			text: title,
+			color: '#000000',
 		},
 		tooltip: {
 			enabled: true,

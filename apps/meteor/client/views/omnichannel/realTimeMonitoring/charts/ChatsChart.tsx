@@ -26,7 +26,7 @@ const initialData = {
 const init = (canvas: HTMLCanvasElement, context: chartjs.Chart<'doughnut'> | undefined, t: TFunction) =>
 	drawDoughnutChart(
 		canvas,
-		t('Chats'),
+		'',
 		context,
 		labels.map((l) => t(l as TranslationKey)),
 		Object.values(initialData),
@@ -73,10 +73,19 @@ const ChatsChart = ({ departmentId, dateRange, ...props }: ChatsChartProps) => {
 			return;
 		}
 
-		updateChartData(t('Open'), [open]);
-		updateChartData(t('Closed'), [closed]);
-		updateChartData(t('On_Hold_Chats'), [onhold]);
-		updateChartData(t('Queued'), [queued]);
+		const dataWithLabels = [
+			{ label: t('Open'), value: open },
+			{ label: t('Closed'), value: closed },
+			{ label: t('On_Hold_Chats'), value: onhold },
+			{ label: t('Queued'), value: queued },
+		];
+
+		if (context.data.labels && context.data.datasets) {
+			context.data.labels = dataWithLabels.map((d) => `${d.label} (${d.value})`);
+			context.data.datasets[0].data = dataWithLabels.map((d) => d.value);
+			context.update();
+			return;
+		}
 	}, [context, closed, open, queued, onhold, isSuccess, t, updateChartData]);
 
 	return <Chart canvasRef={canvas} {...props} />;

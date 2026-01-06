@@ -56,8 +56,8 @@ const ChatDurationChart = ({ departmentId, dateRange, ...props }: ChatDurationCh
 
 	const getBucketLabel = (date: Date): string => {
     const hour = date.getHours();
-    // Find the nearest odd hour less than or equal to current hour
-    const bucketHour = hour % 2 === 0 ? hour - 1 : hour;
+    // Find the nearest even hour less than or equal to current hour
+    const bucketHour = hour % 2 !== 0 ? hour - 1 : hour;
     // Clamp to 0 if negative
     const finalHour = bucketHour < 0 ? 0 : bucketHour;
     return finalHour.toString().padStart(2, '0') + ':00';
