@@ -82,6 +82,7 @@ const lineChartConfiguration = ({
 						return val;
 					},
 				},
+				beginAtZero: true,
 			},
 		},
 		hover: {
@@ -143,6 +144,7 @@ type ChartDataSet = {
 	borderColor: string;
 	borderWidth: number;
 	fill: boolean;
+	clip?: number | false | any;
 };
 
 export const drawLineChart = async (
@@ -170,6 +172,7 @@ export const drawLineChart = async (
 			borderColor: colors[index],
 			borderWidth: 3,
 			fill: false,
+			clip: 10,
 		});
 	});
 

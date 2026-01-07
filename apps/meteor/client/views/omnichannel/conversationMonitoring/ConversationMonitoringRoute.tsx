@@ -62,14 +62,16 @@ const ConversationMonitoringRoute = () => {
                             flexDirection='column'
                             flexGrow={1}
                             flexShrink={1}
+                            flexBasis='0'
                             minWidth='250px'
                             alignItems='stretch'
                             bg='white'
                             paddingBlockStart={12}
+                            paddingBlockEnd={12}
                             pis={10}
                             borderRadius='x8'
                         >
-                        <Box fontScale="h3"  color='black' style={{ lineHeight: 1 }}>
+                        <Box fontScale="h3" color='black' mb="x8" style={{ lineHeight: 1 }}>
                             {t('Conversation Overview')}
                         </Box>
                         <ConversationOverview flexGrow={1} flexShrink={1} departmentId={departmentId} dateRange={dateRange} />
@@ -80,16 +82,18 @@ const ConversationMonitoringRoute = () => {
                     flexDirection='column'
                     flexGrow={1}
                     flexShrink={1}
+                    flexBasis='0'
                     minWidth='250px'
                     alignItems='stretch'
                     bg='white'
                     paddingBlockStart={12}
+                    paddingBlockEnd={12}
                     pis={10}
                     paddingInlineEnd={6}
                     borderRadius='x8'
                 >
                     <Box display='flex' flexDirection='column' w='full' alignItems='stretch' flexShrink={1}>
-                        <Box fontScale="h4" mb="x8" fontSize="22px" w="100%">
+                        <Box fontScale="h3" mb="x8" fontSize="22px" w="100%" style={{ lineHeight: 1 }}>
                             {t('Chat Durations Overview')}
                         </Box>
                         <ChatsOverview flexGrow={1} flexShrink={1} width='100%' departmentId={departmentId} dateRange={dateRange} />
@@ -99,8 +103,9 @@ const ConversationMonitoringRoute = () => {
                 <Box
                 display='flex'
                 flexDirection='column'
-                flexGrow={1}
+                flexGrow={2}
                 flexShrink={1}
+                flexBasis='0'
                 minWidth='250px'
                 alignItems='stretch'
                 bg='white'

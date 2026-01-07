@@ -24,7 +24,7 @@ const Header = ({ title, onClose, children, ...props }: HeaderProps) => {
 					
 				</Box>
 			)}
-			<Box paddingBlockStart='8px' borderBlockEndWidth='x1' borderBlockEndColor='#fff' w='full' />
+			<Box paddingBlockStart='8px' borderBlockEndWidth='x1' borderBlockEndColor='#8E8E8E' w='full' />
 			{children}
 		</Box>
 	);

@@ -69,7 +69,7 @@ const RealTimeMonitoringPage = () => {
 						withTitle={false}
 						renderItem={({ label, ...props }) => <Option {...props} label={<span style={{ whiteSpace: 'normal' }}>{label}</span>} />}
 					/>
-					<Label mie={4}>{t('Update every:')}</Label>
+					<Label mie={4} marginInlineStart='20px'>{t('Update every:')}</Label>
 					<Select options={reloadOptions} placeholder={t('All')} onChange={useEffectEvent((val: Key) => setReloadFrequency(val as number))} value={reloadFrequency} />
 				</Box>
 			</PageHeader>
@@ -83,6 +83,7 @@ const RealTimeMonitoringPage = () => {
 							flexDirection='column'
 							flexGrow={1}
 							flexShrink={1}
+							flexBasis='0'
 							minWidth='250px'
 							alignItems='stretch'
 							bg='white'
@@ -102,6 +103,7 @@ const RealTimeMonitoringPage = () => {
 							flexDirection='column'
 							flexGrow={1}
 							flexShrink={1}
+							flexBasis='0'
 							minWidth='250px'
 							alignItems='stretch'
 							bg='white'
@@ -119,8 +121,9 @@ const RealTimeMonitoringPage = () => {
 						<Box
 							display='flex'
 							flexDirection='column'
-							flexGrow={1}
+							flexGrow={2}
 							flexShrink={1}
+							flexBasis='0'
 							minWidth='400px'
 							alignItems='stretch'
 							bg='white'

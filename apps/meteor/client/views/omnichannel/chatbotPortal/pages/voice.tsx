@@ -94,8 +94,8 @@ const VoiceProcessing: React.FC = () => {
     return (
         <Box style={{ width: '100%', margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
             {/* Header with title, search, and submit file button */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8, fontFamily: 'Inter, sans-serif' }}>
-                <h2 style={{ marginLeft: '15px', fontWeight: 700, fontSize: '28px' ,fontFamily: 'Inter, sans-serif',}}>Voice Transcriptions</h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 24, fontFamily: 'Inter, sans-serif' }}>
+                <h2 style={{ marginLeft: '32px', fontWeight: 700, fontSize: '28px' ,fontFamily: 'Inter, sans-serif',}}>Voice Transcriptions</h2>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 24,fontFamily: 'Inter, sans-serif', }}>
                     {/* Search box */}
                     <div style={{ position: 'relative', width: 220,fontFamily: 'Inter, sans-serif', }}>
@@ -177,8 +177,8 @@ const VoiceProcessing: React.FC = () => {
                 style={{
                     maxHeight: '70vh',
                     overflowY: 'auto',  
-                    paddingLeft: 8,
-                    paddingRight: 8,
+                    paddingLeft: 32,
+                    paddingRight: 24,
                     boxSizing: 'border-box',
                     fontFamily: 'Inter, sans-serif',
                 }}
@@ -191,7 +191,7 @@ const VoiceProcessing: React.FC = () => {
                             background: '#fff',
                             borderRadius: 8,
                             padding: '18px 20px',
-                            boxShadow: '0 1px 5px 1px rgba(0,0,0,0.2)',
+                            boxShadow: '0px 0px 5px 1px rgba(0, 0, 0, 0.2)',
                             position: 'relative',
                         }}
                     >

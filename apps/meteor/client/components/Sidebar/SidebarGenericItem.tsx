@@ -24,6 +24,17 @@ const SidebarGenericItem = ({ href, active, externalUrl, children, ...props }: S
 		href={href}
 		{...(externalUrl && { target: '_blank', rel: 'noopener noreferrer' })}
 		{...(active && { style: { backgroundColor: '#1d74f5' } })}
+		{...(!active && {
+			style: {
+				backgroundColor: 'transparent',
+			},
+			onMouseEnter: (e) => {
+				(e.currentTarget as HTMLElement).style.backgroundColor = '#1F2226';
+			},
+			onMouseLeave: (e) => {
+				(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+			},
+		})}
 		{...props}
 	>
 		<Box display='flex' flexDirection='row' alignItems='center' pb={8} width='100%' color='inherit'>
