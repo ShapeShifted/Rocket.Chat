@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import{ createPortal } from 'react-dom';
 import { Box, Button, ButtonGroup } from '@rocket.chat/fuselage';
 import { FactService } from './services/fact.service';
+import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import type { ReactElement } from 'react';
 
 interface Fact {
@@ -32,12 +33,11 @@ const FactManager = (): ReactElement => {
 
   // Search state
   const [search, setSearch] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<Fact[]>([]);
+  const debouncedSearch = useDebouncedValue(search, 50);
   const [deletingFact, setDeletingFact] = useState<Fact | null>(null);
   const [pageInput, setPageInput] = useState<string>(String(page));
 
-  const load = async (p = 1, searchQuery = '') => {
+  const load = useCallback( async (p = 1, searchQuery = '') => {
     setLoading(true);
     setError(null);
     try {
@@ -51,10 +51,9 @@ const FactManager = (): ReactElement => {
           content: d.content ?? d.text ?? '',
           source: d.source ?? d.metadata?.source,
         }));
-        setSearchResults(mapped);
-        setTotalPages(Math.max(1, Math.ceil(mapped.length / PAGE_SIZE)));
-        setPage(1);
-        setFacts(mapped.slice(0, PAGE_SIZE));
+        setFacts(mapped);
+        setTotalPages(res.totalPages ?? 1);
+        setPage(p);
       } else {
         res = await FactService.getFacts(p, PAGE_SIZE);
         const docs = res.documents ?? [];
@@ -67,42 +66,25 @@ const FactManager = (): ReactElement => {
         setFacts(mapped);
         setTotalPages(res.totalPages ?? 1);
         setPage(p);
-        setSearchResults([]);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to load facts');
     } finally {
       setLoading(false);
     }
-  };
+  },[]);
 
   useEffect(() => {
-    load(1); // Load first page on mount
-  }, []);
+    load(1, debouncedSearch.trim());
+  }, [debouncedSearch, load]);
 
   useEffect(() => {
     setPageInput(String(page));
   }, [page]);
 
-  const handleSearchKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (search.trim() === '') {
-        setIsSearching(false);
-        await load(1);
-      } else {
-        setIsSearching(true);
-        await load(1, search.trim());
-      }
-    }
-  };
-
   const handlePageChange = (newPage: number) => {
-    if (isSearching && searchResults.length > 0) {
-      setPage(newPage);
-      setFacts(searchResults.slice((newPage - 1) * PAGE_SIZE, newPage * PAGE_SIZE));
-    } else {
-      load(newPage);
-    }
+    setPage(newPage);
+    load(newPage, search.trim());
   };
 
   const onStartEdit = (f: Fact) => {
@@ -194,7 +176,7 @@ const FactManager = (): ReactElement => {
       } else {
         await FactService.updateFact(payload);
       }
-      await load(page);
+      await load(page, search.trim());
       onCancelEdit();
     } catch (err: any) {
       alert('Failed to save fact: ' + (err.message ?? err));
@@ -205,7 +187,7 @@ const FactManager = (): ReactElement => {
     if (!id) return alert('Unable to delete ?? missing id');
     try {
       await FactService.deleteFact(id);
-      await load(page);
+      await load(page, search.trim());
     } catch (err: any) {
       alert('Failed to delete fact: ' + (err.message ?? err));
     }
@@ -243,7 +225,6 @@ const FactManager = (): ReactElement => {
               placeholder="Search for Facts"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
               style={{
                 padding: '8px 12px 8px 36px', // left padding for icon
                 borderRadius: 6,

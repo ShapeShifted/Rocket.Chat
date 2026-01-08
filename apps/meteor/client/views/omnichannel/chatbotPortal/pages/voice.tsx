@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Box, Button } from '@rocket.chat/fuselage';
+import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import { VoiceService } from './services/voice.service';
 
 const PAGE_SIZE = 8;
@@ -13,11 +14,12 @@ const VoiceProcessing: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [search, setSearch] = useState('');
+    const debouncedSearch = useDebouncedValue(search, 50);
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [pageInput, setPageInput] = useState<string>(String(page));
 
-    const load = async (p = 1, searchQuery = '') => {
+    const load = useCallback(async (p = 1, searchQuery = '') => {
         setLoading(true);
         setError(null);
         try {
@@ -42,34 +44,24 @@ const VoiceProcessing: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        load(1);
-    }, []);
+        const searchQuery = debouncedSearch.trim();
+        setIsSearching(!!searchQuery);
+        load(1, searchQuery);
+    }, [debouncedSearch, load]);
 
     useEffect(() => {
         setPageInput(String(page));
     }, [page]);
-
-    const handleSearchKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            if (search.trim() === '') {
-                setIsSearching(false);
-                await load(1);
-            } else {
-                setIsSearching(true);
-                await load(1, search.trim());
-            }
-        }
-    };
 
     const handlePageChange = (newPage: number) => {
         if (isSearching && searchResults.length > 0) {
             setPage(newPage);
             setTranscriptions(searchResults.slice((newPage - 1) * PAGE_SIZE, newPage * PAGE_SIZE));
         } else {
-            load(newPage);
+            load(newPage, search.trim());
         }
     };
 
@@ -122,7 +114,6 @@ const VoiceProcessing: React.FC = () => {
                             placeholder="Search transcription"
                             value={search}
                             onChange={e => setSearch(e.target.value)}
-                            onKeyDown={handleSearchKeyDown}
                             style={{
                                 padding: '8px 12px 8px 36px',
                                 borderRadius: 6,
@@ -168,7 +159,7 @@ const VoiceProcessing: React.FC = () => {
                 </div>
             </div>
 
-            {loading && <div style={{ fontFamily: 'Inter, sans-serif' }}>Loading...</div>}
+            {loading && <div style={{ fontFamily: 'Inter, sans-serif', paddingLeft: 32  }}>Loading...</div>}
             {error && <div style={{ color: 'red' }}>{error}</div>}
             {!loading && transcriptions.length === 0 && <div>No transcriptions found.</div>}
 
@@ -224,7 +215,7 @@ const VoiceProcessing: React.FC = () => {
             </div>
 
             {/* Pagination */}
-            <Box marginBlockStart="x8" display="flex" alignItems="center" justifyContent="space-between">
+            <Box marginBlockStart="x8" display="flex" alignItems="center" justifyContent="space-between" paddingInlineStart={32}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '16px' }}>
                     <Button small disabled={page <= 1} onClick={() => handlePageChange(page - 1)}
                         style={{ fontSize: '16px' }}>

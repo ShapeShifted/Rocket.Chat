@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Box, Button } from '@rocket.chat/fuselage';
+import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import { FaqService } from './services/faq.service';
 
 const PAGE_SIZE = 8;
@@ -31,8 +32,7 @@ const FAQ: React.FC = () => {
 
   // Search state
   const [search, setSearch] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<FaqTopic[]>([]);
+  const debouncedSearch = useDebouncedValue(search, 50);
   const [deletingTopic, setDeletingTopic] = useState<FaqTopic | null>(null);
   const [pageInput, setPageInput] = useState<string>(String(page));
 
@@ -41,7 +41,7 @@ const FAQ: React.FC = () => {
   const [faqTooltips, setFaqTooltips] = useState<{ [idx: number]: { question: boolean; answer: boolean } }>({});
 
   // Load topics (grouped by topic)
-  const load = async (p = 1, searchQuery = '') => {
+  const load = useCallback(async (p = 1, searchQuery = '') => {
     setLoading(true);
     setError(null);
     try {
@@ -70,20 +70,20 @@ const FAQ: React.FC = () => {
       setFaqTopics(grouped);
       setTotalPages(res.totalPages ?? 1);
       setPage(p);
-      setSearchResults(searchQuery ? grouped : []);
     } catch (err: any) {
       setError(err.message || 'Failed to load FAQs');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-  load(1); // Load first page on mount
-}, []);
+    load(1, debouncedSearch.trim());
+  }, [debouncedSearch, load]);
 
-  useEffect(() => {setPageInput(String(page));
-}, [page]);
+  useEffect(() => {
+    setPageInput(String(page));
+  }, [page]);
 
   // Modal handlers
   const onStartEdit = (topic: FaqTopic) => {
@@ -145,6 +145,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
     setEditingTopic({ ...editingTopic, faqs: editingTopic.faqs.filter((_, i) => i !== idx) });
   };
 
+  // Save handler (within component)
   const onSave = async () => {
     if (!editingTopic) return;
     if (!editingTopic.topic || editingTopic.topic.trim() === '') {
@@ -160,20 +161,20 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
       documents: [
         isNew
           ? {
-              title: editingTopic.topic.trim(),
-              content: editingTopic.faqs.map(f => ({
-                question: f.question.trim(),
-                answer: f.answer.trim(),
-              })),
-            }
+               title: editingTopic.topic.trim(),
+               content: editingTopic.faqs.map(f => ({
+                 question: f.question.trim(),
+                 answer: f.answer.trim(),
+               })),
+             }
           : {
-              id: editingTopic._id,
-              title: editingTopic.topic.trim(),
-              content: editingTopic.faqs.map(f => ({
-                question: f.question.trim(),
-                answer: f.answer.trim(),
-              })),
-            },
+               id: editingTopic._id,
+               title: editingTopic.topic.trim(),
+               content: editingTopic.faqs.map(f => ({
+                 question: f.question.trim(),
+                 answer: f.answer.trim(),
+               })),
+             },
       ],
     };
     try {
@@ -182,7 +183,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
       } else {
         await FaqService.updateQna(payload);
       }
-      await load(page);
+      await load(page, search.trim());
       onCancelEdit();
     } catch (err: any) {
       alert('Failed to save FAQ topic: ' + (err.message ?? err));
@@ -194,29 +195,16 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
     if (!id) return alert('Unable to delete ?? missing id');
     try {
       await FaqService.deleteTopic(id);
-      await load(page);
+      await load(page, search.trim());
     } catch (err: any) {
       alert('Failed to delete FAQ topic: ' + (err.message ?? err));
-    }
-  };
-
-  // Search
-  const handleSearchKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (search.trim() === '') {
-        setIsSearching(false);
-        await load(1);
-      } else {
-        setIsSearching(true);
-        await load(1, search.trim());
-      }
     }
   };
 
   // Pagination
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    load(newPage, isSearching ? search : '');
+    load(newPage, search.trim());
   };
 
   return (
@@ -237,7 +225,6 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
               placeholder="Search for FAQs"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
               style={{
                 padding: '8px 12px 8px 36px',
                 borderRadius: 6,
