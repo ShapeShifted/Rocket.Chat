@@ -1,8 +1,10 @@
 import type { ILivechatDepartment } from '@rocket.chat/core-typings';
 import type { Box } from '@rocket.chat/fuselage';
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isWithinInterval } from 'date-fns';
+
 import { ConversationMonitoringService } from '../ConversationMonitoring.service';
 import Chart from '../../realTimeMonitoring/charts/Chart';
 import { drawDoughnutChart } from '../../../../../app/livechat/client/lib/chartHandler';
@@ -18,11 +20,24 @@ const AnalyticsOverview: FC<AnalyticsOverviewProps> = ({ departmentId, dateRange
     const canvas: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
     const chartInstance = useRef<any>(null);
 
-    const { data: analyticsData = { analytics: [] } } = useQuery({
-        queryKey: ['allAnalytics', departmentId, dateRange],
+    const { data: allAnalyticsData = { analytics: [] } } = useQuery({
+        queryKey: ['allAnalytics'],
         queryFn: () => ConversationMonitoringService.getAllAnalytics(),
-        gcTime: 0,
     });
+
+    const analyticsData = useMemo(() => {
+        const all = allAnalyticsData.analytics || [];
+        const start = new Date(dateRange.start);
+        const end = new Date(dateRange.end);
+
+        const filtered = all.filter((day: any) => {
+            if (!day.date) return false;
+            const date = new Date(day.date);
+            return isWithinInterval(date, { start, end });
+        });
+
+        return { analytics: filtered };
+    }, [allAnalyticsData, dateRange]);
 
     // Count sessions per classifiedIssueType across all days
     const issueTypeCounts: Record<string, number> = {};

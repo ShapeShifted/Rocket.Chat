@@ -6,6 +6,7 @@ import type { TFunction } from 'i18next';
 import type { ComponentPropsWithoutRef } from 'react';
 import { useRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isWithinInterval } from 'date-fns';
 
 
 import Chart from './Chart';
@@ -50,7 +51,7 @@ const ChatDurationChart = ({ departmentId, dateRange, ...props }: ChatDurationCh
     const chartRef = useRef<chartjs.Chart | null>(null);
 
     const { data: allConversationsData } = useQuery({
-        queryKey: ['allConversations', departmentId, dateRange],
+        queryKey: ['allConversations'],
         queryFn: () => ConversationMonitoringService.getAllConversations(),
     });
 
@@ -65,7 +66,17 @@ const ChatDurationChart = ({ departmentId, dateRange, ...props }: ChatDurationCh
 
     const { labels, data, rawData } = useMemo(() => {
         const timeDurations: Record<string, number> = {};
-        const conversations = allConversationsData?.conversations || [];
+        const all = allConversationsData?.conversations || [];
+        const start = new Date(dateRange.start);
+        const end = new Date(dateRange.end);
+
+        const conversations = all.filter((conv: any) => {
+            const history = conv.context?.conversationHistory || [];
+            const firstTs = history[0]?.timestamp;
+            if (!firstTs) return false;
+            const date = new Date(firstTs);
+            return isWithinInterval(date, { start, end });
+        });
 
         for (const conv of conversations) {
             const history = conv.context?.conversationHistory || [];
@@ -87,7 +98,7 @@ const ChatDurationChart = ({ departmentId, dateRange, ...props }: ChatDurationCh
         const normalizedData = rawData.map((val) => (max === min ? 0 : (val - min) / (max - min)));
 
         return { labels: sortedLabels, data: normalizedData, rawData };
-    }, [allConversationsData]);
+    }, [allConversationsData, dateRange]);
 
     useEffect(() => {
         let cancelled = false;

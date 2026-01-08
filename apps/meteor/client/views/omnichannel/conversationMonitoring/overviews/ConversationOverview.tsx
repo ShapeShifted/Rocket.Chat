@@ -2,6 +2,9 @@ import type { ILivechatDepartment } from '@rocket.chat/core-typings';
 import { Box, Icon } from '@rocket.chat/fuselage';
 import { useQuery } from '@tanstack/react-query';
 import type { ComponentPropsWithoutRef, FC } from 'react';
+import { useMemo } from 'react';
+
+import { subDays, startOfDay, endOfDay, isWithinInterval } from 'date-fns';
 
 import { ConversationMonitoringService } from '../ConversationMonitoring.service';
 import CounterContainer from '../counter/CounterContainer';
@@ -89,7 +92,19 @@ const ConversationOverview: FC<ConversationOverviewProps> = ({ departmentId, dat
 		},
 	});
 
-	const conversations: Conversation[] = allConversationsData.conversations || [];
+	const conversations: Conversation[] = useMemo(() => {
+        const all = allConversationsData.conversations || [];
+        const start = new Date(dateRange.start);
+        const end = new Date(dateRange.end);
+
+        return all.filter((conv: Conversation) => {
+            const history: ConversationHistoryItem[] = conv.context?.conversationHistory || [];
+            const firstTs = history[0]?.timestamp;
+            if (!firstTs) return false;
+            const date = new Date(firstTs);
+            return isWithinInterval(date, { start, end });
+        });
+    }, [allConversationsData, dateRange]);
 
 	// Total Conversations
 	const totalConversations = conversations.length;
