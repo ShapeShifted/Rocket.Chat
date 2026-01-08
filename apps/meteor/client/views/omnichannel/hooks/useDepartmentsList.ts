@@ -71,7 +71,7 @@ export const useDepartmentsList = (options: DepartmentsListOptions) => {
 				items.unshift({
 					_id: '',
 					label: t('All'),
-					value: 'all',
+					value: '',
 				});
 			}
 

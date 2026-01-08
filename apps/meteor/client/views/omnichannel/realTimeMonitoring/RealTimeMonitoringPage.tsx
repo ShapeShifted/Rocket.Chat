@@ -27,7 +27,7 @@ const dateRange = getDateRange();
 const RealTimeMonitoringPage = () => {
 	const { t } = useTranslation();
 
-	const [reloadFrequency, setReloadFrequency] = useState(5);
+	const [reloadFrequency, setReloadFrequency] = useState('5');
 	const [departmentId, setDepartment] = useState('');
 
 	const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ const RealTimeMonitoringPage = () => {
 	});
 
 	useEffect(() => {
-		const interval = setInterval(reloadCharts, reloadFrequency * 1000);
+		const interval = setInterval(reloadCharts, Number(reloadFrequency) * 1000);
 
 		return () => {
 			clearInterval(interval);
@@ -46,10 +46,10 @@ const RealTimeMonitoringPage = () => {
 
 	const reloadOptions = useMemo(
 		() => [
-			[5, <Fragment key='5 seconds'>5 {t('seconds')}</Fragment>] as unknown as SelectOption,
-			[10, <Fragment key='10 seconds'>10 {t('seconds')}</Fragment>] as unknown as SelectOption,
-			[30, <Fragment key='30 seconds'>30 {t('seconds')}</Fragment>] as unknown as SelectOption,
-			[60, <Fragment key='1 minute'>1 {t('minute')}</Fragment>] as unknown as SelectOption,
+			['5', <Fragment key='5 seconds'>5 {t('seconds')}</Fragment>] as unknown as SelectOption,
+			['10', <Fragment key='10 seconds'>10 {t('seconds')}</Fragment>] as unknown as SelectOption,
+			['30', <Fragment key='30 seconds'>30 {t('seconds')}</Fragment>] as unknown as SelectOption,
+			['60', <Fragment key='1 minute'>1 {t('minute')}</Fragment>] as unknown as SelectOption,
 		],
 		[t],
 	);
@@ -66,11 +66,12 @@ const RealTimeMonitoringPage = () => {
 						placeholder={t('All')}
 						label={t('All')}
 						onlyMyDepartments
+						haveAll
 						withTitle={false}
 						renderItem={({ label, ...props }) => <Option {...props} label={<span style={{ whiteSpace: 'normal' }}>{label}</span>} />}
 					/>
 					<Label mie={4} marginInlineStart='20px'>{t('Update every:')}</Label>
-					<Select options={reloadOptions} placeholder={t('All')} onChange={useEffectEvent((val: Key) => setReloadFrequency(val as number))} value={reloadFrequency} />
+					<Select options={reloadOptions} onChange={useEffectEvent((val: Key) => setReloadFrequency(String(val)))} value={reloadFrequency} />
 				</Box>
 			</PageHeader>
 			<Box borderBlockEndWidth='x2' borderBlockEndColor='#8e8e8e' w='full' />
