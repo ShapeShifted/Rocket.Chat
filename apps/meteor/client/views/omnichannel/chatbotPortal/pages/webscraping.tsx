@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Box, Button } from '@rocket.chat/fuselage';
 import { WebScrapingService, Website } from './services/webscraping.service';
 
-const LIST_MAX_HEIGHT = '70vh';
+const LIST_MAX_HEIGHT = '68vh';
 
 const WebScraping = (): React.ReactElement => {
   const [websites, setWebsites] = useState<Website[]>([]);

@@ -5,7 +5,7 @@ import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import { FaqService } from './services/faq.service';
 
 const PAGE_SIZE = 8;
-const LIST_MAX_HEIGHT = '70vh';
+const LIST_MAX_HEIGHT = '67vh';
 
 interface Faq {
   _id?: string;

@@ -14,7 +14,7 @@ const ChatbotPortalRoute = () => {
   const [selected, setSelected] = useState<Selected>('FAQ');
 
   return (
-    <Box style={{ fontFamily: 'Inter, sans-serif' }}>
+    <Box display='flex' flexDirection='column' style={{ fontFamily: 'Inter, sans-serif', minHeight: '100%' }}>
       <Box p='x12'>
         <h1 style={{ fontWeight: 700, fontSize: '2.25rem', marginLeft: '5px', marginBottom: 0 }}>Chatbot Portal</h1>
       </Box>
@@ -118,13 +118,27 @@ const ChatbotPortalRoute = () => {
         </Box>
         <hr style={{ border: '1px solid #e0e0e0', marginTop: '-1px', width: '100%' }} />
 
-        <Box>
+        <Box flexGrow={1}>
           {selected === 'FAQ' && <FAQ />}
           {selected === 'Fact' && <Fact />}
           {selected === 'Conversation' && <Conversation />}
           {selected === 'Analytics' && <Analytics />}
           {selected === 'Voice Processing' && <VoiceProcessing />}
           {selected === 'Web Scraping' && <WebScraping />}
+        </Box>
+
+        <Box
+          backgroundColor='#E4E7EA'
+          color='#1F2329'
+          paddingBlock='x4'
+          marginBlockStart='x8'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          width='100%'
+          style={{ fontSize: '12px' }}
+        >
+          &#169; 2026 by DB AI Technology Sdn. Bhd.
         </Box>
     </Box>
   );
