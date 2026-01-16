@@ -8,7 +8,7 @@ export const IS_LOCALHOST = BASE_URL.startsWith('http://localhost');
 
 export const IS_EE = process.env.IS_EE ? !!JSON.parse(process.env.IS_EE) : false;
 
-export const URL_MONGODB = process.env.MONGO_URL || 'mongodb://localhost:3001/meteor?retryWrites=false';
+export const URL_MONGODB = process.env.MONGODB_URI || process.env.MONGO_URL || 'mongodb://localhost:3001/meteor?retryWrites=false';
 
 export const ADMIN_CREDENTIALS = {
 	email: 'rocketchat.internal.admin.test@rocket.chat',

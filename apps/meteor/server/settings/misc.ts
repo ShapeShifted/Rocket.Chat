@@ -12,7 +12,7 @@ const logger = new Logger('FingerPrint');
 
 const generateFingerprint = function () {
 	const siteUrl = settings.get('Site_Url');
-	const dbConnectionString = process.env.MONGO_URL;
+	const dbConnectionString = process.env.MONGODB_URI || process.env.MONGO_URL;
 
 	const fingerprint = `${siteUrl}${dbConnectionString}`;
 	return crypto.createHash('sha256').update(fingerprint).digest('base64');

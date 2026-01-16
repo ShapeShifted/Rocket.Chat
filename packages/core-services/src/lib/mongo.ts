@@ -2,9 +2,9 @@ import { isTracingEnabled } from '@rocket.chat/tracing';
 import { MongoClient } from 'mongodb';
 import type { Db, Collection, MongoClientOptions, Document } from 'mongodb';
 
-const { MONGO_URL = 'mongodb://localhost:27017/rocketchat' } = process.env;
+const { MONGO_URL = process.env.MONGODB_URI || 'mongodb://localhost:27017/rocketchat' } = process.env;
 
-const name = /^mongodb:\/\/.*?(?::[0-9]+)?\/([^?]*)/.exec(MONGO_URL)?.[1];
+const name = /^mongodb(?:\+srv)?:\/\/.*?(?::[0-9]+)?\/([^?]*)/.exec(MONGO_URL)?.[1];
 
 function connectDb(options?: MongoClientOptions): Promise<MongoClient> {
 	const client = new MongoClient(MONGO_URL, {

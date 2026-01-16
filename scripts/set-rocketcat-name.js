@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:3001/rocketchat';
+const MONGO_URL = process.env.MONGODB_URI || process.env.MONGO_URL || 'mongodb://localhost:3001/rocketchat';
 const NEW_NAME = process.env.ROCKETCAT_NAME || 'DB Engage Bot';
 
 (async () => {

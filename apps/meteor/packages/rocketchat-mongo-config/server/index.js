@@ -17,8 +17,8 @@ if (!shouldUseNativeOplog) {
 tls.DEFAULT_ECDH_CURVE = 'auto';
 
 const mongoConnectionOptions = {
-	// add retryWrites=false if not present in MONGO_URL
-	...(!process.env.MONGO_URL.includes('retryWrites') && { retryWrites: false }),
+	// add retryWrites=false if not present in MONGO_URL or MONGODB_URI
+	...(!(process.env.MONGODB_URI || process.env.MONGO_URL || '').includes('retryWrites') && { retryWrites: false }),
 	ignoreUndefined: false,
 
 	// TODO ideally we should call isTracingEnabled(), but since this is a Meteor package we can't :/
