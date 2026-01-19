@@ -25,14 +25,14 @@ RUN cd /app && \
 # Build the Meteor app
 RUN cd /app/apps/meteor \
     && rm -rf .meteor/local \
-    && meteor build --server-only --directory /app/bundle --allow-superuser
+    && NODE_OPTIONS="--max-old-space-size=8192" meteor build --server-only --directory /app/bundle --allow-superuser
 
 # --- Stage 2: Dependency Compilation ---
 FROM node:22-bullseye-slim AS deps-compiler
 
 # Install build tools for native modules (like sharp/bcrypt)
 RUN apt-get update && apt-get install -y \
-    python3 make g++ libc6 \
+    python3 make g++ gcc libc6 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/bundle /app/bundle

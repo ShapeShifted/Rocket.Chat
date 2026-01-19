@@ -171,7 +171,7 @@ services:
     image: nats:2.6-alpine
 
   traefik:
-    image: traefik:v2.8
+    image: traefik:latest
     command:
       - --providers.docker=true
     ports:
