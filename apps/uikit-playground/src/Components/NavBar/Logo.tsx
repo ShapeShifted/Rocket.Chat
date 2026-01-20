@@ -9,9 +9,9 @@ const Logo: FC = () => (
     height="100%"
     width="var(--sidebar-width)"
   >
-    <Box height="100%" width="80%">
+    {/* <Box height="100%" width="80%">
       <RocketChatLogo />
-    </Box>
+    </Box> */}
   </Box>
 );
 

@@ -36,9 +36,9 @@ const SignInSignUp = ({ route }: { route: string }) => {
           direction="column"
         >
           <Box w="max-content" h="100%">
-            <Box w="180px" h="40px" mbs="100px">
+            {/* <Box w="180px" h="40px" mbs="100px">
               <RocketChatLogo />
-            </Box>
+            </Box> */}
             <Label mbs="20px" fontScale="hero">
               {labels[route].header}
             </Label>
