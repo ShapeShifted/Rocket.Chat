@@ -166,7 +166,7 @@ const VoiceProcessing: React.FC = () => {
             <div
                 aria-live="polite"
                 style={{
-                    maxHeight: '70vh',
+                    maxHeight: '67vh',
                     overflowY: 'auto',  
                     paddingLeft: 32,
                     paddingRight: 24,

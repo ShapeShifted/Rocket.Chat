@@ -183,6 +183,19 @@ const RealTimeMonitoringPage = () => {
 					</Box>
 				</Margins>
 			</PageScrollableContentWithShadow>
+			<Box
+          backgroundColor='#E4E7EA'
+          color='#1F2329'
+          paddingBlock='x4'
+          marginBlockStart='x8'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          width='100%'
+          style={{ fontSize: '12px' }}
+        >
+          &#169; 2026 by DB AI Technology Sdn. Bhd.
+        </Box>
 		</Page>
 	);
 };

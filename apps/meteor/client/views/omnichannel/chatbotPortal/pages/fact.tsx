@@ -13,7 +13,7 @@ interface Fact {
 }
 
 const PAGE_SIZE = 8;
-const LIST_MAX_HEIGHT = '70vh';
+const LIST_MAX_HEIGHT = '68vh';
 
 const FactManager = (): ReactElement => {
   const [facts, setFacts] = useState<Fact[]>([]);

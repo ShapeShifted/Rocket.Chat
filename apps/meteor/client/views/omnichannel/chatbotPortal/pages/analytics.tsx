@@ -29,7 +29,7 @@ type SessionGroup = {
 };
 
 const PAGE_SIZE = 8;
-const LIST_MAX_HEIGHT = '70vh';
+const LIST_MAX_HEIGHT = '67vh';
 
 const Analytics: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
