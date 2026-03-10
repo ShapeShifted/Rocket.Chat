@@ -11,7 +11,7 @@ API.v1.addRoute('livechat/archived-conversation.importAll', { authRequired: true
 		const { dryRun } = (this as any).queryParams;
 		const isDryRun = dryRun === 'true';
 
-		const knowledgeUrl = process.env.KNOWLEDGE_API_BASE_URL || 'http://host.docker.internal:3005/knowledge';
+		const knowledgeUrl = process.env.KNOWLEDGE_API_BASE_URL || 'http://localhost:3005/knowledge';
 		const response = await fetch(`${knowledgeUrl}/archived-conversations/all`);
 
 		if (!response.ok) {

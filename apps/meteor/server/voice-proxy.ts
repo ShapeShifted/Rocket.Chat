@@ -1,7 +1,7 @@
 import { WebApp } from 'meteor/webapp';
 import httpProxy from 'http-proxy';
 
-const rawTarget = process.env.VOICE_PROXY_TARGET || 'http://host.docker.internal:3005';
+const rawTarget = process.env.VOICE_PROXY_TARGET || 'http://localhost:3005';
 
 // Ensure the final proxy target includes the `/voice-to-chat` prefix exactly once.
 const trimmed = rawTarget.replace(/\/+$/, '');

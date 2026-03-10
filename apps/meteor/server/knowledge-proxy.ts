@@ -1,7 +1,7 @@
 import { WebApp } from 'meteor/webapp';
 import httpProxy from 'http-proxy';
 
-const rawTarget = process.env.KNOWLEDGE_PROXY_TARGET || 'http://host.docker.internal:3005';
+const rawTarget = process.env.KNOWLEDGE_PROXY_TARGET || 'http://localhost:3005';
 
 // Ensure the final proxy target includes the `/knowledge` prefix exactly once.
 // If rawTarget already includes `/knowledge`, keep it; otherwise append it.
