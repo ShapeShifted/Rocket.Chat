@@ -5,6 +5,7 @@ import AdminSidebarPages from './AdminSidebarPages';
 import PlanTag from '../../../components/PlanTag';
 import Sidebar from '../../../components/Sidebar';
 import SettingsProvider from '../../../providers/SettingsProvider';
+import { Box } from '@rocket.chat/fuselage';
 
 const AdminSidebar = () => {
 	const t = useTranslation();
@@ -16,13 +17,13 @@ const AdminSidebar = () => {
 	// TODO: uplift this provider
 	return (
 		<SettingsProvider>
-			<Sidebar>
+			<Sidebar style={{ backgroundColor: '#2B2D3A' }}>
 				<Sidebar.Header
 					onClose={sidebar.close}
 					title={
-						<>
+						<Box color='white'>
 							{t('Administration')} <PlanTag />
-						</>
+						</Box>
 					}
 				/>
 				<Sidebar.Content>
