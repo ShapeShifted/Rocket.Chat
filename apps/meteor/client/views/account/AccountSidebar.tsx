@@ -4,6 +4,7 @@ import { memo, useSyncExternalStore } from 'react';
 import { getAccountSidebarItems, subscribeToAccountSidebarItems } from './sidebarItems';
 import Sidebar from '../../components/Sidebar';
 import SettingsProvider from '../../providers/SettingsProvider';
+import { Box } from '@rocket.chat/fuselage';
 
 const AccountSidebar = () => {
 	const t = useTranslation();
@@ -17,8 +18,8 @@ const AccountSidebar = () => {
 	// TODO: uplift this provider
 	return (
 		<SettingsProvider>
-			<Sidebar>
-				<Sidebar.Header onClose={sidebar.close} title={t('Account')} />
+			<Sidebar style={{ backgroundColor: '#2B2D3A' }}>
+				<Sidebar.Header onClose={sidebar.close} title={<span style={{ color: 'white' }}>{t('Account')}</span>} />
 				<Sidebar.Content>
 					<Sidebar.ItemsAssembler items={items} currentPath={currentPath} />
 				</Sidebar.Content>
