@@ -15,6 +15,7 @@ interface Faq {
 
 interface FaqTopic {
   _id?: string;
+  topicId:string;
   topic: string;
   faqs: Faq[];
 }
@@ -54,19 +55,29 @@ const FAQ: React.FC = () => {
       const docs = res.documents ?? [];
       // Group by topic
       const grouped: FaqTopic[] = [];
-      docs.forEach((d: any) => {
-        const topic = d.topic ?? d.metadata?.topic ?? 'General';
-        let topicObj = grouped.find(t => t.topic === topic);
-        if (!topicObj) {
-          topicObj = { _id: d.topicId ?? d._id, topic, faqs: [] };
-          grouped.push(topicObj);
-        }
-        topicObj.faqs.push({
-          _id: d.id ?? d._id,
-          question: d.question ?? d.metadata?.question ?? '',
-          answer: d.answer ?? d.text ?? '',
-        });
-      });
+docs.forEach((d: any) => {
+  // 1. Identify the topic name
+  const topicName = d.metadata?.topic ?? d.topic ?? 'General';
+  
+  // 2. Group by NAME (this keeps your topics separate in the UI)
+  let topicObj = grouped.find(t => t.topic === topicName);
+  
+  if (!topicObj) {
+    topicObj = { 
+      // Store the topicId in the _id field of the group
+      topicId: d.metadata?.topicId ?? d.topicId,
+      topic: topicName, 
+      faqs: [] 
+    };
+    grouped.push(topicObj);
+  }
+
+  topicObj.faqs.push({
+    _id: d.id ?? d._id,
+    question: d.metadata?.question ?? d.question ?? '',
+    answer: d.text ?? d.answer ?? '',
+  });
+});
       setFaqTopics(grouped);
       setTotalPages(res.totalPages ?? 1);
       setPage(p);
@@ -92,7 +103,8 @@ const FAQ: React.FC = () => {
   };
   const onStartNew = () => {
     setIsNew(true);
-    setEditingTopic({ topic: '', faqs: [{ question: '', answer: '' }] });
+    const newGeneratedId = `topic_${Date.now()}`;
+    setEditingTopic({ topicId: newGeneratedId, topic: '', faqs: [{ question: '', answer: '' }] });
   };
   const onCancelEdit = () => {
     setEditingTopic(null);
@@ -148,35 +160,24 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
   // Save handler (within component)
   const onSave = async () => {
     if (!editingTopic) return;
+    
     if (!editingTopic.topic || editingTopic.topic.trim() === '') {
       alert('Topic name is required');
       return;
     }
-    if (editingTopic.faqs.some(f => !f.question.trim() || !f.answer.trim())) {
-      alert('All questions and answers are required');
-      return;
-    }
-   const payload = {
-      type: 'fact',
-      documents: [
-        isNew
-          ? {
-               title: editingTopic.topic.trim(),
-               content: editingTopic.faqs.map(f => ({
-                 question: f.question.trim(),
-                 answer: f.answer.trim(),
-               })),
-             }
-          : {
-               id: editingTopic._id,
-               title: editingTopic.topic.trim(),
-               content: editingTopic.faqs.map(f => ({
-                 question: f.question.trim(),
-                 answer: f.answer.trim(),
-               })),
-             },
-      ],
+    
+    const payload = {
+      type: 'qna',
+      documents: editingTopic.faqs.map(f => ({
+        id: f._id,
+        topicId: editingTopic.topicId, // Send the stable anchor ID
+        topic: editingTopic.topic.trim(), // The new name
+        question: f.question.trim(),
+        answer: f.answer.trim(),
+        source: 'QnA_Answers'
+      })),
     };
+
     try {
       if (isNew) {
         await FaqService.ingestQna(payload);
@@ -691,7 +692,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                 primary
                 style={{ minWidth: 120 }}
                 onClick={async () => {
-                  await onDelete(deletingTopic._id);
+                  await onDelete(deletingTopic.topicId);
                   setDeletingTopic(null);
                 }}
               >

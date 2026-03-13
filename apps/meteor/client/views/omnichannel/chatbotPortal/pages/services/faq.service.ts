@@ -21,8 +21,8 @@ export const FaqService = {
   getFaqsForTopic: (topicName: string): Promise<QnaResponse> =>
     fetch(`${BASE}/documents/topic/${encodeURIComponent(topicName)}`, { credentials: 'include' }).then(handleJsonResponse),
 
-  deleteTopic: (topicName: string): Promise<QnaResponse> =>
-    fetch(`${BASE}/documents/delete/${encodeURIComponent(topicName)}`, { method: 'DELETE', credentials: 'include' }).then(handleJsonResponse),
+  deleteTopic: (topicId: string): Promise<QnaResponse> =>
+    fetch(`${BASE}/documents/delete/${encodeURIComponent(topicId)}`, { method: 'DELETE', credentials: 'include' }).then(handleJsonResponse),
 
   updateQna: (qnaPayload: any): Promise<QnaResponse> =>
     fetch(`${BASE}/qna/update`, {
