@@ -55,6 +55,12 @@ const FAQ: React.FC = () => {
       }
       const docs = res.documents ?? [];
       // Group by topic
+
+      const sortedDocs = [...docs].sort((a: any, b: any) => {
+      const idA = a.metadata?.topicId ?? a.topicId ?? '';
+      const idB = b.metadata?.topicId ?? b.topicId ?? '';
+      return idA.localeCompare(idB);
+    });
       const grouped: FaqTopic[] = [];
 
       let topicCounter = 1;
@@ -62,7 +68,7 @@ const FAQ: React.FC = () => {
       // If we are past page 1, we check if the first item should start at an offset
     if (p > 1) {
       // We fetch the very last item of the PREVIOUS page to check its topic
-      const firstDoc = docs[0];
+      const firstDoc = sortedDocs[0];
       const firstTopicId = firstDoc.metadata?.topicId ?? firstDoc.topicId;
 
       // 1. Check the last item of the PREVIOUS page
@@ -92,7 +98,7 @@ const FAQ: React.FC = () => {
       }
     }
 
-  docs.forEach((d: any) => {
+  sortedDocs.forEach((d: any) => {
     // 1. Identify the topic ID and topic name
     const topicId = d.metadata?.topicId ?? d.topicId ?? 'default-id';
     const topicName = d.metadata?.topic ?? d.topic ?? 'General';
@@ -115,16 +121,28 @@ const FAQ: React.FC = () => {
       grouped.push(topicObj);
     }
 
-    topicObj.faqs.push({
-      _id: d.id ?? d._id,
-      question: d.metadata?.question ?? d.question ?? '',
-      answer: d.text ?? d.answer ?? '',
-      
-    });
+    // Check if this FAQ already exists in the topic to avoid duplicates
+      const existingFaqIndex = topicObj.faqs.findIndex(
+        faq => faq._id === (d.id ?? d._id)
+      );
+
+      if (existingFaqIndex === -1) {
+        topicObj.faqs.push({
+          _id: d.id ?? d._id,
+          question: d.metadata?.question ?? d.question ?? '',
+          answer: d.text ?? d.answer ?? '',
+        });
+      }
 
     topicCounter++;
   });
         setFaqTopics(grouped);
+        console.log('FINAL GROUPED TOPICS:', grouped.map(g => ({
+        topicId: g.topicId,
+        topic: g.topic,
+        faqCount: g.faqs.length,
+        faqIds: g.faqs.map(f => f._id)
+      })));
         setTotalPages(res.totalPages ?? 1);
         setPage(p);
       } catch (err: any) {
@@ -253,6 +271,10 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
       } else {
         await FaqService.updateQna(payload);
       }
+      console.log('=== AFTER SAVE ===');
+    console.log('Current page:', page);
+    console.log('Search:', search);
+
       await load(page, search.trim());
       onCancelEdit();
     } catch (err: any) {
