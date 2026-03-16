@@ -18,6 +18,7 @@ interface FaqTopic {
   topicId:string;
   topic: string;
   faqs: Faq[];
+  startingIndex? : number;
 }
 
 const FAQ: React.FC = () => {
@@ -55,38 +56,83 @@ const FAQ: React.FC = () => {
       const docs = res.documents ?? [];
       // Group by topic
       const grouped: FaqTopic[] = [];
-docs.forEach((d: any) => {
-  // 1. Identify the topic name
-  const topicName = d.metadata?.topic ?? d.topic ?? 'General';
-  
-  // 2. Group by NAME (this keeps your topics separate in the UI)
-  let topicObj = grouped.find(t => t.topic === topicName);
-  
-  if (!topicObj) {
-    topicObj = { 
-      // Store the topicId in the _id field of the group
-      topicId: d.metadata?.topicId ?? d.topicId,
-      topic: topicName, 
-      faqs: [] 
-    };
-    grouped.push(topicObj);
-  }
 
-  topicObj.faqs.push({
-    _id: d.id ?? d._id,
-    question: d.metadata?.question ?? d.question ?? '',
-    answer: d.text ?? d.answer ?? '',
-  });
-});
-      setFaqTopics(grouped);
-      setTotalPages(res.totalPages ?? 1);
-      setPage(p);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load FAQs');
-    } finally {
-      setLoading(false);
+      let topicCounter = 1;
+
+      // If we are past page 1, we check if the first item should start at an offset
+    if (p > 1) {
+      // We fetch the very last item of the PREVIOUS page to check its topic
+      const firstDoc = docs[0];
+      const firstTopicId = firstDoc.metadata?.topicId ?? firstDoc.topicId;
+
+      // 1. Check the last item of the PREVIOUS page
+      const prevRes = await (searchQuery 
+        ? FaqService.searchFaqs(searchQuery, 'qna', undefined, p - 1, PAGE_SIZE)
+        : FaqService.getFaqs(p - 1, PAGE_SIZE));
+      
+      const prevDocs = prevRes.documents ?? [];
+      const lastDocPrevPage = prevDocs[prevDocs.length - 1];
+      const lastTopicId = lastDocPrevPage?.metadata?.topicId ?? lastDocPrevPage?.topicId;
+
+      // more than 2 pages of span for the same topic
+      if (firstTopicId === lastTopicId && firstTopicId !== undefined) {
+        const topicName = firstDoc.metadata?.topic ?? firstDoc.topic;
+        
+        // Fetch the full set for this topic to find our global starting position
+        // We use a high limit (999) to ensure we get all records for this specific topic
+        const topicFullSet = await FaqService.searchFaqs(topicName, 'qna', firstTopicId, 1, 999);
+        
+        // Find how many items exist BEFORE the first item of our current page
+        const totalItemsBeforeThisPage = topicFullSet.documents.findIndex(
+          (d: any) => (d.id ?? d._id) === (firstDoc.id ?? firstDoc._id)
+        );
+
+        // If found, start the counter at that position + 1
+        topicCounter = totalItemsBeforeThisPage !== -1 ? totalItemsBeforeThisPage + 1 : 1;
+      }
     }
-  }, []);
+
+  docs.forEach((d: any) => {
+    // 1. Identify the topic ID and topic name
+    const topicId = d.metadata?.topicId ?? d.topicId ?? 'default-id';
+    const topicName = d.metadata?.topic ?? d.topic ?? 'General';
+    
+    // 2. Group by NAME (this keeps your topics separate in the UI)
+    let topicObj = grouped.find(t => t.topicId === topicId);
+    
+    if (!topicObj) {
+      if (grouped.length > 0) {
+            topicCounter = 1;
+          }
+
+      topicObj = { 
+        // Store the topicId in the _id field of the group
+        topicId: topicId,
+        topic: topicName, 
+        faqs: [] ,
+        startingIndex: topicCounter
+      };
+      grouped.push(topicObj);
+    }
+
+    topicObj.faqs.push({
+      _id: d.id ?? d._id,
+      question: d.metadata?.question ?? d.question ?? '',
+      answer: d.text ?? d.answer ?? '',
+      
+    });
+
+    topicCounter++;
+  });
+        setFaqTopics(grouped);
+        setTotalPages(res.totalPages ?? 1);
+        setPage(p);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load FAQs');
+      } finally {
+        setLoading(false);
+      }
+    }, []);
 
   useEffect(() => {
     load(1, debouncedSearch.trim());
@@ -97,9 +143,32 @@ docs.forEach((d: any) => {
   }, [page]);
 
   // Modal handlers
-  const onStartEdit = (topic: FaqTopic) => {
+  const onStartEdit = async (topic: FaqTopic) => {
     setIsNew(false);
-    setEditingTopic({ ...topic, faqs: topic.faqs.map(f => ({ ...f })) });
+    setLoading(true); // Optional: show a small spinner
+    
+    try {
+      // Fetch EVERYTHING for this specific topic, bypassing general pagination
+      const res = await FaqService.searchFaqs(topic.topic, 'qna', topic.topicId, 1, 999); 
+      
+      if (res && res.documents) {
+      const allFaqs = res.documents.map((d: any) => ({
+        _id: d.id || d._id, // Support both formats
+        question: d.metadata?.question ?? '',
+        answer: d.text ?? '',
+      }));
+      setEditingTopic({ ...topic, faqs: allFaqs });
+    } else {
+        throw new Error("No documents found in response");
+    }
+    } catch (err) {
+      console.error("DEBUG - Edit Fetch Failed:", err);
+      alert("Could not load all FAQs for this topic");
+      // Fallback to what we have locally if the fetch fails
+      setEditingTopic({ ...topic, faqs: topic.faqs.map(f => ({ ...f })) });
+    } finally {
+      setLoading(false);
+    }
   };
   const onStartNew = () => {
     setIsNew(true);
@@ -335,9 +404,13 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '1.15rem', marginBottom: 8 }}>{topic.topic}</div>
-              {topic.faqs.map((f, idx) => (
+              {topic.faqs.map((f, idx) => {
+
+                const displayNumber = (topic.startingIndex ?? 1) + idx;
+                
+                return (
                 <div key={f._id ?? idx} style={{ marginBottom: 12 }}>
-                  <div style={{ fontWeight: 600, color: '#222', fontSize: '1rem', marginBottom: 8 }}>FAQ #{idx + 1}</div>
+                  <div style={{ fontWeight: 600, color: '#222', fontSize: '1rem', marginBottom: 8 }}>FAQ #{displayNumber}</div>
                   <div style={{ color: '#222', marginBottom: 8 }}>
                     <b>Question:</b> {f.question}
                   </div>
@@ -345,7 +418,8 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                     <b>Answer:</b> {f.answer}
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </Box>
         ))}
