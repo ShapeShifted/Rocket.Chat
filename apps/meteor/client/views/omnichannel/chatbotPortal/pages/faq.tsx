@@ -57,8 +57,8 @@ const FAQ: React.FC = () => {
       // Group by topic
 
       const sortedDocs = [...docs].sort((a: any, b: any) => {
-      const idA = a.metadata?.topicId ?? a.topicId ?? '';
-      const idB = b.metadata?.topicId ?? b.topicId ?? '';
+      const idA = a.metadata?.topicId  ?? '';
+      const idB = b.metadata?.topicId  ?? '';
       return idA.localeCompare(idB);
     });
       const grouped: FaqTopic[] = [];
@@ -81,21 +81,37 @@ const FAQ: React.FC = () => {
       const lastTopicId = lastDocPrevPage?.metadata?.topicId ?? lastDocPrevPage?.topicId;
 
       // more than 2 pages of span for the same topic
-      if (firstTopicId === lastTopicId && firstTopicId !== undefined) {
-        const topicName = firstDoc.metadata?.topic ?? firstDoc.topic;
-        
-        // Fetch the full set for this topic to find our global starting position
-        // We use a high limit (999) to ensure we get all records for this specific topic
-        const topicFullSet = await FaqService.searchFaqs(topicName, 'qna', firstTopicId, 1, 999);
-        
-        // Find how many items exist BEFORE the first item of our current page
-        const totalItemsBeforeThisPage = topicFullSet.documents.findIndex(
-          (d: any) => (d.id ?? d._id) === (firstDoc.id ?? firstDoc._id)
-        );
+      // Inside faq.tsx -> load function -> if (p > 1) block
+if (firstTopicId === lastTopicId && firstTopicId !== undefined) {
+    const topicName = firstDoc.metadata?.topic ?? firstDoc.topic;
+    const topicFullSet = await FaqService.searchFaqs(topicName, 'qna', firstTopicId, 1, 999);
+    
+    // --- DEBUG START ---
+    console.log(`[DEBUG] Page: ${p}`);
+    console.log(`[DEBUG] Topic: ${topicName} (ID: ${firstTopicId})`);
+    console.log(`[DEBUG] Looking for first item ID: ${firstDoc.id ?? firstDoc._id}`);
+    console.log(`[DEBUG] Looking for first item question: ${firstDoc.question}`);
+    console.log(`[DEBUG] Items returned from backend: ${topicFullSet.documents?.length}`);
+    
+    if (topicFullSet.documents) {
+            // List out the first few IDs returned by the backend to check the sort order
+            console.log(`[DEBUG] First 3 IDs in Backend Set:`, topicFullSet.documents.slice(0, 3).map((d: any) => d.id ?? d._id));
+            console.log(`[DEBUG] Backend Set index 0 is:`, topicFullSet.documents[0].metadata?.question);
+            
+            const totalItemsBeforeThisPage = topicFullSet.documents.findIndex(
+                (d: any) => (d.id ?? d._id) === (firstDoc.id ?? firstDoc._id)
+            );
 
-        // If found, start the counter at that position + 1
-        topicCounter = totalItemsBeforeThisPage !== -1 ? totalItemsBeforeThisPage + 1 : 1;
-      }
+            console.log(`[DEBUG] findIndex result: ${totalItemsBeforeThisPage}`);
+            
+            if (totalItemsBeforeThisPage === -1) {
+                console.error(`[DEBUG] ERROR: Current item was NOT found in the full topic list. This is why the number reset to 1.`);
+            }
+            // --- DEBUG END ---
+
+            topicCounter = totalItemsBeforeThisPage !== -1 ? totalItemsBeforeThisPage + 1 : 1;
+        }
+    }
     }
 
   sortedDocs.forEach((d: any) => {
@@ -106,43 +122,36 @@ const FAQ: React.FC = () => {
     // 2. Group by NAME (this keeps your topics separate in the UI)
     let topicObj = grouped.find(t => t.topicId === topicId);
     
-    if (!topicObj) {
-      if (grouped.length > 0) {
-            topicCounter = 1;
-          }
-
-      topicObj = { 
-        // Store the topicId in the _id field of the group
-        topicId: topicId,
-        topic: topicName, 
-        faqs: [] ,
-        startingIndex: topicCounter
-      };
+  if (!topicObj) {
+      topicObj = { topicId, topic: topicName, faqs: [], startingIndex: 0 };
       grouped.push(topicObj);
     }
-
-    // Check if this FAQ already exists in the topic to avoid duplicates
-      const existingFaqIndex = topicObj.faqs.findIndex(
-        faq => faq._id === (d.id ?? d._id)
-      );
-
-      if (existingFaqIndex === -1) {
-        topicObj.faqs.push({
-          _id: d.id ?? d._id,
-          question: d.metadata?.question ?? d.question ?? '',
-          answer: d.text ?? d.answer ?? '',
-        });
-      }
-
-    topicCounter++;
+    topicObj.faqs.push({
+      _id: d.id ?? d._id,
+      question: d.metadata?.question ?? d.question ?? '',
+      answer: d.text ?? d.answer ?? '',
+    });
   });
+
+    if (p > 1 && grouped.length > 0) {
+  const firstTopic = grouped[0];
+  
+  // Instead of a broad search, we get the COUNT of items for this topic
+  // that appeared on pages 1 to (p-1)
+  const prevRes = await (searchQuery 
+    ? FaqService.searchFaqs(searchQuery, 'qna', undefined, 1, (p - 1) * PAGE_SIZE)
+    : FaqService.getFaqs(1, (p - 1) * PAGE_SIZE));
+  
+  const allPreviousDocs = prevRes.documents ?? [];
+  
+  // Count how many times this specific topic appeared before this page
+  const countInPreviousPages = allPreviousDocs.filter(
+    (d: any) => (d.metadata?.topicId ?? d.topicId) === firstTopic.topicId
+  ).length;
+
+  firstTopic.startingIndex = countInPreviousPages;
+}
         setFaqTopics(grouped);
-        console.log('FINAL GROUPED TOPICS:', grouped.map(g => ({
-        topicId: g.topicId,
-        topic: g.topic,
-        faqCount: g.faqs.length,
-        faqIds: g.faqs.map(f => f._id)
-      })));
         setTotalPages(res.totalPages ?? 1);
         setPage(p);
       } catch (err: any) {
@@ -167,6 +176,7 @@ const FAQ: React.FC = () => {
     
     try {
       // Fetch EVERYTHING for this specific topic, bypassing general pagination
+      console.log(topic.topic);
       const res = await FaqService.searchFaqs(topic.topic, 'qna', topic.topicId, 1, 999); 
       
       if (res && res.documents) {
@@ -271,9 +281,6 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
       } else {
         await FaqService.updateQna(payload);
       }
-      console.log('=== AFTER SAVE ===');
-    console.log('Current page:', page);
-    console.log('Search:', search);
 
       await load(page, search.trim());
       onCancelEdit();
@@ -432,7 +439,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                 
                 return (
                 <div key={f._id ?? idx} style={{ marginBottom: 12 }}>
-                  <div style={{ fontWeight: 600, color: '#222', fontSize: '1rem', marginBottom: 8 }}>FAQ #{displayNumber}</div>
+                  <div style={{ fontWeight: 600, color: '#222', fontSize: '1rem', marginBottom: 8 }}>FAQ #{displayNumber+1}</div>
                   <div style={{ color: '#222', marginBottom: 8 }}>
                     <b>Question:</b> {f.question}
                   </div>
