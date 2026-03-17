@@ -56,19 +56,13 @@ const FAQ: React.FC = () => {
       const docs = res.documents ?? [];
       // Group by topic
 
-      const sortedDocs = [...docs].sort((a: any, b: any) => {
-      const idA = a.metadata?.topicId  ?? '';
-      const idB = b.metadata?.topicId  ?? '';
-      return idA.localeCompare(idB);
-    });
       const grouped: FaqTopic[] = [];
-
       let topicCounter = 1;
 
       // If we are past page 1, we check if the first item should start at an offset
     if (p > 1) {
       // We fetch the very last item of the PREVIOUS page to check its topic
-      const firstDoc = sortedDocs[0];
+      const firstDoc = docs[0];
       const firstTopicId = firstDoc.metadata?.topicId ?? firstDoc.topicId;
 
       // 1. Check the last item of the PREVIOUS page
@@ -82,39 +76,28 @@ const FAQ: React.FC = () => {
 
       // more than 2 pages of span for the same topic
       // Inside faq.tsx -> load function -> if (p > 1) block
-if (firstTopicId === lastTopicId && firstTopicId !== undefined) {
+    if (firstTopicId === lastTopicId && firstTopicId !== undefined) {
     const topicName = firstDoc.metadata?.topic ?? firstDoc.topic;
     const topicFullSet = await FaqService.searchFaqs(topicName, 'qna', firstTopicId, 1, 999);
+
     
-    // --- DEBUG START ---
-    console.log(`[DEBUG] Page: ${p}`);
-    console.log(`[DEBUG] Topic: ${topicName} (ID: ${firstTopicId})`);
-    console.log(`[DEBUG] Looking for first item ID: ${firstDoc.id ?? firstDoc._id}`);
-    console.log(`[DEBUG] Looking for first item question: ${firstDoc.question}`);
-    console.log(`[DEBUG] Items returned from backend: ${topicFullSet.documents?.length}`);
     
     if (topicFullSet.documents) {
-            // List out the first few IDs returned by the backend to check the sort order
-            console.log(`[DEBUG] First 3 IDs in Backend Set:`, topicFullSet.documents.slice(0, 3).map((d: any) => d.id ?? d._id));
-            console.log(`[DEBUG] Backend Set index 0 is:`, topicFullSet.documents[0].metadata?.question);
-            
+            // List out the first few IDs returned by the backend to check the sort order            
             const totalItemsBeforeThisPage = topicFullSet.documents.findIndex(
                 (d: any) => (d.id ?? d._id) === (firstDoc.id ?? firstDoc._id)
             );
-
-            console.log(`[DEBUG] findIndex result: ${totalItemsBeforeThisPage}`);
             
             if (totalItemsBeforeThisPage === -1) {
                 console.error(`[DEBUG] ERROR: Current item was NOT found in the full topic list. This is why the number reset to 1.`);
             }
-            // --- DEBUG END ---
 
             topicCounter = totalItemsBeforeThisPage !== -1 ? totalItemsBeforeThisPage + 1 : 1;
         }
     }
     }
 
-  sortedDocs.forEach((d: any) => {
+  docs.forEach((d: any) => {
     // 1. Identify the topic ID and topic name
     const topicId = d.metadata?.topicId ?? d.topicId ?? 'default-id';
     const topicName = d.metadata?.topic ?? d.topic ?? 'General';
