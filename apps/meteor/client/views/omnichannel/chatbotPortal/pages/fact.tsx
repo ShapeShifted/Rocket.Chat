@@ -98,7 +98,7 @@ const FactManager = (): ReactElement => {
   const onStartNew = () => {
     setEditingFactId(null);
     setIsNew(true);
-    setEditingFact({ title: '', content: '', source: 'Manual' });
+    setEditingFact({ title: '', content: '', source: 'General_Facts' });
     setShowTitleTooltip(false);
     setShowContentTooltip(false);
   };
@@ -159,13 +159,13 @@ const FactManager = (): ReactElement => {
           ? {
               title: editingFact.title.trim(),
               content: editingFact.content.trim(),
-              source: editingFact.source ?? 'Manual',
+              source: editingFact.source ?? 'General_Facts',
             }
           : {
               id: editingFact.id,
               title: editingFact.title.trim(),
               content: editingFact.content.trim(),
-              source: editingFact.source ?? 'Manual',
+              source: editingFact.source ?? 'General_Facts',
             },
       ],
     };
