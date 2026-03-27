@@ -9,16 +9,9 @@ export const {
 	subscribeToSidebarItems: subscribeToOmnichannelSidebarItems,
 } = createSidebarItems([
 	{
-		href: '/omnichannel/current',
-		icon: 'message',
-		i18nLabel: 'Current_Chats',
-		permissionGranted: (): boolean => hasPermission('view-livechat-current-chats'),
-	},
-	{
-		href: '/omnichannel/analytics',
-		icon: 'dashboard',
-		i18nLabel: 'Analytics',
-		permissionGranted: (): boolean => hasPermission('view-livechat-analytics'),
+    i18nLabel: 'Dashboard', 
+    permissionGranted: () => true,   
+    // NOTICE: No 'href' here
 	},
 	{
 		href: '/omnichannel/realtime-monitoring',
@@ -30,7 +23,32 @@ export const {
 		href: '/omnichannel/conversation-monitoring',
 		i18nLabel: 'Chatbot Conversation Monitoring',
 		icon: 'file-sheets',
-		permissionGranted: (): boolean => hasPermission('view-statistics'),
+		permissionGranted: (): boolean => hasPermission('view-livechat-real-time-monitoring'),
+	},
+	{ 
+        divider: true, 
+        i18nLabel: 'Div 1' 
+    },
+	{
+    i18nLabel: 'Knowledge Base', 
+    permissionGranted: (): boolean => hasPermission('view-statistics'),   
+    // NOTICE: No 'href' here
+	},
+	{
+	href: '/omnichannel/chatbot-portal',
+	i18nLabel: 'Chatbot Portal',
+	icon: 'chat',
+	permissionGranted: (): boolean => hasPermission('view-statistics'),
+	},
+	{ 
+        divider: true, 
+        i18nLabel: 'Div 2' ,
+		permissionGranted: (): boolean => hasPermission('view-statistics'), 
+    },
+	{
+    i18nLabel: 'Manage Organisation', 
+    permissionGranted: () => true,   
+    // NOTICE: No 'href' here
 	},
 	{
 		href: '/omnichannel/managers',
@@ -50,23 +68,15 @@ export const {
 		i18nLabel: 'Departments',
 		permissionGranted: (): boolean => hasPermission('view-livechat-departments'),
 	},
+	{ 
+        divider: true, 
+        i18nLabel: 'Div 3' ,
+		permissionGranted: (): boolean => hasPermission('view-livechat-appearance'),
+    },
 	{
-		href: '/omnichannel/customfields',
-		icon: 'file-sheets',
-		i18nLabel: 'Custom_Fields',
-		permissionGranted: (): boolean => hasPermission('view-livechat-customfields'),
-	},
-	{
-		href: '/omnichannel/triggers',
-		icon: 'smart',
-		i18nLabel: 'Livechat_Triggers',
-		permissionGranted: (): boolean => hasPermission('view-livechat-triggers'),
-	},
-	{
-		href: '/omnichannel/installation',
-		icon: 'livechat',
-		i18nLabel: 'Livechat_Installation',
-		permissionGranted: (): boolean => hasPermission('view-livechat-installation'),
+    i18nLabel: 'Settings', 
+    permissionGranted: (): boolean => hasPermission('view-livechat-appearance'),  
+    // NOTICE: No 'href' here
 	},
 	{
 		href: '/omnichannel/appearance',
@@ -86,6 +96,24 @@ export const {
 		i18nLabel: 'Business_Hours',
 		permissionGranted: (): boolean => hasPermission('view-livechat-business-hours'),
 	},
+		{
+		href: '/omnichannel/customfields',
+		icon: 'file-sheets',
+		i18nLabel: 'Custom_Fields',
+		permissionGranted: (): boolean => hasPermission('view-livechat-customfields'),
+	},
+	{
+		href: '/omnichannel/triggers',
+		icon: 'smart',
+		i18nLabel: 'Livechat_Triggers',
+		permissionGranted: (): boolean => hasPermission('view-livechat-triggers'),
+	},
+	{
+		href: '/omnichannel/installation',
+		icon: 'livechat',
+		i18nLabel: 'Livechat_Installation',
+		permissionGranted: (): boolean => hasPermission('view-livechat-installation'),
+	},
 	{
 		href: '/omnichannel/security-privacy',
 		icon: 'shield-check',
@@ -93,10 +121,16 @@ export const {
 		permissionGranted: () => hasAtLeastOnePermission(['view-privileged-setting', 'edit-privileged-setting', 'manage-selected-settings']),
 	},
 	{
-	href: '/omnichannel/chatbot-portal',
-	i18nLabel: 'Chatbot Portal',
-	icon: 'chat',
-	permissionGranted: (): boolean => hasPermission('view-statistics'),
+		href: '/omnichannel/current',
+		icon: 'message',
+		i18nLabel: 'Current_Chats',
+		permissionGranted: (): boolean => hasPermission('view-livechat-current-chats'),
+	},
+	{
+		href: '/omnichannel/analytics',
+		icon: 'dashboard',
+		i18nLabel: 'Analytics',
+		permissionGranted: (): boolean => hasPermission('view-livechat-analytics'),
 	},
 
 ]);
