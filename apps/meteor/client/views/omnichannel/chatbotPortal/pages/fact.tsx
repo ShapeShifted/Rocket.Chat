@@ -4,6 +4,7 @@ import { Box, Button, ButtonGroup } from '@rocket.chat/fuselage';
 import { FactService } from './services/fact.service';
 import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import type { ReactElement } from 'react';
+import { PageHeader } from '/client/components/Page';
 
 interface Fact {
   id?: string;
@@ -13,7 +14,7 @@ interface Fact {
 }
 
 const PAGE_SIZE = 8;
-const LIST_MAX_HEIGHT = '68vh';
+const LIST_MAX_HEIGHT = '85vh';
 
 const FactManager = (): ReactElement => {
   const [facts, setFacts] = useState<Fact[]>([]);
@@ -194,10 +195,10 @@ const FactManager = (): ReactElement => {
   };
 
   return (
-    <Box style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <Box style={{ width: 1800, margin: '0 auto' }}>
       {/* Header with title, search, and new fact button */}
       <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8 }}>
-        <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Facts</h2>
+        <PageHeader title="Facts" />
         
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           {/* Search box */}
@@ -262,14 +263,16 @@ const FactManager = (): ReactElement => {
         </div>
       </div>
 
+      <Box paddingInlineStart="x16">
       {loading && <div>Loading...</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {!loading && facts.length === 0 && <div>No facts found.</div>}
+      </Box>
 
       <div
         aria-live="polite"
         style={{
-          maxHeight: LIST_MAX_HEIGHT,
+          height: LIST_MAX_HEIGHT,
           overflowY: 'auto',
           paddingLeft: 4,
           paddingRight: 8,

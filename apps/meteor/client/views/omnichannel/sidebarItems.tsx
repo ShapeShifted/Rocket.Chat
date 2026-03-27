@@ -35,10 +35,28 @@ export const {
     // NOTICE: No 'href' here
 	},
 	{
-	href: '/omnichannel/chatbot-portal',
-	i18nLabel: 'Chatbot Portal',
-	icon: 'chat',
-	permissionGranted: (): boolean => hasPermission('view-statistics'),
+		href: '/omnichannel/chatbot/faq',
+		i18nLabel: 'FAQs',
+		icon: 'info',
+		permissionGranted: () => hasPermission('view-statistics'),
+	},
+	{
+		href: '/omnichannel/chatbot/facts',
+		i18nLabel: 'Facts',
+		icon: 'info',
+		permissionGranted: () => hasPermission('view-statistics'),
+	},
+	{
+		href: '/omnichannel/chatbot/voice',
+		i18nLabel: 'Voice Processing',
+		icon: 'mic',
+		permissionGranted: () => hasPermission('view-statistics'),
+	},
+	{
+		href: '/omnichannel/chatbot/web-scraping',
+		i18nLabel: 'Web Scraping',
+		icon: 'live',
+		permissionGranted: () => hasPermission('view-statistics'),
 	},
 	{ 
         divider: true, 

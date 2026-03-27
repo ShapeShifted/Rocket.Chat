@@ -96,10 +96,26 @@ declare module '@rocket.chat/ui-contexts' {
 			pattern: '/omnichannel/security-privacy';
 			pathname: `/omnichannel/security-privacy`;
 		};
-		'omnichannel-chatbot-portal': {
-			pattern: '/omnichannel/chatbot-portal';
-			pathname: `/omnichannel/chatbot-portal`;
-		};
+		'omnichannel-chatbot-faq': {
+            pattern: '/omnichannel/chatbot/faq';
+            pathname: '/omnichannel/chatbot/faq';
+        };
+        'omnichannel-chatbot-facts': {
+            pattern: '/omnichannel/chatbot/facts';
+            pathname: '/omnichannel/chatbot/facts';
+        };
+        'omnichannel-chatbot-analytics': {
+            pattern: '/omnichannel/chatbot/analytics';
+            pathname: '/omnichannel/chatbot/analytics';
+        };
+        'omnichannel-chatbot-voice': {
+            pattern: '/omnichannel/chatbot/voice';
+            pathname: '/omnichannel/chatbot/voice';
+        };
+        'omnichannel-chatbot-web-scraping': {
+            pattern: '/omnichannel/chatbot/web-scraping';
+            pathname: '/omnichannel/chatbot/web-scraping';
+        };
 		'omnichannel-conversation-monitoring': {
 			pattern: '/omnichannel/conversation-monitoring';
 			pathname: `/omnichannel/conversation-monitoring`;
@@ -213,9 +229,29 @@ registerOmnichannelRoute('/security-privacy', {
 	component: lazy(() => import('./securityPrivacy/SecurityPrivacyRoute')),
 });
 
-registerOmnichannelRoute('/chatbot-portal', {
-  name: 'omnichannel-chatbot-portal',
-  component: lazy(() => import('./chatbotPortal/ChatbotPortalRoute')), // or copy component to an omnichannel route component
+registerOmnichannelRoute('/chatbot/faq', {
+  name: 'omnichannel-chatbot-faq',
+  component: lazy(() => import('./chatbotPortal/pages/faq')),
+});
+
+registerOmnichannelRoute('/chatbot/facts', {
+  name: 'omnichannel-chatbot-facts',
+  component: lazy(() => import('./chatbotPortal/pages/fact')),
+});
+
+registerOmnichannelRoute('/chatbot/analytics', {
+  name: 'omnichannel-chatbot-analytics',
+  component: lazy(() => import('./chatbotPortal/pages/analytics')),
+});
+
+registerOmnichannelRoute('/chatbot/voice', {
+  name: 'omnichannel-chatbot-voice',
+  component: lazy(() => import('./chatbotPortal/pages/voice')),
+});
+
+registerOmnichannelRoute('/chatbot/web-scraping', {
+  name: 'omnichannel-chatbot-web-scraping',
+  component: lazy(() => import('./chatbotPortal/pages/webscraping')),
 });
 
 registerOmnichannelRoute('/conversation-monitoring', {

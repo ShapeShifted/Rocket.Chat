@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 import { Box, Button } from '@rocket.chat/fuselage';
 import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import { FaqService } from './services/faq.service';
+import { Page, PageHeader, PageScrollableContentWithShadow } from '/client/components/Page';
 
 const PAGE_SIZE = 8;
-const LIST_MAX_HEIGHT = '67vh';
+const LIST_MAX_HEIGHT = '85vh';
 
 interface Faq {
   _id?: string;
@@ -290,10 +291,10 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
   };
 
   return (
-    <Box style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <Box style={{margin: '0 auto', height:1000, width:1800 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8 }}>
-        <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>FAQs</h2>
+        <PageHeader title="Frequently Asked Questions" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           <div style={{ position: 'relative', width: 220 }}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -343,14 +344,16 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
         </div>
       </div>
 
+      <Box paddingInlineStart='x16'>    
       {loading && <div>Loading...</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {!loading && faqTopics.length === 0 && <div>No FAQs found.</div>}
-
+        </Box>
+      
       <div
         aria-live="polite"
         style={{
-          maxHeight: LIST_MAX_HEIGHT,
+          height: LIST_MAX_HEIGHT,
           overflowY: 'auto',
           paddingRight: 8,
           paddingLeft: 4,
