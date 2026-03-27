@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Box, Button } from '@rocket.chat/fuselage';
 import { WebScrapingService, Website } from './services/webscraping.service';
+import { PageHeader } from '/client/components/Page';
 
-const LIST_MAX_HEIGHT = '68vh';
+const LIST_MAX_HEIGHT = '85vh';
 
 const WebScraping = (): React.ReactElement => {
   const [websites, setWebsites] = useState<Website[]>([]);
@@ -115,18 +116,20 @@ const WebScraping = (): React.ReactElement => {
   return (
     <Box style={{ width: '100%', maxWidth: '100%', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif'  }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <h2 style={{ margin: 0, fontWeight: 700, fontSize: '28px' }}>Web Scraping</h2>
+        <PageHeader title="Web Scraping" />
         <Button primary onClick={onStartAdd} style={{ fontWeight: 600, fontSize: '18px', borderRadius: 8 }}>
           Add Website
         </Button>
       </div>
+      <Box paddingBlockStart="x16">
       {loading && <div>Loading...</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {!loading && websites.length === 0 && <div>No websites found.</div>}
+      </Box>
       <div
         aria-live="polite"
         style={{
-          maxHeight: LIST_MAX_HEIGHT,
+          height: LIST_MAX_HEIGHT,
           overflowY: 'auto',
           paddingLeft: 4,
           paddingRight: 8,
@@ -149,7 +152,7 @@ const WebScraping = (): React.ReactElement => {
               gap: 12,
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 1800 }}>
               {w.name ? (
                 <strong style={{ fontSize: '1.05rem', color: '#1F2329', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {w.name}

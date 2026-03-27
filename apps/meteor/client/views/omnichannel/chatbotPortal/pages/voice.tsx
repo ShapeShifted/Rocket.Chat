@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Box, Button } from '@rocket.chat/fuselage';
 import { useDebouncedValue } from '@rocket.chat/fuselage-hooks';
 import { VoiceService } from './services/voice.service';
+import { PageHeader } from '/client/components/Page';
 
 const PAGE_SIZE = 8;
 
@@ -84,10 +85,10 @@ const VoiceProcessing: React.FC = () => {
     };
 
     return (
-        <Box style={{ width: '100%', margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
+        <Box style={{ width: 1800, margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
             {/* Header with title, search, and submit file button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 24, fontFamily: 'Inter, sans-serif' }}>
-                <h2 style={{ marginLeft: '32px', fontWeight: 700, fontSize: '28px' ,fontFamily: 'Inter, sans-serif',}}>Voice Transcriptions</h2>
+                <PageHeader title="Voice Transcription" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: 24,fontFamily: 'Inter, sans-serif', }}>
                     {/* Search box */}
                     <div style={{ position: 'relative', width: 220,fontFamily: 'Inter, sans-serif', }}>
@@ -159,14 +160,15 @@ const VoiceProcessing: React.FC = () => {
                 </div>
             </div>
 
+             <Box paddingInlineStart='x16'>
             {loading && <div style={{ fontFamily: 'Inter, sans-serif', paddingLeft: 32  }}>Loading...</div>}
             {error && <div style={{ color: 'red' }}>{error}</div>}
             {!loading && transcriptions.length === 0 && <div>No transcriptions found.</div>}
-
+            </Box>    
             <div
                 aria-live="polite"
                 style={{
-                    maxHeight: '67vh',
+                    height: '85vh',
                     overflowY: 'auto',  
                     paddingLeft: 32,
                     paddingRight: 24,
