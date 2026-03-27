@@ -59,7 +59,7 @@ const WebScraping = (): React.ReactElement => {
     setEditingId(w.id);
     setEditingUrl(w.url);
     setEditingName(w.name);
-    setEditingIsOwnCompany(false);
+    setEditingIsOwnCompany(!!w.isOwnCompany);
     setShowNameTooltip(false);
     setShowUrlTooltip(false);
     setNameTouched(false);
@@ -91,9 +91,9 @@ const WebScraping = (): React.ReactElement => {
     }
     try {
       if (isNew) {
-        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: false });
+        await WebScrapingService.modifyWebsite({ mode: 'add', url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: editingIsOwnCompany });
       } else {
-        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: false });
+        await WebScrapingService.modifyWebsite({ mode: 'edit', id: editingId!, url: editingUrl.trim(), name: editingName.trim(), isOwnCompany: editingIsOwnCompany });
       }
       await loadWebsites();
       onCancelEdit();
@@ -133,7 +133,7 @@ const WebScraping = (): React.ReactElement => {
           boxSizing: 'border-box',
         }}
       >
-        {websites.filter((w) => !w.isOwnCompany).map((w) => (
+        {websites.map((w) => (
           <Box
             key={w.id}
             mb="x8"
@@ -417,6 +417,19 @@ const WebScraping = (): React.ReactElement => {
                   </div>
                 )}
               </div>
+
+              <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <input
+              type="checkbox"
+              id="isOwnCompany"
+              checked={editingIsOwnCompany}
+              onChange={(e) => setEditingIsOwnCompany(e.target.checked)}
+              style={{ width: 18, height: 18, cursor: 'pointer' }}
+            />
+            <label htmlFor="isOwnCompany" style={{ fontWeight: 600, fontSize: '16px', cursor: 'pointer' }}>
+              Is this your own company website?
+            </label>
+          </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
