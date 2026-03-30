@@ -23,14 +23,27 @@ const initialData = {
 	closed: 0,
 };
 
-const init = (canvas: HTMLCanvasElement, context: chartjs.Chart<'doughnut'> | undefined, t: TFunction) =>
-	drawDoughnutChart(
+// Updated init function to be async and defensive
+const init = async (canvas: HTMLCanvasElement, context: chartjs.Chart<'doughnut'> | undefined, t: TFunction) => {
+	// 1. Clean up existing context passed from the hook
+	context?.destroy();
+
+	// 2. Fail-safe: Check the global Chart.js registry for this canvas
+	const { default: ChartJs } = await import('chart.js/auto');
+	const existingChart = ChartJs.getChart(canvas);
+	if (existingChart) {
+		existingChart.destroy();
+	}
+
+	// 3. Create the new chart
+	return drawDoughnutChart(
 		canvas,
 		'',
-		context,
+		undefined, // Pass undefined because we've already handled destruction above
 		labels.map((l) => t(l as TranslationKey)),
 		Object.values(initialData),
 	);
+};
 
 type ChatsChartProps = {
 	departmentId: ILivechatDepartment['_id'];
@@ -55,6 +68,8 @@ const ChatsChart = ({ departmentId, dateRange, ...props }: ChatsChartProps) => {
 		t,
 	});
 
+	// Note: updateChartData might be redundant now that you are handling 
+	// the update logic directly in the useEffect below.
 	const updateChartData = useUpdateChartData({
 		context,
 		canvas,
@@ -65,11 +80,7 @@ const ChatsChart = ({ departmentId, dateRange, ...props }: ChatsChartProps) => {
 	const { open, queued, closed, onhold } = data ?? initialData;
 
 	useEffect(() => {
-		if (!context) {
-			return;
-		}
-
-		if (!isSuccess) {
+		if (!context || !isSuccess || !canvas.current) {
 			return;
 		}
 
@@ -84,9 +95,16 @@ const ChatsChart = ({ departmentId, dateRange, ...props }: ChatsChartProps) => {
 			context.data.labels = dataWithLabels.map((d) => `${d.label} (${d.value})`);
 			context.data.datasets[0].data = dataWithLabels.map((d) => d.value);
 			context.update();
-			return;
 		}
-	}, [context, closed, open, queued, onhold, isSuccess, t, updateChartData]);
+	}, [context, closed, open, queued, onhold, isSuccess, t]);
+
+	useEffect(() => {
+		return () => {
+			if (context) {
+				context.destroy();
+			}
+		};
+	}, [context]);
 
 	return <Chart canvasRef={canvas} {...props} />;
 };

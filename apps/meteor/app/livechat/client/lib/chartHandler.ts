@@ -188,20 +188,25 @@ export const drawLineChart = async (
 };
 
 export const drawDoughnutChart = async (
-	chart: chartjs.ChartItem,
+	canvasElement : HTMLCanvasElement | string,
 	title: string,
 	chartContext: chartjs.Chart<'doughnut'> | undefined,
 	dataLabels: string[],
 	dataPoints: number[],
 	tooltipCallbacks = {},
 ) => {
-	if (!chart) {
+	if (!canvasElement) {
 		throw new Error('No chart element');
 	}
-	chartContext?.destroy();
 
 	const { default: Chart } = await import('chart.js/auto');
-	return new Chart(chart, {
+
+	const existingChart = Chart.getChart(canvasElement);
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+	return new Chart(canvasElement, {
 		type: 'doughnut',
 		data: {
 			labels: dataLabels, // data labels, y-axis points
@@ -231,6 +236,11 @@ export const updateChart = async <TChartType extends chartjs.ChartType>(
 	label: string,
 	data: chartjs.DefaultDataPoint<TChartType>,
 ): Promise<void> => {
+	if (!chart || !chart.canvas || !document.body.contains(chart.canvas)) {
+        console.warn('Attempted to update a chart that is no longer in the DOM.');
+        return;
+    }
+
 	if (chart.data?.labels?.indexOf(label) === -1) {
 		// insert data
 		chart.data.labels.push(label);

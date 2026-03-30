@@ -81,13 +81,16 @@ const ConversationMonitoringRoute = () => {
     return (
         <Page bg='#f8f8f8'>
             <PageHeader title={t('Chatbot Conversation Monitoring')}>
-                <Box display='flex' flexDirection='row' mis='auto' alignItems='center'>
+                <Box display='flex' flexDirection='row' mis='auto' alignItems='center '>
                     <Box mie='x8'>{t('Show analysis from')}</Box>
-                    <DateRangePicker 
-                        onChange={setCustomRange} 
-                        onRangeTypeChange={(val) => setRangeType(String(val))} 
-                        rangeType={rangeType} 
-                    />
+                    <Box borderBlockWidth='x1' borderBlockColor='#d3d3d3' borderInlineWidth='x1' 
+                        borderInlineColor='#d3d3d3'> 
+                        <DateRangePicker 
+                            onChange={setCustomRange} 
+                            onRangeTypeChange={(val) => setRangeType(String(val))} 
+                            rangeType={rangeType} 
+                        />
+                    </Box>
                 </Box>
             </PageHeader>
             <Box borderBlockEndWidth='x2' borderBlockEndColor='#8e8e8e' w='full' />

@@ -73,11 +73,25 @@ const ChatsChart = ({ departmentId, dateRange, ...props }: ChatsChartProps) => {
 			return;
 		}
 
+		if (!canvas.current) {
+        return;
+    }
+
 		updateChartData(t('Open'), [open]);
 		updateChartData(t('Closed'), [closed]);
 		updateChartData(t('On_Hold_Chats'), [onhold]);
 		updateChartData(t('Queued'), [queued]);
+
+		
 	}, [context, closed, open, queued, onhold, isSuccess, t, updateChartData]);
+
+	useEffect(() => {
+        return () => {
+            if (context) {
+                context.destroy();
+            }
+        };
+    }, [context]);
 
 	return <Chart canvasRef={canvas} {...props} />;
 };

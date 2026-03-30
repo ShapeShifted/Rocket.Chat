@@ -14,14 +14,8 @@ export const {
     // NOTICE: No 'href' here
 	},
 	{
-		href: '/omnichannel/realtime-monitoring',
-		icon: 'live',
-		i18nLabel: 'Agent Conversation Monitoring',
-		permissionGranted: (): boolean => hasPermission('view-livechat-real-time-monitoring'),
-	},
-	{
-		href: '/omnichannel/conversation-monitoring',
-		i18nLabel: 'Chatbot Conversation Monitoring',
+		href: '/omnichannel/monitoring-portal',
+		i18nLabel: 'Agent & Chatbot Performance',
 		icon: 'file-sheets',
 		permissionGranted: (): boolean => hasPermission('view-livechat-real-time-monitoring'),
 	},

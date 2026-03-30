@@ -13,20 +13,37 @@ type UseUpdateChartDataOptions<TChart> = {
 };
 
 export function useUpdateChartData<TChartType extends chartjs.ChartType>({
-	canvas: canvasRef,
-	context,
-	init,
-	t,
+    canvas: canvasRef,
+    context,
+    init,
+    t,
 }: UseUpdateChartDataOptions<chartjs.Chart<TChartType>>) {
-	return useEffectEvent(async (label: string, data: number[]) => {
-		const canvas = canvasRef.current;
+    return useEffectEvent(async (label: string, data: number[]) => {
+        // 1. Initial check
+        if (!canvasRef.current) {
+            return;
+        }
 
-		if (!canvas) {
-			return;
-		}
+        try {
+            // 2. If context doesn't exist, init it. 
+            // Note: If this takes time, the component might unmount!
+            const chartContext = context ?? (await init(canvasRef.current, undefined, t));
 
-		const chartContext = context ?? (await init(canvas, undefined, t));
+            // 3. POST-AWAIT CHECK (Crucial)
+            // Verify the canvas hasn't been wiped from the DOM while we were waiting
+            if (!canvasRef.current || !chartContext) {
+                return;
+            }
 
-		await updateChart(chartContext, label, data);
-	});
+            // 4. Validate the chart internal state
+            // Chart.js stores the canvas in chartContext.canvas
+            if (!chartContext.canvas || !document.body.contains(chartContext.canvas)) {
+                return;
+            }
+
+            await updateChart(chartContext, label, data);
+        } catch (error) {
+            console.error('Failed to update chart data:', error);
+        }
+    });
 }

@@ -21,14 +21,42 @@ import ChatsOverview from './overviews/ChatsOverview';
 import ConversationOverview from './overviews/ConversationOverview';
 import ProductivityOverview from './overviews/ProductivityOverview';
 import { omnichannelQueryKeys } from '../../../lib/queryKeys';
+import DateRangePicker from '../analytics/DateRangePicker';
+import { subDays, startOfDay, endOfDay } from 'date-fns';
 
-const dateRange = getDateRange();
 
 const RealTimeMonitoringPage = () => {
-	const { t } = useTranslation();
 
+	
+	const { t } = useTranslation();
 	const [reloadFrequency, setReloadFrequency] = useState('5');
 	const [departmentId, setDepartment] = useState('');
+
+	const [rangeType, setRangeType] = useState('last_7_days');
+    const [customRange, setCustomRange] = useState({ start: '', end: '' });
+
+	const dateRange = useMemo(() => {
+			const today = new Date();
+			switch (rangeType) {
+				case 'today':
+					return { start: startOfDay(today).toISOString(), end: endOfDay(today).toISOString() };
+				case 'yesterday':
+					const yesterday = subDays(today, 1);
+					return { start: startOfDay(yesterday).toISOString(), end: endOfDay(today).toISOString() };
+				case 'last_30_days':
+					return { start: startOfDay(subDays(today, 29)).toISOString(), end: endOfDay(today).toISOString() };
+				case 'all_time':
+					return { start: new Date(0).toISOString(), end: endOfDay(today).toISOString() };
+				case 'custom':
+					return { 
+						start: customRange.start ? startOfDay(new Date(customRange.start)).toISOString() : startOfDay(subDays(today, 6)).toISOString(), 
+						end: customRange.end ? endOfDay(new Date(customRange.end)).toISOString() : endOfDay(today).toISOString() 
+					};
+				case 'last_7_days':
+				default:
+					return { start: startOfDay(subDays(today, 6)).toISOString(), end: endOfDay(today).toISOString() };
+			}
+		}, [rangeType, customRange]);
 
 	const queryClient = useQueryClient();
 
@@ -36,8 +64,12 @@ const RealTimeMonitoringPage = () => {
 		queryClient.invalidateQueries({ queryKey: omnichannelQueryKeys.analytics.all(departmentId) });
 	});
 
+
 	useEffect(() => {
-		const interval = setInterval(reloadCharts, Number(reloadFrequency) * 1000);
+		const interval = setInterval(() => {
+			// Optional: Decide if auto-reload should also update the date window
+			queryClient.invalidateQueries({ queryKey: omnichannelQueryKeys.analytics.all(departmentId) });
+		}, Number(reloadFrequency) * 1000);
 
 		return () => {
 			clearInterval(interval);
@@ -58,6 +90,15 @@ const RealTimeMonitoringPage = () => {
 		<Page bg='#f8f8f8'>
 			<PageHeader title={t('Agent Conversation Monitoring')}>
 				<Box display='flex' flexDirection='row' mis='auto' alignItems='center'>
+					<Box mie='x8'>{t('Show analysis from')}</Box>
+						<Box borderBlockWidth='x1' borderBlockColor='#d3d3d3' borderInlineWidth='x1' 
+    					borderInlineColor='#d3d3d3' mie='x16'> 
+						<DateRangePicker 
+							onChange={setCustomRange} 
+							onRangeTypeChange={(val) => setRangeType(String(val))} 
+							rangeType={rangeType} 
+						/>
+					</Box>
 					<Label mie={4}>{t('Departments:')}</Label>
 					<AutoCompleteDepartment
 						mie={4}
