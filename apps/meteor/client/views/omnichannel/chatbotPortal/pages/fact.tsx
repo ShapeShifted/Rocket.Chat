@@ -194,6 +194,50 @@ const FactManager = (): ReactElement => {
     }
   };
 
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+  
+      // Optional: Double check extension if user forces a non-csv through 'All Files'
+      if (!file.name.endsWith('.csv')) {
+        alert('Please upload a valid .csv file');
+        return;
+      }
+  
+      try {
+        setLoading(true);
+        const result = await FactService.importCsv(file, 'fact');
+        alert(`Import Complete: ${result.imported} added, ${result.skipped} skipped.`);
+        
+        // Refresh your data (assuming your fetch function is called fetchFaqs)
+        // fetchFaqs(1); 
+        window.location.reload(); 
+      } catch (err: any) {
+        console.error(err);
+        alert('Failed to import: ' + err.message);
+      } finally {
+        setLoading(false);
+        event.target.value = ''; // Reset so you can upload the same file again if needed
+      }
+    };
+  
+    const triggerPicker = () => {
+      document.getElementById('csv-upload-input')?.click();
+    };
+
+    const handleExport = useCallback(() => {
+      const url = FactService.getExportUrl('fact');
+      
+      // Create a temporary hidden anchor tag to trigger the download
+      const link = document.createElement('a');
+      link.href = url;
+      // This tells the browser to download instead of navigate
+      link.setAttribute('download', `faq_export_${new Date().getTime()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  }, []);
+
   return (
     <Box style={{ width: 1800, margin: '0 auto' }}>
       {/* Header with title, search, and new fact button */}
@@ -260,6 +304,56 @@ const FactManager = (): ReactElement => {
               New Fact
             </span>
           </Button>
+
+          <>
+                      <input
+                        type="file"
+                        id="csv-upload-input"
+                        accept=".csv"     
+                        style={{ display: 'none' }}
+                        onChange={handleImport}
+                      />
+          
+                      <Button
+                        primary
+                        style={{
+                          fontWeight: 600,
+                          fontSize: '18px',
+                          padding: '8px 20px',
+                          borderRadius: 8,
+                          background: '#156ff5',
+                          border: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                        onClick={triggerPicker} // <-- Changed this to trigger the input
+                      >
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          Upload CSV
+                        </span>
+                      </Button>
+                    </>
+  
+            <Button
+              primary
+              style={{
+                fontWeight: 600,
+                fontSize: '18px',
+                padding: '8px 20px',
+                borderRadius: 8,
+                background: '#156ff5',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+              onClick={handleExport}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                Download CSV
+              </span>
+            </Button>
         </div>
       </div>
 

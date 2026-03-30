@@ -187,6 +187,7 @@ const FAQ: React.FC = () => {
     const newGeneratedId = `topic_${Date.now()}`;
     setEditingTopic({ topicId: newGeneratedId, topic: '', faqs: [{ question: '', answer: '' }] });
   };
+
   const onCancelEdit = () => {
     setEditingTopic(null);
     setIsNew(false);
@@ -290,6 +291,52 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
     load(newPage, search.trim());
   };
 
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Optional: Double check extension if user forces a non-csv through 'All Files'
+    if (!file.name.endsWith('.csv')) {
+      alert('Please upload a valid .csv file');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await FaqService.importCsv(file, 'qna');
+      alert(`Import Complete: ${result.imported} added, ${result.skipped} skipped.`);
+      
+      // Refresh your data (assuming your fetch function is called fetchFaqs)
+      // fetchFaqs(1); 
+      window.location.reload(); 
+    } catch (err: any) {
+      console.error(err);
+      alert('Failed to import: ' + err.message);
+    } finally {
+      setLoading(false);
+      event.target.value = ''; // Reset so you can upload the same file again if needed
+    }
+  };
+
+  const triggerPicker = () => {
+    document.getElementById('csv-upload-input')?.click();
+  };
+
+  const handleExport = useCallback(() => {
+    // For FAQ page, we use 'qna'. 
+    // (If you use this same component for Facts, you'd pass 'fact')
+    const url = FaqService.getExportUrl('qna');
+    
+    // Create a temporary hidden anchor tag to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    // This tells the browser to download instead of navigate
+    link.setAttribute('download', `faq_export_${new Date().getTime()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}, []);
+
   return (
     <Box style={{margin: '0 auto', height:1000, width:1800 }}>
       {/* Header */}
@@ -339,6 +386,56 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
                 <path d="M8.88903 1.11111C8.88903 0.497461 9.38649 0 10.0001 0C10.6138 0 11.1112 0.497461 11.1112 1.11111V18.8889C11.1112 19.5025 10.6138 20 10.0001 20C9.38649 20 8.88903 19.5025 8.88903 18.8889V1.11111Z" fill="white"/>
               </svg>
               New FAQ
+            </span>
+          </Button>
+
+          <>
+            <input
+              type="file"
+              id="csv-upload-input"
+              accept=".csv"     
+              style={{ display: 'none' }}
+              onChange={handleImport}
+            />
+
+            <Button
+              primary
+              style={{
+                fontWeight: 600,
+                fontSize: '18px',
+                padding: '8px 20px',
+                borderRadius: 8,
+                background: '#156ff5',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+              onClick={triggerPicker} // <-- Changed this to trigger the input
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                Upload CSV
+              </span>
+            </Button>
+          </>
+
+          <Button
+            primary
+            style={{
+              fontWeight: 600,
+              fontSize: '18px',
+              padding: '8px 20px',
+              borderRadius: 8,
+              background: '#156ff5',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+            onClick={handleExport}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+             Download CSV
             </span>
           </Button>
         </div>
