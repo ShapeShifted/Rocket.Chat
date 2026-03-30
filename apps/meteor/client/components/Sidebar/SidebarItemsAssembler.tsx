@@ -27,6 +27,7 @@ const SidebarItemsAssembler = ({ items, currentPath }: SidebarItemsAssemblerProp
 				<Fragment key={props.i18nLabel}>
 					{isSidebarItem(props) ? (
 						props.href ? (
+                            <Box pis="x16">
                             <SidebarNavigationItem
                                 permissionGranted={props.permissionGranted}
                                 pathSection={props.href ?? props.pathSection ?? ''}
@@ -37,6 +38,7 @@ const SidebarItemsAssembler = ({ items, currentPath }: SidebarItemsAssemblerProp
                                 externalUrl={props.externalUrl}
                                 badge={props.badge}
                             />
+                            </Box>
                         ) : (
                             /* RENDER AS UNCLICKABLE HEADER */
                             <Box 
