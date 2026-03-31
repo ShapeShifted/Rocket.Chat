@@ -239,7 +239,7 @@ const FactManager = (): ReactElement => {
   }, []);
 
   return (
-    <Box style={{ width: 1800, margin: '0 auto' }}>
+    <Box style={{ maxWidth:1800, width: '100%', margin: '0 auto' }}>
       {/* Header with title, search, and new fact button */}
       <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8 }}>
         <PageHeader title="Facts" />

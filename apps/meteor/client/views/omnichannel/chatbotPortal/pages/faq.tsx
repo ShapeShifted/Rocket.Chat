@@ -338,7 +338,7 @@ const onBlurFaq = (idx: number, field: 'question' | 'answer', value: string) => 
 }, []);
 
   return (
-    <Box style={{margin: '0 auto', height:1000, width:1800 }}>
+    <Box style={{margin: '0 auto', height:1000, maxWidth:1800, width: '100%' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 8 }}>
         <PageHeader title="Frequently Asked Questions" />

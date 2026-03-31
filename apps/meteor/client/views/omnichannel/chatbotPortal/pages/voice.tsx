@@ -85,7 +85,7 @@ const VoiceProcessing: React.FC = () => {
     };
 
     return (
-        <Box style={{ width: 1800, margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
+        <Box style={{ maxWidth:1800, width: '100%', margin: '0 auto' , fontFamily: 'Inter, sans-serif' }} >
             {/* Header with title, search, and submit file button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 32, paddingRight: 24, fontFamily: 'Inter, sans-serif' }}>
                 <PageHeader title="Voice Transcription" />

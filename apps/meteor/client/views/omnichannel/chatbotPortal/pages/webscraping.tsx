@@ -121,7 +121,7 @@ const WebScraping = (): React.ReactElement => {
           Add Website
         </Button>
       </div>
-      <Box paddingBlockStart="x16">
+      <Box>
       {loading && <div>Loading...</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {!loading && websites.length === 0 && <div>No websites found.</div>}
@@ -152,7 +152,7 @@ const WebScraping = (): React.ReactElement => {
               gap: 12,
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 1800 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxWidth: 1800 }}>
               {w.name ? (
                 <strong style={{ fontSize: '1.05rem', color: '#1F2329', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {w.name}
