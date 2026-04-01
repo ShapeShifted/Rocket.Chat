@@ -35,27 +35,36 @@ const RealTimeMonitoringPage = () => {
 	const [rangeType, setRangeType] = useState('last_7_days');
     const [customRange, setCustomRange] = useState({ start: '', end: '' });
 
+	const getSafeCustomDate = (dateStr: string, defaultDate: Date) => 
+        dateStr ? new Date(dateStr) : defaultDate;
+
 	const dateRange = useMemo(() => {
 			const today = new Date();
-			switch (rangeType) {
-				case 'today':
-					return { start: startOfDay(today).toISOString(), end: endOfDay(today).toISOString() };
-				case 'yesterday':
-					const yesterday = subDays(today, 1);
-					return { start: startOfDay(yesterday).toISOString(), end: endOfDay(today).toISOString() };
-				case 'last_30_days':
-					return { start: startOfDay(subDays(today, 29)).toISOString(), end: endOfDay(today).toISOString() };
-				case 'all_time':
-					return { start: new Date(0).toISOString(), end: endOfDay(today).toISOString() };
-				case 'custom':
-					return { 
-						start: customRange.start ? startOfDay(new Date(customRange.start)).toISOString() : startOfDay(subDays(today, 6)).toISOString(), 
-						end: customRange.end ? endOfDay(new Date(customRange.end)).toISOString() : endOfDay(today).toISOString() 
-					};
-				case 'last_7_days':
-				default:
-					return { start: startOfDay(subDays(today, 6)).toISOString(), end: endOfDay(today).toISOString() };
-			}
+
+	// Helper to keep code clean
+		const formatStart = (d: Date) => startOfDay(d).toISOString();
+		const formatEnd = (d: Date) => endOfDay(d).toISOString();
+
+		if (rangeType === 'custom') {
+			return {
+				// Use customRange if it exists, otherwise fallback to last 7 days but STAY in custom mode
+				start: formatStart(customRange.start ? new Date(customRange.start) : subDays(today, 6)),
+				end: formatEnd(customRange.end ? new Date(customRange.end) : today),
+			};
+		}
+
+		switch (rangeType) {
+			case 'today':
+				return { start: formatStart(today), end: formatEnd(today) };
+			case 'yesterday':
+				return { start: formatStart(subDays(today, 1)), end: formatEnd(subDays(today, 1)) };
+			case 'last_30_days':
+				return { start: formatStart(subDays(today, 29)), end: formatEnd(today) };
+			case 'all_time':
+				return { start: new Date(0).toISOString(), end: formatEnd(today) };
+			default: // last_7_days
+				return { start: formatStart(subDays(today, 6)), end: formatEnd(today) };
+				}
 		}, [rangeType, customRange]);
 
 	const queryClient = useQueryClient();
@@ -64,17 +73,25 @@ const RealTimeMonitoringPage = () => {
 		queryClient.invalidateQueries({ queryKey: omnichannelQueryKeys.analytics.all(departmentId) });
 	});
 
+	// Change when there's change in the date range
+	useEffect(() => {
+		queryClient.invalidateQueries({ 
+			queryKey: omnichannelQueryKeys.analytics.all(departmentId) 
+		});
+	}, [dateRange, departmentId, queryClient]);
 
+	// Interval-based automatic background update
 	useEffect(() => {
 		const interval = setInterval(() => {
-			// Optional: Decide if auto-reload should also update the date window
-			queryClient.invalidateQueries({ queryKey: omnichannelQueryKeys.analytics.all(departmentId) });
+			queryClient.invalidateQueries({ 
+				queryKey: omnichannelQueryKeys.analytics.all(departmentId) 
+			});
 		}, Number(reloadFrequency) * 1000);
 
 		return () => {
 			clearInterval(interval);
 		};
-	}, [reloadCharts, reloadFrequency]);
+	}, [reloadFrequency, departmentId, queryClient]);
 
 	const reloadOptions = useMemo(
 		() => [
@@ -86,6 +103,8 @@ const RealTimeMonitoringPage = () => {
 		[t],
 	);
 
+	const viewId = `${rangeType}-${dateRange.start}-${dateRange.end}-${departmentId}`;
+
 	return (
 		<Page bg='#f8f8f8'>
 			<PageHeader title={t('Agent Conversation Monitoring')}>
@@ -94,29 +113,21 @@ const RealTimeMonitoringPage = () => {
 						<Box borderBlockWidth='x1' borderBlockColor='#d3d3d3' borderInlineWidth='x1' 
     					borderInlineColor='#d3d3d3' mie='x16'> 
 						<DateRangePicker 
-							onChange={setCustomRange} 
+							onChange={(range) => {
+										setCustomRange(range);
+										setRangeType('custom'); 
+									}}
 							onRangeTypeChange={(val) => setRangeType(String(val))} 
 							rangeType={rangeType} 
 						/>
 					</Box>
-					<Label mie={4}>{t('Departments:')}</Label>
-					<AutoCompleteDepartment
-						mie={4}
-						value={departmentId}
-						onChange={setDepartment}
-						placeholder={t('All')}
-						label={t('All')}
-						onlyMyDepartments
-						haveAll
-						withTitle={false}
-						renderItem={({ label, ...props }) => <Option {...props} label={<span style={{ whiteSpace: 'normal' }}>{label}</span>} />}
-					/>
+					
 					<Label mie={4} marginInlineStart='20px'>{t('Update every:')}</Label>
 					<Select options={reloadOptions} onChange={useEffectEvent((val: Key) => setReloadFrequency(String(val)))} value={reloadFrequency} />
 				</Box>
 			</PageHeader>
 			<Box borderBlockEndWidth='x2' borderBlockEndColor='#8e8e8e' w='full' />
-			<PageScrollableContentWithShadow>
+			<PageScrollableContentWithShadow key={viewId}>
 				<Margins block='x4'>
 
 					<Box display='flex' flexDirection='row' alignItems='stretch' flexWrap='wrap' style={{ gap: '16px' }}>

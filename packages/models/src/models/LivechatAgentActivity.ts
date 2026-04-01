@@ -46,7 +46,7 @@ export class LivechatAgentActivityRaw extends BaseRaw<ILivechatAgentActivity> im
 		);
 	}
 
-	updateLastStoppedAt({
+	async updateLastStoppedAt({
 		agentId,
 		date,
 		lastStoppedAt,
@@ -62,7 +62,10 @@ export class LivechatAgentActivityRaw extends BaseRaw<ILivechatAgentActivity> im
 				lastStoppedAt,
 			},
 		};
-		return this.updateMany(query, update);
+
+		const result = await this.col.updateOne(query, update);
+
+		return result;
 	}
 
 	updateServiceHistory({
