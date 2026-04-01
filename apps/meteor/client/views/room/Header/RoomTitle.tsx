@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import HeaderIconWithRoom from './HeaderIconWithRoom';
 import { HeaderTitle, HeaderTitleButton } from '../../../components/Header';
 import { useRoomToolbox } from '../contexts/RoomToolboxContext';
+import { get } from 'underscore';
 
 const getSessionIdFromRoom = (room: any): string | undefined =>
 	room?.livechatData?.sessionId ??
@@ -18,6 +19,12 @@ const getSessionIdFromRoom = (room: any): string | undefined =>
 	room?.visitor?.sessionId ??
 	room?.livechatData?.sessionToken ??
 	undefined;
+
+
+const getPhoneNo = (room: any): string | undefined =>
+		room?.v?.token??
+		room?.sms?.from??
+		undefined;
 
 const RoomTitle = ({ room }: { room: IRoom }): ReactElement => {
 	useDocumentTitle(room.name, false);
@@ -52,6 +59,8 @@ const RoomTitle = ({ room }: { room: IRoom }): ReactElement => {
 
 	const sessionId = getSessionIdFromRoom(room);
 
+	const phoneNo = getPhoneNo(room);
+
 	return (
 		<HeaderTitleButton {...buttonProps} mie={4}>
 			<HeaderIconWithRoom room={room} />
@@ -60,7 +69,7 @@ const RoomTitle = ({ room }: { room: IRoom }): ReactElement => {
 				{sessionId && (
 					<Box is='span' fontScale='p2' color='default' style={{ fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }}>
 						{' '}
-						Session ID: {sessionId || t('N/A')}
+						Phone Number: {phoneNo || t('N/A')}
 					</Box>
 				)}
 			</HeaderTitle>

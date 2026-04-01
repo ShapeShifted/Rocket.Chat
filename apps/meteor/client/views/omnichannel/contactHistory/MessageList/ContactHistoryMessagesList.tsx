@@ -83,7 +83,14 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 		room?.livechatData?.sessionToken ??
 		undefined;
 
+	const getPhoneNo = (room: any): string | undefined =>
+		room?.v?.token??
+		room?.sms?.from??
+		undefined;
+
 	const sessionId = getSessionIdFromRoom(room);
+
+	const phoneNo = getPhoneNo(room);
 
 	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		setText(event.currentTarget.value);
@@ -111,9 +118,9 @@ const ContactHistoryMessagesList = ({ chatId, onClose, onOpenRoom }: ContactHist
 					borderBlockEndColor='extra-light'
 					flexShrink={0}
 				>
-					<Box mb='x8' fontScale='p2' color='default' style={{ fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }}>
-						Session ID: {sessionId || t('N/A')}
-					</Box>
+					 <Box mb='x8' fontScale='p2' color='default' style={{ fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }}>
+						Phone Number: {phoneNo || t('N/A')}
+					</Box> 
 					<Box display='flex' flexDirection='row' flexGrow={1} mi='neg-x4'>
 						<Margins inline={4}>
 							<TextInput

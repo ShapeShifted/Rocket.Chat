@@ -71,9 +71,9 @@ const ContactInfoHistoryMessages = ({ chatId, onBack, onOpenRoom, sessionId }: C
 					borderBlockEndColor='extra-light'
 					flexShrink={0}
 				>
-					<Box pis={12} fontFamily='inter' fontScale='p1' color='default'>
+					{/* <Box pis={12} fontFamily='inter' fontScale='p1' color='default'>
 						{t('Session ID')}: {sessionId}
-					</Box>
+					</Box> */}
 					<Box display='flex' alignItems='center' flexDirection='row' flexGrow={1} mi='neg-x4'>
 						<Margins inline={4}>
 							<TextInput
