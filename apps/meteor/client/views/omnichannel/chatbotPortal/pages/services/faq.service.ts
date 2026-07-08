@@ -1,6 +1,6 @@
 // lightweight fetch-based service for FAQs (translated from Angular)
 
-const DEFAULT_BASE ='/knowledge';
+const DEFAULT_BASE = '/knowledge';
 
 const BASE = DEFAULT_BASE.replace(/\/$/, '');
 
@@ -41,32 +41,33 @@ export const FaqService = {
     }).then(handleJsonResponse),
 
   searchFaqs: (query: string, type: string = 'qna', topicId?: string, page = 1, limit = 100): Promise<QnaResponse> =>
-        fetch(`${BASE}/search`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            query,
-            topicId,
-            type:'qna',
-            page,
-            limit,
-          }),
-        }).then(handleJsonResponse),
+    fetch(`${BASE}/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        query,
+        topicId,
+        type: 'qna',
+        page,
+        limit,
+      }),
+    }).then(handleJsonResponse),
 
   getExportUrl: (type: 'qna' | 'fact'): string => {
     return `${BASE}/documents/export?type=${type}`;
   },
 
-  importCsv: (file: File, type: 'qna' | 'fact'): Promise<any> => {
+  importCsv: (file: File): Promise<{ imported: number; skipped: number; errors: string[] }> => {
     const formData = new FormData();
     formData.append('file', file);
-    return fetch(`${BASE}/documents/import?type=${type}`, {
+
+    // Point to your new auto-detecting route and drop the '?type=' query string parameter
+    return fetch(`${BASE}/documents/import-file`, {
       method: 'POST',
       body: formData,
       credentials: 'include',
     }).then(handleJsonResponse);
   },
-      };
+};
 
-    
