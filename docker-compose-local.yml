@@ -150,6 +150,8 @@ services:
     restart: on-failure
     ports:
       - 27017:27017
+    volumes:
+      - local_mongodb_data:/data/db
     environment:
       MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
       MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
@@ -178,3 +180,6 @@ services:
       - 3000:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  local_mongodb_data:

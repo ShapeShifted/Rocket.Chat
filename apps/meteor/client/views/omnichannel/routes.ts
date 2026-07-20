@@ -108,6 +108,10 @@ declare module '@rocket.chat/ui-contexts' {
             pattern: '/omnichannel/chatbot/facts';
             pathname: '/omnichannel/chatbot/facts';
         };
+        'omnichannel-chatbot-announcement': {
+            pattern: '/omnichannel/chatbot/announcement';
+            pathname: '/omnichannel/chatbot/announcement';
+        };
         'omnichannel-chatbot-analytics': {
             pattern: '/omnichannel/chatbot/analytics';
             pathname: '/omnichannel/chatbot/analytics';
@@ -246,6 +250,11 @@ registerOmnichannelRoute('/chatbot/faq', {
 registerOmnichannelRoute('/chatbot/facts', {
   name: 'omnichannel-chatbot-facts',
   component: lazy(() => import('./chatbotPortal/pages/fact')),
+});
+
+registerOmnichannelRoute('/chatbot/announcement', {
+  name: 'omnichannel-chatbot-announcement',
+  component: lazy(() => import('./chatbotPortal/pages/announcement')),
 });
 
 registerOmnichannelRoute('/chatbot/analytics', {

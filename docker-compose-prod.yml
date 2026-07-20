@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  rocketchat:
+    image: ghcr.io/rocketchat/rocket.chat:latest
+    restart: always
+    environment:
+      - TEST_MODE=false
+      - EXIT_UNHANDLEDPROMISEREJECTION=true
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+      - MOLECULER_LOG_LEVEL=info
+      - LOWERCASE_REPOSITORY=rocketchat
+      - DOCKER_TAG=latest
+      - TRANSPORTER=nats://nats:4222
+      - KNOWLEDGE_PROXY_TARGET=http://chatbot-app:3005
+      - REACT_APP_KNOWLEDGE_API_BASE_URL=http://chatbot-app:3005/knowledge
+      - KNOWLEDGE_API_BASE_URL=http://chatbot-app:3005/knowledge
+      - VOICE_PROXY_TARGET=http://chatbot-app:3005
+      - CHAT_PROXY_TARGET=http://chatbot-app:3005
+    depends_on:
+      - mongo
+      - nats
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rocketchat.rule=PathPrefix(`/`)"
+      - "traefik.http.services.rocketchat.loadbalancer.server.port=3000"
+
+  # Enterprise Microservices (using your built images)
+  authorization-service:
+    image: ghcr.io/rocketchat/authorization-service:latest
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+    depends_on:
+      - nats
+
+  account-service:
+    image: ghcr.io/rocketchat/account-service:latest
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+    depends_on:
+      - nats
+
+  presence-service:
+    image: ghcr.io/rocketchat/presence-service:latest
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+    depends_on:
+      - nats
+
+  ddp-streamer-service:
+    image: ghcr.io/rocketchat/ddp-streamer-service:latest
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+    depends_on:
+      - nats
+
+  stream-hub-service:
+    image: ghcr.io/rocketchat/stream-hub-service:latest
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - TRANSPORTER=nats://nats:4222
+    depends_on:
+      - nats
+
+  # Core Infrastructure
+  mongo:
+    image: mongo:6.0
+    restart: always
+    environment:
+      MONGODB_REPLICA_SET_NAME: rs0
+    # This entrypoint ensures the ReplicaSet is initialized on the new server automatically
+    entrypoint: >
+      bash -c "mongod --replSet rs0 --bind_ip_all & sleep 10; 
+      mongosh --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"mongo:27017\"}]})'; wait"
+    volumes:
+      - mongodb_data:/data/db
+
+  nats:
+    image: nats:2.6-alpine
+    restart: always
+
+  traefik:
+    image: traefik:v3.1
+    command:
+      - --providers.docker=true
+      - --providers.docker.apiVersion=1.44
+      - --entrypoints.web.address=:80
+    environment:
+      - DOCKER_API_VERSION=1.44
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  mongodb_data:

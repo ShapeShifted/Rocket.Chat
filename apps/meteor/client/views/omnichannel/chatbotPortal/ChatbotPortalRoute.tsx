@@ -3,12 +3,13 @@ import { Box, Button, ButtonGroup, Margins } from '@rocket.chat/fuselage';
 
 import FAQ from './pages/faq';
 import Fact from './pages/fact';
+import Announcement from './pages/announcement';
 import Conversation from './pages/conversation';
 import Analytics from './pages/analytics';
 import VoiceProcessing from './pages/voice';
 import WebScraping from './pages/webscraping';
 
-type Selected = 'FAQ' | 'Fact' | 'Conversation' | 'Analytics' | 'Voice Processing'| 'Web Scraping';
+type Selected = 'FAQ' | 'Fact' | 'Announcement' | 'Conversation' | 'Analytics' | 'Voice Processing'| 'Web Scraping';
 
 const ChatbotPortalRoute = () => {
   const [selected, setSelected] = useState<Selected>('FAQ');
@@ -55,6 +56,25 @@ const ChatbotPortalRoute = () => {
               Facts
             </Button>
             {selected === 'Fact' && (
+              <Box position='absolute' insetBlockEnd='0px' width='100%' height='2px' backgroundColor='#1d74f5' />
+            )}
+          </Box>
+          <Box position='relative' display='flex' flexDirection='column' margin='0 8px'>
+            <Button
+              primary={selected === 'Announcement'}
+              type='button'
+              onClick={() => setSelected('Announcement')}
+              style={{
+                padding: '8px 16px',
+                fontSize: '16px',
+                border: 'none',
+                background: 'none',
+                color: selected === 'Announcement' ? '#1d74f5' : '#1F2329',
+              }}
+            >
+              Announcement
+            </Button>
+            {selected === 'Announcement' && (
               <Box position='absolute' insetBlockEnd='0px' width='100%' height='2px' backgroundColor='#1d74f5' />
             )}
           </Box>
@@ -121,6 +141,7 @@ const ChatbotPortalRoute = () => {
         <Box flexGrow={1}>
           {selected === 'FAQ' && <FAQ />}
           {selected === 'Fact' && <Fact />}
+          {selected === 'Announcement' && <Announcement />}
           {selected === 'Conversation' && <Conversation />}
           {selected === 'Analytics' && <Analytics />}
           {selected === 'Voice Processing' && <VoiceProcessing />}

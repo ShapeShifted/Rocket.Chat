@@ -41,6 +41,12 @@ export const {
 		permissionGranted: () => hasPermission('view-statistics'),
 	},
 	{
+		href: '/omnichannel/chatbot/announcement',
+		i18nLabel: 'Announcement',
+		icon: 'info',
+		permissionGranted: () => hasPermission('view-statistics'),
+	},
+	{
 		href: '/omnichannel/chatbot/voice',
 		i18nLabel: 'Voice Processing',
 		icon: 'mic',
