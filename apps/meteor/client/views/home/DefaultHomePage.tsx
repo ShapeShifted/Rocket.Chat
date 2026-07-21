@@ -6,10 +6,7 @@ import HomePageHeader from './HomePageHeader';
 import AddUsersCard from './cards/AddUsersCard';
 import CreateChannelsCard from './cards/CreateChannelsCard';
 import CustomContentCard from './cards/CustomContentCard';
-import DesktopAppsCard from './cards/DesktopAppsCard';
-import DocumentationCard from './cards/DocumentationCard';
 import JoinRoomsCard from './cards/JoinRoomsCard';
-import MobileAppsCard from './cards/MobileAppsCard';
 import Page from '../../components/Page/Page';
 import PageScrollableContent from '../../components/Page/PageScrollableContent';
 
@@ -39,9 +36,6 @@ const DefaultHomePage = (): ReactElement => {
 						{canAddUsers && <AddUsersCard />}
 						{canCreateChannel && <CreateChannelsCard />}
 						<JoinRoomsCard />
-						<MobileAppsCard />
-						<DesktopAppsCard />
-						<DocumentationCard />
 						{(isAdmin || (isCustomContentVisible && !isCustomContentBodyEmpty)) && <CustomContentCard />}
 					</CardGroup>
 				</Box>
