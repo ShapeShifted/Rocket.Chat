@@ -79,7 +79,7 @@ export async function sendOfflineMessage(data: OfflineMessageData) {
 
 	const fromText = `${name} - ${email} <${from}>`;
 	const replyTo = `${name} <${email}>`;
-	const subject = `Livechat offline message from ${name}: ${`${emailMessage}`.substring(0, 20)}`;
+	const subject = `Livechat offline message from ${name}`;
 	await Mailer.send({
 		to: emailTo,
 		from: fromText,
